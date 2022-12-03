@@ -1,0 +1,56 @@
+fragment shoe on Shoe {
+    price
+    brand {
+      name
+      slug {
+        current
+      }
+    }
+    condition
+    size {
+      shoeSize
+    }
+    mainImage {
+      asset {
+        url
+      }
+    }
+    image {
+      asset {
+        url
+      }
+    }
+    name
+    slug {
+      current
+    }
+}
+
+query allShoes {
+  allShoe {
+        ...shoe
+  }
+}
+
+query shoe($slug: String) {
+  allShoe(where: { slug: { current: { eq: $slug } } }) {
+    ...shoe
+  }
+}
+
+query allShoeBrands {
+  allShoeBrand {
+    name
+    slug {
+      current
+    }
+  }
+}
+
+query allShoeSizes {
+  allShoe {
+    size {
+      shoeSize
+    }
+  }
+}

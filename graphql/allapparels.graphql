@@ -1,0 +1,64 @@
+fragment apparel on Apparel {
+    price
+    brand {
+      name
+      slug {
+        current
+      }
+    }
+    condition
+    size {
+      apparelSize
+    }
+    category {
+      name
+      slug {
+        current
+      }
+    }
+    mainImage {
+      asset {
+        url
+      }
+    }
+    image {
+      asset {
+        url
+      }
+    }
+    name
+    slug {
+      current
+    }
+}
+
+query allApparels {
+  allApparel {
+        ...apparel
+  }
+}
+
+query apparel($slug: String) {
+  allApparel(where: { slug: { current: { eq: $slug } } }) {
+    ...apparel
+  }
+}
+
+query allApparelCategories {
+  allApparel {
+    category {
+      name
+      slug {
+        current
+      }
+    }
+  }
+}
+
+query allApparelSizes {
+  allApparel {
+    size {
+      apparelSize
+    }
+  }
+}

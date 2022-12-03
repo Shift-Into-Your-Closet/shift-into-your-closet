@@ -1,0 +1,53 @@
+fragment accessories on Accessories {
+    price
+    brand {
+      name
+      slug {
+        current
+      }
+    }
+    condition
+    category {
+      name
+      slug {
+        current
+      }
+    }
+    mainImage {
+      asset {
+        url
+      }
+    }
+    image {
+      asset {
+        url
+      }
+    }
+    name
+    slug {
+      current
+    }
+}
+
+query allAccessory {
+  allAccessories {
+        ...accessories
+  }
+}
+
+query accessories($slug: String) {
+  allAccessories(where: { slug: { current: { eq: $slug } } }) {
+    ...accessories
+  }
+}
+
+query allAccessoryCategories {
+  allAccessories {
+    category {
+      name
+      slug {
+        current
+      }
+    }
+  }
+}

@@ -11,7 +11,7 @@ const navigation = [
   { name: "Apparel", href: "/apparel", current: false },
   { name: "Accessories", href: "/accessories", current: false },
   { name: "Wishlist", href: "/wishlist", current: false },
-  { name: "Sell With Us", href: "/sell-with-us", current: false },
+  { name: "Sell", href: "/sell", current: false },
   { name: "Contact", href: "/contact", current: false },
 ];
 

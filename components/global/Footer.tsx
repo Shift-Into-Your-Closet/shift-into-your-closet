@@ -34,8 +34,8 @@ const customerServiceLinks = [
     link: "/wishlist",
   },
   {
-    name: "Sell With Us",
-    link: "/sell-with-us",
+    name: "Sell",
+    link: "/sell",
   },
 ];
 

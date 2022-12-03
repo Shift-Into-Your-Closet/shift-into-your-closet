@@ -6,11 +6,13 @@
     "start": "next start"
   },
   "dependencies": {
+    "@formspree/react": "^2.4.1",
     "@headlessui/react": "^1.7.4",
     "clsx": "^1.2.1",
     "next": "latest",
     "react": "18.2.0",
     "react-dom": "18.2.0",
+    "react-hook-form": "^7.40.0",
     "react-icons": "^4.7.1"
   },
   "devDependencies": {

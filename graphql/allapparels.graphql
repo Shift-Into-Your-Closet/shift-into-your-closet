@@ -45,12 +45,10 @@ query apparel($slug: String) {
 }
 
 query allApparelCategories {
-  allApparel {
-    category {
-      name
-      slug {
-        current
-      }
+  allApparelCategory {
+    name
+    slug {
+      current
     }
   }
 }

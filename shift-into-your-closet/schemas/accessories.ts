@@ -7,7 +7,7 @@ export default {
       name: "price",
       title: "Price",
       type: "number",
-      description: "Please provide a price for your shoes.",
+      description: "Please provide a price for your accessories.",
       validation: (Rule: any) => Rule.required(),
     },
     {

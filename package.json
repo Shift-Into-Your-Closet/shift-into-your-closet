@@ -3,12 +3,18 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next start"
+    "start": "next start",
+    "codegen": "graphql-codegen"
   },
   "dependencies": {
+    "@apollo/client": "^3.7.1",
     "@formspree/react": "^2.4.1",
     "@headlessui/react": "^1.7.4",
+    "@urql/core": "^3.0.5",
     "clsx": "^1.2.1",
+    "cross-fetch": "^3.1.5",
+    "graphql": "^16.6.0",
+    "graphql-request": "^5.0.0",
     "next": "latest",
     "react": "18.2.0",
     "react-dom": "18.2.0",
@@ -16,6 +22,10 @@
     "react-icons": "^4.7.1"
   },
   "devDependencies": {
+    "@graphql-codegen/cli": "^2.15.0",
+    "@graphql-codegen/typed-document-node": "^2.3.8",
+    "@graphql-codegen/typescript": "^2.8.3",
+    "@graphql-codegen/typescript-operations": "^2.5.8",
     "@types/node": "18.11.3",
     "@types/react": "18.0.21",
     "@types/react-dom": "18.0.6",

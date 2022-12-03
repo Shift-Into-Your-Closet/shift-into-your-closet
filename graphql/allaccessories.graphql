@@ -42,12 +42,10 @@ query accessories($slug: String) {
 }
 
 query allAccessoryCategories {
-  allAccessories {
-    category {
-      name
-      slug {
-        current
-      }
+  allAccessoriesCategory {
+    name
+    slug {
+      current
     }
   }
 }

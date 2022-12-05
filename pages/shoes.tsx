@@ -39,7 +39,7 @@ export const getStaticProps: GetStaticProps<ShoeProps> = async () => {
 
 const Shoes: NextPage<ShoeProps> = ({ shoes, brands }: ShoeProps) => {
   const router = useRouter();
-  const { category: activeBrand } = router.query;
+  const { brand: activeBrand } = router.query;
   const filteredShoes = useMemo(() => {
     return activeBrand
       ? shoes.filter((shoe) =>
@@ -63,7 +63,7 @@ const Shoes: NextPage<ShoeProps> = ({ shoes, brands }: ShoeProps) => {
           {brands?.map((brand) => (
             <Link
               key={brand.slug?.current}
-              href={`/shoes?category=${brand?.slug?.current}`}
+              href={`/shoes?brand=${brand?.slug?.current}`}
             >
               <button
                 className={cn(
@@ -92,7 +92,10 @@ const Shoes: NextPage<ShoeProps> = ({ shoes, brands }: ShoeProps) => {
                             src={shoe.mainImage.asset.url}
                             alt={`Image for ${shoe.name}`}
                             className="object-cover"
-                            layout="fill"
+                            fill
+                            sizes="(max-width: 768px) 100vw,
+                          (max-width: 1200px) 50vw,
+                          33vw"
                           />
                         )}
                       </div>

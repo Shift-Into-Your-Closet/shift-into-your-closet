@@ -1,5 +1,6 @@
 import type { NextPage } from "next";
 import Head from "next/head";
+import ShopWithUs from "../components/global/landing/ShopWithUs";
 
 const Home: NextPage = () => {
   return (
@@ -9,9 +10,10 @@ const Home: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <section className="max-w-7xl mx-auto mt-5 px-5 sm:px-6 lg:px-8 py-20 sm:py-24 lg:py-24 font-roboto dark:text-white min-h-screen">
-        <h1 className="text-7xl font-title">
+        <h1 className="text-7xl font-title text-center text-white">
           Shift Into Your <strong>Closet</strong>
         </h1>
+        <ShopWithUs />
       </section>
     </div>
   );

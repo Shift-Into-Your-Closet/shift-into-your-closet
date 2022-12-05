@@ -9,7 +9,7 @@ type LayoutProps = {
 
 export default function Layout({ children }: LayoutProps) {
   return (
-    <div>
+    <div className="bg-zinc-800">
       <Head>
         <title>Shift Into Your Closet</title>
       </Head>

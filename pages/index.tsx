@@ -1,6 +1,6 @@
 import type { NextPage } from "next";
 import Head from "next/head";
-import ShopWithUs from "../components/global/landing/ShopWithUs";
+import ShopWithUs from "../components/landing/ShopWithUs";
 
 const Home: NextPage = () => {
   return (

@@ -1,8 +1,12 @@
-import { Fragment } from "react";
+import { Fragment, SetStateAction, useState } from "react";
 
 import Head from "next/head";
 import Link from "next/link";
-import { NextPage } from "next";
+import Image from "next/image";
+import { GetStaticProps, NextPage } from "next";
+
+import client from "../apollo-client";
+import { AllShoesDocument, AllShoesQuery } from "../graphql-operations";
 
 import { useForm } from "react-hook-form";
 import { useForm as useFormSpree } from "@formspree/react";
@@ -14,22 +18,46 @@ type FormValues = {
   lastName: string;
   subject: string;
   email: string;
+  phone: string;
   message: string;
 };
 
-const WishList: NextPage = () => {
-  const [formSpreeState, sendToFormSpree] = useFormSpree("mqkjvrpd");
+type ShoeInquiryProps = {
+  shoes: AllShoesQuery["allShoe"];
+};
+
+export const getStaticProps: GetStaticProps<ShoeInquiryProps> = async () => {
+  let shoeData;
+  ({ data: shoeData } = await client.query<AllShoesQuery>({
+    query: AllShoesDocument,
+  }));
+  return {
+    props: {
+      shoes: shoeData?.allShoe ?? [],
+    },
+    revalidate: 200,
+  };
+};
+
+const ShoeInquiry: NextPage<ShoeInquiryProps> = ({
+  shoes,
+}: ShoeInquiryProps) => {
+  const [formSpreeState, sendToFormSpree] = useFormSpree("xvoywvlv");
+  const [userChoice, setUserChoice] = useState("");
 
   const {
     register,
     handleSubmit,
     formState: { errors },
+    control,
   } = useForm({
     defaultValues: {
       firstName: "",
       lastName: "",
       subject: "",
       email: "",
+      phone: "",
+      preferredContact: ["", ""],
       message: "",
     },
   });
@@ -44,27 +72,44 @@ const WishList: NextPage = () => {
     }, 2000);
   };
 
+  const handleUserChoice = (e: {
+    target: { value: SetStateAction<string> };
+  }) => {
+    setUserChoice(e.target.value);
+  };
+
   return (
     <>
       <Head>
-        <title>Wishlist | Shift Into Your Closet</title>
+        <title>Shoe Inquiry | Shift Into Your Closet</title>
         <link rel="apple-touch-icon" href="/path/to/apple-touch-icon.png" />
-        <meta name="theme-color" content="#327CDF" />
-        <meta name="description" content="wishlist at Shift Into Your Closet" />
-        <meta name="keywords" content="wishlist, shift into your closet" />
+        <meta
+          name="description"
+          content="shoe inquiry at Shift Into Your Closet"
+        />
+        <meta
+          name="keywords"
+          content="shoe inquiry, hands on physio therapy and rehab centre"
+        />
         <meta name="viewport" content="width=device-width" />
       </Head>
 
+      <div className="max-w-screen-xl m-auto w-11/12">
+        <h1 className="text-3xl sm:text-5xl text-center py-6 font-bold font-roboto text-white capitalize">
+          Shoe Inquiry
+        </h1>
+      </div>
+
       <section
-        id="wishlist"
+        id="product-inquiry"
         className="max-w-7xl mx-auto px-5 sm:px-6 lg:px-8 py-20 sm:py-24 lg:py-24 animate-fade-in-up min-h-screen"
       >
         <nav className="flex" aria-label="Breadcrumb">
-          <ol className="inline-flex items-center space-x-1 md:space-x-3">
+          <ol className="inline-flex items-center space-x-1 md:space-x-3 text-white">
             <li className="inline-flex items-center">
               <Link
                 href="/"
-                className="inline-flex items-center text-lg font-medium md:ml-2 dark:hover:text-white  cursor-pointer text-gray-750 dark:text-white hover:text-blue-400"
+                className="inline-flex items-center text-lg font-bold font-roboto md:ml-2 cursor-pointer  hover:text-blue-400"
               >
                 <svg
                   className="w-4 h-4 mr-2"
@@ -76,6 +121,28 @@ const WishList: NextPage = () => {
                 </svg>
                 Home
               </Link>
+            </li>
+            <li>
+              <div className="flex items-center">
+                <svg
+                  className="w-6 h-6 text-gray-400"
+                  fill="currentColor"
+                  viewBox="0 0 20 20"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    fillRule="evenodd"
+                    d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
+                    clipRule="evenodd"
+                  ></path>
+                </svg>
+                <Link
+                  href="/shoes"
+                  className="ml-1 text-lg font-regular font-roboto md:ml-2 cursor-pointer  hover:text-blue-400"
+                >
+                  Shoes
+                </Link>
+              </div>
             </li>
             <li aria-current="page">
               <div className="flex items-center">
@@ -91,101 +158,77 @@ const WishList: NextPage = () => {
                     clipRule="evenodd"
                   ></path>
                 </svg>
-                <span className="ml-1 text-lg font-medium md:ml-2 cursor-pointer text-gray-750 dark:text-white hover:text-blue-400">
-                  Wishlist
+                <span className="ml-1 text-lg font-regular font-roboto md:ml-2  text-gray-750 dark:text-white dark:hover:text-blue-350 hover:text-blue-550">
+                  Shoe Inquiry
                 </span>
               </div>
             </li>
           </ol>
         </nav>
         <div className="my-10">
-          <p className="text-left text-black text-base mb-4">
-            Not seeing what you're looking for? Feel free to fill in the form
-            below or contact us directly. We'll be sure to reach out to you
-            directly before the item is on sale to the general public.
+          <p className="font-roboto text-left text-white text-base mb-4">
+            Feel free to fill in the form below or contact us directly with any
+            questions you may have or with any product inquiries. We keep your
+            information private and will not share it with third parties.
           </p>
         </div>
         <form
           onSubmit={handleSubmit(onSubmit)}
-          className="bg-white dark:bg-gray-800 dark:border dark:border-1 dark:border-slate-700 py-8 px-2 rounded-b-xl shadow-md lg:p-8 sm:px-4"
+          className="bg-white dark:bg-gray-800 dark:border dark:border-1 dark:border-slate-700 py-8 px-2 rounded-lg shadow-md lg:p-8 sm:px-4"
         >
-          <h2 className="text-2xl text-gray-550 dark:text-white font-semibold">
+          <h2 className="text-2xl text-gray-550 dark:text-white font-roboto font-bold">
             Let's get to know you
           </h2>
           <div className="flex flex-col space-y-6">
             <div className="grid grid-cols-1 space-y-3">
-              <div className="flex flex-col justify-evenly md:gap-4 sm:flex-row">
+              <div className="flex flex-col justify-evenly gap-4 sm:flex-row">
                 <div className="flex flex-col w-full">
                   {errors.firstName && (
-                    <span className="absolute mt-10 ml-2 text-red-500">
+                    <span className="absolute mt-24 ml-2 text-red-500 font-roboto ">
                       required
                     </span>
                   )}
                   <label
                     htmlFor="firstName"
-                    className="block mb-2 mt-5 text-sm text-gray-900 dark:text-white"
+                    className="block mb-2 mt-5 text-sm font-roboto font-regular text-gray-900 dark:text-white"
                   >
-                    First Name
+                    Legal First Name
                   </label>
                   <input
                     placeholder="First Name"
-                    className="rounded-md border bg-blue-100 border-slate-200 px-4 py-2 outline-none hover:border-green-300 focus:border-green-350 w-full mb-2 sm:mb-0 font-opensans"
+                    className="rounded-md border bg-blue-150 border-slate-200 px-4 py-2 outline-none hover:border-green-350 focus:border-green-350 w-full mb-2 sm:mb-0 font-opensans"
                     {...register("firstName", {
                       required: true,
                       maxLength: 30,
                     })}
                   />
                 </div>
+
                 <div className="flex flex-col w-full">
                   {errors.lastName && (
-                    <span className="absolute mt-10 ml-2 text-red-500">
+                    <span className="absolute mt-24 ml-2 text-red-500 font-roboto">
                       required
                     </span>
                   )}
                   <label
                     htmlFor="lastName"
-                    className="block mb-2 mt-5 text-sm text-gray-900 dark:text-white"
+                    className="block mb-2 mt-5 text-sm font-roboto font-regular text-gray-900 dark:text-white"
                   >
-                    Last Name
+                    Legal Last Name
                   </label>
                   <input
                     placeholder="Last Name"
-                    className="rounded-md border bg-blue-100 border-slate-200 px-4 py-2 outline-none hover:border-green-300 focus:border-green-400 w-full mb-2 sm:mb-0"
+                    className="rounded-md border bg-blue-150 border-slate-200 px-4 py-2 outline-none hover:border-green-350 focus:border-green-350 w-full mb-2 sm:mb-0 font-opensans"
                     {...register("lastName", { required: true, maxLength: 30 })}
                   />
                 </div>
               </div>
             </div>
-            <div className="flex flex-col gap-8">
-              <h3 className="text-2xl text-gray-550 dark:text-white  font-semibold">
-                How can we help?
-              </h3>
-              <label
-                htmlFor="subject"
-                className="block text-sm text-gray-900 dark:text-white"
-              >
-                Subject
-              </label>
-              <input
-                type="text"
-                placeholder="Wishlist"
-                className="rounded-md bg-blue-100 border border-slate-200 px-4 py-2 w-full outline-none hover:border-green-300 focus:border-green-400"
-                {...register("subject", {
-                  required: true,
-                  minLength: 5,
-                  maxLength: 30,
-                })}
-              />
-              {errors.subject && (
-                <span className="absolute ml-2 text-red-500 uppercase">
-                  required
-                </span>
-              )}
-            </div>
-            <div className="flex flex-col justify-evenly md:gap-4 sm:flex-row font-opensans">
+
+            <div className="flex flex-col justify-evenly gap-2 sm:flex-row font-roboto">
               <div className="flex flex-col w-full">
                 {errors.email && (
-                  <span className="absolute mt-10 ml-2 text-red-500">
+                  <span className="absolute mt-24 ml-2 text-red-500 font-roboto">
                     required
                   </span>
                 )}
@@ -198,7 +241,7 @@ const WishList: NextPage = () => {
                 <input
                   type="text"
                   placeholder="Email"
-                  className="rounded-md bg-blue-100 border border-slate-200 px-4 py-2 outline-none hover:border-green-300 focus:border-green-400 w-full mb-2 sm:mb-0"
+                  className="rounded-md font-opensans bg-blue-150 border border-slate-200 px-4 py-2 outline-none hover:border-green-350 focus:border-green-350 w-full mb-2 sm:mb-0"
                   {...register("email", {
                     required: "Email is required",
                     pattern: {
@@ -210,15 +253,54 @@ const WishList: NextPage = () => {
               </div>
             </div>
 
-            <div className="flex flex-col font-opensans pt-5 gap-5">
-              <h3 className="text-2xl text-gray-550 dark:text-white font-monsterrat font-semibold">
+            <h3 className="text-2xl text-gray-550 dark:text-white font-roboto font-bold">
+              Which shoe would you like to purchase?
+            </h3>
+            <div className="flex-1 font-opensans">
+              <div className="flex flex-col mb-2 items-start">
+                <label
+                  htmlFor="subject"
+                  className="text-black dark:text-white font-bold font-roboto flex-shrink-0 text-md mb-2"
+                >
+                  Select Shoe
+                </label>
+                <select
+                  placeholder="Subject"
+                  className="cursor-pointer rounded-md border bg-blue-150 border-slate-200 px-4 py-2 w-full outline-none hover:border-green-350 focus:border-green-350"
+                  {...register("subject", {
+                    required: true,
+                  })}
+                  value={userChoice}
+                  onChange={handleUserChoice}
+                >
+                  {shoes.map((shoes) => (
+                    <option
+                      key={shoes.name ?? "Shoe name"}
+                      value={shoes.name ?? "Shoe name"}
+                    >
+                      {shoes.name}
+                    </option>
+                  ))}
+                </select>
+                {errors.subject && (
+                  <span className="absolute mt-20 ml-2 text-red-500 font-roboto">
+                    required
+                  </span>
+                )}
+              </div>
+            </div>
+
+            <div className="flex flex-col font-roboto pt-5 gap-5">
+              <h3 className="text-2xl text-gray-550 dark:text-white font-bold">
                 Have any questions for us?
               </h3>
-              <label htmlFor="message">Message</label>
+              <label htmlFor="message" className="dark:text-white">
+                Message
+              </label>
               <textarea
                 rows={5}
                 placeholder="Message"
-                className="rounded-md bg-blue-100 border border-gray-200 px-4 py-2 outline-none hover:border-green-300 focus:border-green-400 md:col-span-2 resize-none"
+                className="rounded-md font-opensans bg-blue-150 border border-gray-200 px-4 py-2 outline-none hover:border-green-350 focus:border-green-350 md:col-span-2 resize-none"
                 {...register("message", {
                   required: true,
                   minLength: 5,
@@ -226,19 +308,19 @@ const WishList: NextPage = () => {
                 })}
               />
               {errors.message && (
-                <span className="absolute mt-textareaRem ml-2 text-red-500">
+                <span className="absolute mt-textareaRem ml-2 text-red-500 font-roboto">
                   required
                 </span>
               )}
             </div>
 
-            <div className="flex">
+            <div className="flex ">
               <button
                 type="submit"
                 value="Send"
-                className="w-full rounded-md bg-blue-500 px-14 py-4 mt-4 text-sm font-roboto bold uppercase text-white hover:bg-blue-700 cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75"
+                className="w-full rounded-md bg-blue-500 px-14 py-4 mt-4 text-sm font-roboto bold  text-white hover:bg-blue-700 cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75"
               >
-                Submit
+                Send
               </button>
             </div>
           </div>
@@ -256,7 +338,7 @@ const WishList: NextPage = () => {
           >
             <div className="flex flex-col justify-center items-center absolute top-0 left-0 h-full w-full bg-white bg-opacity-90">
               <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-gray-900"></div>
-              <p className="mt-10 text-xl font-roboto uppercase text-accent font-bold">
+              <p className="mt-10 text-xl font-roboto text-accent font-bold">
                 sending...
               </p>
             </div>
@@ -276,14 +358,14 @@ const WishList: NextPage = () => {
             <div className="flex flex-col justify-center items-center absolute top-0 left-0 h-full w-full bg-white">
               <div className="flex flex-col md:flex-row"></div>
 
-              <p className="mt-10 text-xl text-blue-500 font-roboto text-accent font-bold uppercase">
+              <p className="mt-10 text-xl text-blue-550 font-roboto text-accent font-bold">
                 message sent!
               </p>
-              <p className="text-sm font-roboto text-blue-300 my-5 sm:text-lg">
-                We will get back to you as soon as the item is available!
+              <p className="text-sm font-roboto text-blue-350 my-5 sm:text-lg">
+                A member of our staff will get back to you as soon as possible!
               </p>
               <Link href="/">
-                <button className="rounded-lg bg-blue-300 px-6 py-2 font-bold uppercase text-white hover:bg-green-350">
+                <button className="rounded-lg bg-blue-350 px-6 py-2 font-bold text-white hover:bg-green-350">
                   RETURN HOME
                 </button>
               </Link>
@@ -314,4 +396,4 @@ const WishList: NextPage = () => {
   );
 };
 
-export default WishList;
+export default ShoeInquiry;

@@ -5,7 +5,7 @@ import Link from "next/link";
 import { GetStaticProps, NextPage } from "next";
 
 import client from "../apollo-client";
-import { AllShoesDocument, AllShoesQuery } from "../graphql-operations";
+import { AllApparelsDocument, AllApparelsQuery } from "../graphql-operations";
 
 import { useForm } from "react-hook-form";
 import { useForm as useFormSpree } from "@formspree/react";
@@ -20,26 +20,26 @@ type FormValues = {
   message: string;
 };
 
-type ShoeInquiryProps = {
-  shoes: AllShoesQuery["allShoe"];
+type ApparelInquiryProps = {
+  apparels: AllApparelsQuery["allApparel"];
 };
 
-export const getStaticProps: GetStaticProps<ShoeInquiryProps> = async () => {
-  let shoeData;
-  ({ data: shoeData } = await client.query<AllShoesQuery>({
-    query: AllShoesDocument,
+export const getStaticProps: GetStaticProps<ApparelInquiryProps> = async () => {
+  let apparelData;
+  ({ data: apparelData } = await client.query<AllApparelsQuery>({
+    query: AllApparelsDocument,
   }));
   return {
     props: {
-      shoes: shoeData?.allShoe ?? [],
+      apparels: apparelData?.allApparel ?? [],
     },
     revalidate: 200,
   };
 };
 
-const ShoeInquiry: NextPage<ShoeInquiryProps> = ({
-  shoes,
-}: ShoeInquiryProps) => {
+const ApparelInquiry: NextPage<ApparelInquiryProps> = ({
+  apparels,
+}: ApparelInquiryProps) => {
   const [formSpreeState, sendToFormSpree] = useFormSpree("xvoywvlv");
   const [userChoice, setUserChoice] = useState("");
 
@@ -77,22 +77,22 @@ const ShoeInquiry: NextPage<ShoeInquiryProps> = ({
   return (
     <>
       <Head>
-        <title>Shoe Inquiry | Shift Into Your Closet</title>
+        <title>Apparel Inquiry | Shift Into Your Closet</title>
         <link rel="apple-touch-icon" href="/path/to/apple-touch-icon.png" />
         <meta
           name="description"
-          content="shoe inquiry at Shift Into Your Closet"
+          content="apparel inquiry at Shift Into Your Closet"
         />
         <meta
           name="keywords"
-          content="shoe inquiry, hands on physio therapy and rehab centre"
+          content="apparel inquiry, hands on physio therapy and rehab centre"
         />
         <meta name="viewport" content="width=device-width" />
       </Head>
 
       <div className="max-w-screen-xl m-auto w-11/12">
         <h1 className="text-3xl sm:text-5xl text-center py-6 font-bold font-roboto text-white capitalize">
-          Shoe Inquiry
+          Apparel Inquiry
         </h1>
       </div>
 
@@ -133,10 +133,10 @@ const ShoeInquiry: NextPage<ShoeInquiryProps> = ({
                   ></path>
                 </svg>
                 <Link
-                  href="/shoes"
+                  href="/apparel"
                   className="ml-1 text-lg font-regular font-roboto md:ml-2 cursor-pointer  hover:text-blue-400"
                 >
-                  Shoes
+                  Apparel
                 </Link>
               </div>
             </li>
@@ -155,7 +155,7 @@ const ShoeInquiry: NextPage<ShoeInquiryProps> = ({
                   ></path>
                 </svg>
                 <span className="ml-1 text-lg font-regular font-roboto md:ml-2  text-gray-750 dark:text-white dark:hover:text-blue-350 hover:text-blue-550">
-                  Shoe Inquiry
+                  Apparel Inquiry
                 </span>
               </div>
             </li>
@@ -250,7 +250,7 @@ const ShoeInquiry: NextPage<ShoeInquiryProps> = ({
             </div>
 
             <h3 className="text-2xl text-gray-550 dark:text-white font-roboto font-bold">
-              Which shoe would you like to purchase?
+              Which apparel would you like to purchase?
             </h3>
             <div className="flex-1 font-opensans">
               <div className="flex flex-col mb-2 items-start">
@@ -258,7 +258,7 @@ const ShoeInquiry: NextPage<ShoeInquiryProps> = ({
                   htmlFor="subject"
                   className="text-black dark:text-white font-bold font-roboto flex-shrink-0 text-md mb-2"
                 >
-                  Select Shoe
+                  Select Apparel
                 </label>
                 <select
                   placeholder="Subject"
@@ -269,12 +269,12 @@ const ShoeInquiry: NextPage<ShoeInquiryProps> = ({
                   value={userChoice}
                   onChange={handleUserChoice}
                 >
-                  {shoes.map((shoes) => (
+                  {apparels.map((apparel) => (
                     <option
-                      key={shoes.name ?? "Shoe name"}
-                      value={shoes.name ?? "Shoe name"}
+                      key={apparel.name ?? "Apparel name"}
+                      value={apparel.name ?? "Apparel name"}
                     >
-                      {shoes.name}
+                      {apparel.name}
                     </option>
                   ))}
                 </select>
@@ -392,4 +392,4 @@ const ShoeInquiry: NextPage<ShoeInquiryProps> = ({
   );
 };
 
-export default ShoeInquiry;
+export default ApparelInquiry;

@@ -119,7 +119,7 @@ const Apparel: NextPage<ApparelProps> = ({
                         </div>
                         <div className="absolute bottom-0 left-0">
                           <div className="bg-black py-3 px-5">
-                            <div className="text-white uppercase font-title font-bold pb-1">
+                            <div className="text-white uppercase font-bold pb-1">
                               {apparel.name}
                             </div>
                           </div>

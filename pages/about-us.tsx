@@ -28,7 +28,7 @@ const AboutUs: NextPage = () => {
         <meta name="viewport" content="width=device-width" />
       </Head>
       <section
-        className="max-w-7xl mx-auto mt-5 px-5 sm:px-6 lg:px-8 py-20 sm:py-24 lg:py-24 font-roboto dark:text-white min-h-screen"
+        className="max-w-7xl mx-auto mt-5 px-5 sm:px-6 lg:px-8 py-20 sm:py-24 lg:py-24  dark:text-white min-h-screen"
         id="about-us"
       >
         <nav className="flex" aria-label="Breadcrumb">

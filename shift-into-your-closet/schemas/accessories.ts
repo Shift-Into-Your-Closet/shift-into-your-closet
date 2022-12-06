@@ -33,7 +33,8 @@ export default {
       options: {
         list: [
           { title: "Brand New", value: "brand-new" },
-          { title: "Used", value: "used" },
+          { title: "Tried On", value: "tried-on" },
+          { title: "Worn", value: "worn" },
         ], // <-- predefined values
         layout: "radio", // <-- defaults to 'dropdown'
         direction: "horizontal",

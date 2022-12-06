@@ -97,7 +97,7 @@ const ApparelInquiry: NextPage<ApparelInquiryProps> = ({
       </div>
 
       <section
-        id="product-inquiry"
+        id="apparel-inquiry"
         className="max-w-7xl mx-auto px-5 sm:px-6 lg:px-8 py-20 sm:py-24 lg:py-24 animate-fade-in-up min-h-screen"
       >
         <nav className="flex" aria-label="Breadcrumb">

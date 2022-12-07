@@ -13,7 +13,7 @@ const Home: NextPage = () => {
         <meta name="keywords" content="shift into your closet" />
         <meta name="viewport" content="width=device-width" />
       </Head>
-      <section className="max-w-7xl mx-auto mt-5 px-5 sm:px-6 lg:px-8 py-20 sm:py-24 lg:py-24 font-roboto dark:text-white min-h-screen">
+      <section className="max-w-7xl mx-auto mt-5 px-5 sm:px-6 lg:px-8 py-20 sm:py-24 lg:py-24 font-roboto min-h-screen">
         <h1 className="text-7xl font-title text-center text-white">
           Shift Into Your <strong>Closet</strong>
         </h1>

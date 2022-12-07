@@ -1,7 +1,7 @@
 function ShopWithUs() {
   return (
     <>
-      <section className="max-w-7xl mx-auto mt-5 px-5 sm:px-6 lg:px-8 py-20 sm:py-24 lg:py-24  dark:text-white min-h-screen bg-zinc-800">
+      <section className="max-w-7xl mx-auto mt-5 px-5 sm:px-6 lg:px-8 py-20 sm:py-24 lg:py-24 min-h-screen bg-zinc-800">
         <h3 className="text-3xl tracking-widest mb-3 uppercase text-gray-400 font-bold ">
           Shop With Us
         </h3>

@@ -107,7 +107,7 @@ const WishList: NextPage = () => {
         </div>
         <form
           onSubmit={handleSubmit(onSubmit)}
-          className="bg-white py-8 px-2 rounded-b-xl shadow-md lg:p-8 sm:px-4"
+          className="bg-white py-8 px-2 rounded-xl shadow-md lg:p-8 sm:px-4"
         >
           <h2 className="text-2xl font-semibold">Let's get to know you</h2>
           <div className="flex flex-col space-y-6">

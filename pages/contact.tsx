@@ -91,7 +91,7 @@ const Contact: NextPage = () => {
                     clipRule="evenodd"
                   ></path>
                 </svg>
-                <span className="ml-1 text-lg font-medium md:ml-2 cursor-pointer text-gray-750 dark:text-white hover:text-blue-400">
+                <span className="ml-1 text-lg font-medium md:ml-2">
                   Contact
                 </span>
               </div>
@@ -106,11 +106,9 @@ const Contact: NextPage = () => {
         </div>
         <form
           onSubmit={handleSubmit(onSubmit)}
-          className="bg-white dark:bg-gray-800 dark:border dark:border-1 dark:border-slate-700 py-8 px-2 rounded-b-xl shadow-md lg:p-8 sm:px-4"
+          className="bg-white py-8 px-2 rounded-xl shadow-md lg:p-8 sm:px-4"
         >
-          <h2 className="text-2xl text-gray-550 dark:text-white font-semibold">
-            Let's get to know you
-          </h2>
+          <h2 className="text-2xlfont-semibold">Let's get to know you</h2>
           <div className="flex flex-col space-y-6">
             <div className="grid grid-cols-1 space-y-3">
               <div className="flex flex-col justify-evenly md:gap-4 sm:flex-row">
@@ -122,13 +120,13 @@ const Contact: NextPage = () => {
                   )}
                   <label
                     htmlFor="firstName"
-                    className="block mb-2 mt-5 text-sm text-gray-900 dark:text-white"
+                    className="block mb-2 mt-5 text-sm text-gray-900"
                   >
                     First Name
                   </label>
                   <input
                     placeholder="First Name"
-                    className="rounded-md border bg-blue-100 border-slate-200 px-4 py-2 outline-none hover:border-green-300 focus:border-green-350 w-full mb-2 sm:mb-0 font-opensans"
+                    className="rounded-md border bg-blue-100 border-slate-200 px-4 py-2 outline-none hover:border-green-300 focus:border-green-400 w-full mb-2 sm:mb-0 font-opensans"
                     {...register("firstName", {
                       required: true,
                       maxLength: 30,
@@ -143,7 +141,7 @@ const Contact: NextPage = () => {
                   )}
                   <label
                     htmlFor="lastName"
-                    className="block mb-2 mt-5 text-sm text-gray-900 dark:text-white"
+                    className="block mb-2 mt-5 text-sm text-gray-900"
                   >
                     Last Name
                   </label>
@@ -156,13 +154,8 @@ const Contact: NextPage = () => {
               </div>
             </div>
             <div className="flex flex-col gap-8">
-              <h3 className="text-2xl text-gray-550 dark:text-white  font-semibold">
-                How can we help?
-              </h3>
-              <label
-                htmlFor="subject"
-                className="block text-sm text-gray-900 dark:text-white"
-              >
+              <h3 className="text-2xl font-semibold">How can we help?</h3>
+              <label htmlFor="subject" className="block text-sm text-gray-900">
                 Subject
               </label>
               <input
@@ -176,7 +169,7 @@ const Contact: NextPage = () => {
                 })}
               />
               {errors.subject && (
-                <span className="absolute ml-2 text-red-500 uppercase">
+                <span className="absolute mt-10 ml-2 text-red-500">
                   required
                 </span>
               )}
@@ -190,7 +183,7 @@ const Contact: NextPage = () => {
                 )}
                 <label
                   htmlFor="email"
-                  className="block mb-2 mt-5 text-sm text-gray-900 dark:text-white"
+                  className="block mb-2 mt-5 text-sm text-gray-900"
                 >
                   Email
                 </label>
@@ -210,7 +203,7 @@ const Contact: NextPage = () => {
             </div>
 
             <div className="flex flex-col font-opensans pt-5 gap-5">
-              <h3 className="text-2xl text-gray-550 dark:text-white font-monsterrat font-semibold">
+              <h3 className="text-2xl font-monsterrat font-semibold">
                 Have any questions for us?
               </h3>
               <label htmlFor="message">Message</label>
@@ -225,7 +218,7 @@ const Contact: NextPage = () => {
                 })}
               />
               {errors.message && (
-                <span className="absolute mt-textareaRem ml-2 text-red-500">
+                <span className="absolute mt-10 ml-2 text-red-500">
                   required
                 </span>
               )}
@@ -282,8 +275,8 @@ const Contact: NextPage = () => {
                 We'll be in touch soon!
               </p>
               <Link href="/">
-                <button className="rounded-lg bg-blue-300 px-6 py-2 font-bold uppercase text-white hover:bg-green-350">
-                  RETURN HOME
+                <button className="rounded-lg bg-blue-500 px-6 py-2 font-bold uppercase text-white hover:bg-blue-700">
+                  Return Home
                 </button>
               </Link>
             </div>

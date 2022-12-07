@@ -36,7 +36,7 @@ const AboutUs: NextPage = () => {
             <li className="inline-flex items-center">
               <Link
                 href="/"
-                className="inline-flex items-center text-lg font-medium md:ml-2 dark:hover:text-white  cursor-pointer text-gray-750 dark:text-white hover:text-blue-400"
+                className="inline-flex items-center text-lg font-medium md:ml-2  cursor-pointer  hover:text-blue-400"
               >
                 <svg
                   className="w-4 h-4 mr-2"

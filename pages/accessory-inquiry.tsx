@@ -5,12 +5,7 @@ import Link from "next/link";
 import { GetStaticProps, NextPage } from "next";
 
 import client from "../apollo-client";
-import {
-  AllAccessoryDocument,
-  AllAccessoryQuery,
-  AllApparelsDocument,
-  AllApparelsQuery,
-} from "../graphql-operations";
+import { AllAccessoryDocument, AllAccessoryQuery } from "../graphql-operations";
 
 import { useForm } from "react-hook-form";
 import { useForm as useFormSpree } from "@formspree/react";
@@ -113,7 +108,7 @@ const ApparelInquiry: NextPage<AccessoryInquiryProps> = ({
             <li className="inline-flex items-center">
               <Link
                 href="/"
-                className="inline-flex items-center text-lg font-bold font-roboto md:ml-2 cursor-pointer  hover:text-blue-400"
+                className="inline-flex items-center text-lg font-bold font-roboto md:ml-2 cursor-pointer hover:text-blue-400"
               >
                 <svg
                   className="w-4 h-4 mr-2"
@@ -142,7 +137,7 @@ const ApparelInquiry: NextPage<AccessoryInquiryProps> = ({
                 </svg>
                 <Link
                   href="/accessories"
-                  className="ml-1 text-lg font-regular font-roboto md:ml-2 cursor-pointer  hover:text-blue-400"
+                  className="ml-1 text-lg font-regular font-roboto md:ml-2 cursor-pointer hover:text-blue-400"
                 >
                   Accessories
                 </Link>
@@ -162,7 +157,7 @@ const ApparelInquiry: NextPage<AccessoryInquiryProps> = ({
                     clipRule="evenodd"
                   ></path>
                 </svg>
-                <span className="ml-1 text-lg font-regular font-roboto md:ml-2  text-gray-750 dark:text-white dark:hover:text-blue-350 hover:text-blue-550">
+                <span className="ml-1 text-lg font-regular font-roboto md:ml-2">
                   Accessory Inquiry
                 </span>
               </div>
@@ -178,9 +173,9 @@ const ApparelInquiry: NextPage<AccessoryInquiryProps> = ({
         </div>
         <form
           onSubmit={handleSubmit(onSubmit)}
-          className="bg-white dark:bg-gray-800 dark:border dark:border-1 dark:border-slate-700 py-8 px-2 rounded-lg shadow-md lg:p-8 sm:px-4"
+          className="bg-white py-8 px-2 rounded-xl shadow-md lg:p-8 sm:px-4"
         >
-          <h2 className="text-2xl text-gray-550 dark:text-white font-roboto font-bold">
+          <h2 className="text-2xl font-roboto font-bold">
             Let's get to know you
           </h2>
           <div className="flex flex-col space-y-6">
@@ -188,19 +183,19 @@ const ApparelInquiry: NextPage<AccessoryInquiryProps> = ({
               <div className="flex flex-col justify-evenly gap-4 sm:flex-row">
                 <div className="flex flex-col w-full">
                   {errors.firstName && (
-                    <span className="absolute mt-24 ml-2 text-red-500 font-roboto ">
+                    <span className="absolute mt-24 ml-2 text-red-500 font-roboto">
                       required
                     </span>
                   )}
                   <label
                     htmlFor="firstName"
-                    className="block mb-2 mt-5 text-sm font-roboto font-regular text-gray-900 dark:text-white"
+                    className="block mb-2 mt-5 text-sm font-roboto font-regular text-gray-900"
                   >
                     Legal First Name
                   </label>
                   <input
                     placeholder="First Name"
-                    className="rounded-md border bg-blue-150 border-slate-200 px-4 py-2 outline-none hover:border-green-350 focus:border-green-350 w-full mb-2 sm:mb-0 font-opensans"
+                    className="rounded-md border bg-blue-150 border-slate-200 px-4 py-2 outline-none hover:border-green-300 focus:border-green-400 w-full mb-2 sm:mb-0 font-opensans"
                     {...register("firstName", {
                       required: true,
                       maxLength: 30,
@@ -216,13 +211,13 @@ const ApparelInquiry: NextPage<AccessoryInquiryProps> = ({
                   )}
                   <label
                     htmlFor="lastName"
-                    className="block mb-2 mt-5 text-sm font-roboto font-regular text-gray-900 dark:text-white"
+                    className="block mb-2 mt-5 text-sm font-roboto font-regular text-gray-900"
                   >
                     Legal Last Name
                   </label>
                   <input
                     placeholder="Last Name"
-                    className="rounded-md border bg-blue-150 border-slate-200 px-4 py-2 outline-none hover:border-green-350 focus:border-green-350 w-full mb-2 sm:mb-0 font-opensans"
+                    className="rounded-md border bg-blue-100 border-slate-200 px-4 py-2 outline-none hover:border-green-300 focus:border-green-400 w-full mb-2 sm:mb-0 font-opensans"
                     {...register("lastName", { required: true, maxLength: 30 })}
                   />
                 </div>
@@ -238,14 +233,14 @@ const ApparelInquiry: NextPage<AccessoryInquiryProps> = ({
                 )}
                 <label
                   htmlFor="email"
-                  className="block mb-2 mt-5 text-sm text-gray-900 dark:text-white"
+                  className="block mb-2 mt-5 text-sm text-gray-900"
                 >
                   Email
                 </label>
                 <input
                   type="text"
                   placeholder="Email"
-                  className="rounded-md font-opensans bg-blue-150 border border-slate-200 px-4 py-2 outline-none hover:border-green-350 focus:border-green-350 w-full mb-2 sm:mb-0"
+                  className="rounded-md font-opensans bg-blue-100 border border-slate-200 px-4 py-2 outline-none hover:border-green-300 focus:border-green-400 w-full mb-2 sm:mb-0"
                   {...register("email", {
                     required: "Email is required",
                     pattern: {
@@ -257,20 +252,20 @@ const ApparelInquiry: NextPage<AccessoryInquiryProps> = ({
               </div>
             </div>
 
-            <h3 className="text-2xl text-gray-550 dark:text-white font-roboto font-bold">
+            <h3 className="text-2xl font-roboto font-bold">
               Which accessory would you like to purchase?
             </h3>
             <div className="flex-1 font-opensans">
               <div className="flex flex-col mb-2 items-start">
                 <label
                   htmlFor="subject"
-                  className="text-black dark:text-white font-bold font-roboto flex-shrink-0 text-md mb-2"
+                  className="text-black font-bold font-roboto flex-shrink-0 text-md mb-2"
                 >
                   Select Accessory
                 </label>
                 <select
                   placeholder="Subject"
-                  className="cursor-pointer rounded-md border bg-blue-150 border-slate-200 px-4 py-2 w-full outline-none hover:border-green-350 focus:border-green-350"
+                  className="cursor-pointer rounded-md border bg-blue-100 border-slate-200 px-4 py-2 w-full outline-none hover:border-green-300 focus:border-green-400"
                   {...register("subject", {
                     required: true,
                   })}
@@ -295,16 +290,14 @@ const ApparelInquiry: NextPage<AccessoryInquiryProps> = ({
             </div>
 
             <div className="flex flex-col font-roboto pt-5 gap-5">
-              <h3 className="text-2xl text-gray-550 dark:text-white font-bold">
+              <h3 className="text-2xl before:font-bold">
                 Have any questions for us?
               </h3>
-              <label htmlFor="message" className="dark:text-white">
-                Message
-              </label>
+              <label htmlFor="message">Message</label>
               <textarea
                 rows={5}
                 placeholder="Message"
-                className="rounded-md font-opensans bg-blue-150 border border-gray-200 px-4 py-2 outline-none hover:border-green-350 focus:border-green-350 md:col-span-2 resize-none"
+                className="rounded-md font-opensans bg-blue-100 border border-gray-200 px-4 py-2 outline-none hover:border-green-300 focus:border-green-400 md:col-span-2 resize-none"
                 {...register("message", {
                   required: true,
                   minLength: 5,
@@ -312,7 +305,7 @@ const ApparelInquiry: NextPage<AccessoryInquiryProps> = ({
                 })}
               />
               {errors.message && (
-                <span className="absolute mt-textareaRem ml-2 text-red-500 font-roboto">
+                <span className="absolute mt-10 ml-2 text-red-500 font-roboto">
                   required
                 </span>
               )}
@@ -322,7 +315,7 @@ const ApparelInquiry: NextPage<AccessoryInquiryProps> = ({
               <button
                 type="submit"
                 value="Send"
-                className="w-full rounded-md bg-blue-500 px-14 py-4 mt-4 text-sm font-roboto bold  text-white hover:bg-blue-700 cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75"
+                className="w-full rounded-md bg-blue-500 px-14 py-4 mt-4 text-sm font-roboto bold text-white hover:bg-blue-700 cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75"
               >
                 Send
               </button>
@@ -362,15 +355,15 @@ const ApparelInquiry: NextPage<AccessoryInquiryProps> = ({
             <div className="flex flex-col justify-center items-center absolute top-0 left-0 h-full w-full bg-white">
               <div className="flex flex-col md:flex-row"></div>
 
-              <p className="mt-10 text-xl text-blue-550 font-roboto text-accent font-bold">
+              <p className="mt-10 text-xl text-blue-500 font-roboto text-accent font-bold">
                 message sent!
               </p>
-              <p className="text-sm font-roboto text-blue-350 my-5 sm:text-lg">
-                A member of our staff will get back to you as soon as possible!
+              <p className="text-sm font-roboto text-blue-300 my-5 sm:text-lg">
+                We will get back to you as soon as possible!
               </p>
               <Link href="/">
-                <button className="rounded-lg bg-blue-350 px-6 py-2 font-bold text-white hover:bg-green-350">
-                  RETURN HOME
+                <button className="rounded-lg bg-blue-500 px-6 py-2 font-bold uppercase text-white hover:bg-blue-700">
+                  Return Home
                 </button>
               </Link>
             </div>

@@ -1,7 +1,10 @@
+import cn from "clsx";
 import { GetStaticProps, NextPage } from "next";
 import Head from "next/head";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/router";
+import { useMemo } from "react";
 import client from "./../apollo-client";
 import {
   AllWornAccessoriesDocument,
@@ -114,7 +117,7 @@ const Worn: NextPage<WornProps> = ({
                   return (
                     <Link
                       key={shoe.slug?.current}
-                      href={`/shoes/${shoe.slug?.current}`}
+                      href={`/shoe/${shoe.slug?.current}`}
                     >
                       <div className="relative cursor-pointer overflow-hidden rounded-sm">
                         <div className="h-72 relative">
@@ -148,11 +151,12 @@ const Worn: NextPage<WornProps> = ({
                     </Link>
                   );
                 })}
+                ,
                 {accessories.map((acccessory) => {
                   return (
                     <Link
                       key={acccessory.slug?.current}
-                      href={`/accessories/${acccessory.slug?.current}`}
+                      href={`/accessory/${acccessory.slug?.current}`}
                     >
                       <div className="relative cursor-pointer overflow-hidden rounded-sm">
                         <div className="h-72 relative">

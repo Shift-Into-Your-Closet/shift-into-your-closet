@@ -14,6 +14,10 @@ const shopLinks = [
     name: "Accessories",
     link: "/accessories",
   },
+  {
+    name: "Worn",
+    link: "/worn",
+  },
 ];
 
 const customerServiceLinks = [

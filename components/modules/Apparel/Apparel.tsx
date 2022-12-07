@@ -60,6 +60,7 @@ function Apparel({ apparel }: ApparelProps) {
       <Head>
         <title>{apparel?.name + " | " + siteTitle}</title>
         <link rel="apple-touch-icon" href="/path/to/apple-touch-icon.png" />
+        <meta name="theme-color" content="#60A5FA" />
         <meta
           name="description"
           content={`${apparel?.name} Shift Into Your Closet`}

@@ -10,6 +10,7 @@ const navigation = [
   { name: "Shoes", href: "/shoes", current: false },
   { name: "Apparel", href: "/apparel", current: false },
   { name: "Accessories", href: "/accessories", current: false },
+  { name: "Worn", href: "/worn", current: false },
   { name: "Wishlist", href: "/wishlist", current: false },
   { name: "Sell", href: "/sell", current: false },
   { name: "Contact", href: "/contact", current: false },

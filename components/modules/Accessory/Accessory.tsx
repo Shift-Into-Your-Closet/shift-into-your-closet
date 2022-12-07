@@ -60,6 +60,7 @@ function Accessory({ accessory }: AccessoryProps) {
       <Head>
         <title>{accessory?.name + " | " + siteTitle}</title>
         <link rel="apple-touch-icon" href="/path/to/apple-touch-icon.png" />
+        <meta name="theme-color" content="#60A5FA" />
         <meta
           name="description"
           content={`${accessory?.name} Shift Into Your Closet`}

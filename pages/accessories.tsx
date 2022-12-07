@@ -61,6 +61,7 @@ const Accessories: NextPage<ApparelProps> = ({
       <Head>
         <title>Accessories | Shift Into Your Closet</title>
         <link rel="apple-touch-icon" href="/path/to/apple-touch-icon.png" />
+        <meta name="theme-color" content="#60A5FA" />
         <meta
           name="description"
           content="Accessories at Shift Into Your Closet"

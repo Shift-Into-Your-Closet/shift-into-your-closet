@@ -22,13 +22,13 @@ const AboutUs: NextPage = () => {
       <Head>
         <title>About Us | Shift Into Your Closet</title>
         <link rel="apple-touch-icon" href="/path/to/apple-touch-icon.png" />
-        <meta name="theme-color" content="#327CDF" />
+        <meta name="theme-color" content="#60A5FA" />
         <meta name="description" content="About Us at Shift Into Your Closet" />
         <meta name="keywords" content="about us, shift into your closet" />
         <meta name="viewport" content="width=device-width" />
       </Head>
       <section
-        className="max-w-7xl mx-auto mt-5 px-5 sm:px-6 lg:px-8 py-20 sm:py-24 lg:py-24  dark:text-white min-h-screen"
+        className="max-w-7xl mx-auto mt-5 px-5 sm:px-6 lg:px-8 py-20 sm:py-24 lg:py-24 text-white min-h-screen"
         id="about-us"
       >
         <nav className="flex" aria-label="Breadcrumb">
@@ -63,7 +63,7 @@ const AboutUs: NextPage = () => {
                     clipRule="evenodd"
                   ></path>
                 </svg>
-                <span className="ml-1 text-lg font-medium md:ml-2 cursor-pointer text-gray-750 dark:text-white hover:text-blue-400">
+                <span className="ml-1 text-lg font-medium md:ml-2">
                   About Us
                 </span>
               </div>

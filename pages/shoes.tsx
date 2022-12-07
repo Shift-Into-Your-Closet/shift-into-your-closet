@@ -54,8 +54,8 @@ const Shoes: NextPage<ShoeProps> = ({ shoes, brands }: ShoeProps) => {
       <Head>
         <title>Shoes | Shift Into Your Closet</title>
         <link rel="apple-touch-icon" href="/path/to/apple-touch-icon.png" />
+        <meta name="theme-color" content="#60A5FA" />
         <meta name="description" content="shoes at Shift Into Your Closet" />
-
         <meta name="keywords" content="shoes, shift into your closet" />
         <meta name="viewport" content="width=device-width" />
       </Head>

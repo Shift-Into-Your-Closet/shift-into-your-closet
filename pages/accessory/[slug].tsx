@@ -7,11 +7,6 @@ import {
   AccessoriesQuery,
   AllAccessoryDocument,
   AllAccessoryQuery,
-  AllShoesDocument,
-  AllShoesQuery,
-  ShoeDocument,
-  ShoeFragment,
-  ShoeQuery,
 } from "../../graphql-operations";
 
 import _Accessory from "../../components/modules/Accessory";

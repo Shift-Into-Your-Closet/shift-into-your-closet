@@ -49,7 +49,7 @@ const Contact: NextPage = () => {
       <Head>
         <title>Contact | Shift Into Your Closet</title>
         <link rel="apple-touch-icon" href="/path/to/apple-touch-icon.png" />
-        <meta name="theme-color" content="#327CDF" />
+        <meta name="theme-color" content="#60A5FA" />
         <meta name="description" content="contact at Shift Into Your Closet" />
         <meta name="keywords" content="contact, shift into your closet" />
         <meta name="viewport" content="width=device-width" />
@@ -60,11 +60,11 @@ const Contact: NextPage = () => {
         className="max-w-7xl mx-auto px-5 sm:px-6 lg:px-8 py-20 sm:py-24 lg:py-24 animate-fade-in-up min-h-screen"
       >
         <nav className="flex" aria-label="Breadcrumb">
-          <ol className="inline-flex items-center space-x-1 md:space-x-3">
+          <ol className="inline-flex items-center space-x-1 md:space-x-3 text-white">
             <li className="inline-flex items-center">
               <Link
                 href="/"
-                className="inline-flex items-center text-lg font-medium md:ml-2 dark:hover:text-white  cursor-pointer text-gray-750 dark:text-white hover:text-blue-400"
+                className="inline-flex items-center text-lg font-medium md:ml-2 cursor-pointer hover:text-blue-400"
               >
                 <svg
                   className="w-4 h-4 mr-2"
@@ -99,7 +99,7 @@ const Contact: NextPage = () => {
           </ol>
         </nav>
         <div className="my-10">
-          <p className="text-left text-black text-base mb-4">
+          <p className="font-roboto text-left text-white text-base mb-4">
             Feel free to fill in the form below or contact us directly with any
             questions you may have.
           </p>

@@ -44,6 +44,12 @@ query apparel($slug: String) {
   }
 }
 
+query allWornApparel {
+  allApparel(where: {condition: {eq: "worn"}}) {
+		...apparel
+  }
+}
+
 query allApparelCategories {
   allApparelCategory {
     name

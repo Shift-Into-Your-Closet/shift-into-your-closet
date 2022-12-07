@@ -38,6 +38,12 @@ query shoe($slug: String) {
   }
 }
 
+query allWornShoes {
+  allShoe(where: {condition: {eq: "worn"}}) {
+		...shoe
+  }
+}
+
 query allShoeBrands {
   allShoeBrand {
     name

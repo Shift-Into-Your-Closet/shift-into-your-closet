@@ -60,6 +60,7 @@ function Shoe({ shoe }: ShoeProps) {
       <Head>
         <title>{shoe?.name + " | " + siteTitle}</title>
         <link rel="apple-touch-icon" href="/path/to/apple-touch-icon.png" />
+        <meta name="theme-color" content="#60A5FA" />
         <meta
           name="description"
           content={`${shoe?.name} Shift Into Your Closet`}

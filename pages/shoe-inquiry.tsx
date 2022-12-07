@@ -79,6 +79,7 @@ const ShoeInquiry: NextPage<ShoeInquiryProps> = ({
       <Head>
         <title>Shoe Inquiry | Shift Into Your Closet</title>
         <link rel="apple-touch-icon" href="/path/to/apple-touch-icon.png" />
+        <meta name="theme-color" content="#60A5FA" />
         <meta
           name="description"
           content="shoe inquiry at Shift Into Your Closet"

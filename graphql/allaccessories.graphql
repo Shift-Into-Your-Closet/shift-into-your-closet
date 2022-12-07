@@ -41,6 +41,12 @@ query accessories($slug: String) {
   }
 }
 
+query allWornAccessories {
+  allAccessories(where: {condition: {eq: "worn"}}) {
+		...accessories
+  }
+}
+
 query allAccessoryCategories {
   allAccessoriesCategory {
     name

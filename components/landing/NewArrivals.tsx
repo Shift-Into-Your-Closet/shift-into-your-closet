@@ -12,11 +12,7 @@ interface NewArrivalCardProps {
   price: number | null | undefined;
 }
 
-function NewAccessoryArrivalCard({
-  imageUrl,
-  name,
-  price,
-}: NewArrivalCardProps) {
+function NewArrivalCard({ imageUrl, name, price }: NewArrivalCardProps) {
   return (
     <>
       <div className="relative overflow-hidden rounded-sm">
@@ -69,7 +65,7 @@ function NewArrivals({
       <section className="max-w-7xl mx-auto mt-5 px-5 sm:px-6 lg:px-8 py-20 sm:py-24 lg:py-24 min-h-screen bg-zinc-800">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-x-3 gap-y-6">
           {allNewArrivals?.map((allNewArrival) => (
-            <NewAccessoryArrivalCard
+            <NewArrivalCard
               key={allNewArrival.slug?.current}
               imageUrl={allNewArrival.mainImage?.asset?.url ?? ""}
               name={allNewArrival.name}

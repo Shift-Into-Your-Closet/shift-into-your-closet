@@ -15,7 +15,6 @@ import SwiperCore, {
   Pagination,
   Scrollbar,
   Keyboard,
-  Mousewheel,
   EffectCreative,
   Lazy,
   A11y,
@@ -37,7 +36,6 @@ SwiperCore.use([
   Pagination,
   Scrollbar,
   Keyboard,
-  Mousewheel,
   EffectCreative,
   Lazy,
   A11y,
@@ -121,6 +119,7 @@ function Accessory({ accessory }: AccessoryProps) {
               <div className={s.sliderContainer}>
                 {images.length > 0 && (
                   <Swiper
+                    key={accessory?.slug?.current}
                     grabCursor={true}
                     effect={"creative"}
                     creativeEffect={{
@@ -133,14 +132,10 @@ function Accessory({ accessory }: AccessoryProps) {
                       },
                     }}
                     slidesPerView={1}
-                    key={accessory?.slug?.current}
                     pagination={{ clickable: true }}
                     keyboard={{
                       enabled: true,
                       onlyInViewport: false,
-                    }}
-                    mousewheel={{
-                      invert: true,
                     }}
                     lazy={true}
                   >

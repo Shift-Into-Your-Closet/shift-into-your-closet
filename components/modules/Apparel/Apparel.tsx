@@ -56,7 +56,7 @@ function Apparel({ apparel }: ApparelProps) {
   }, [apparel]);
 
   const condition = apparel?.condition;
-  const updatedApparelCondition = condition?.toLowerCase().replace("-", " ");
+  const updatedApparelCondition = condition?.replace("-", " ");
 
   return (
     <>

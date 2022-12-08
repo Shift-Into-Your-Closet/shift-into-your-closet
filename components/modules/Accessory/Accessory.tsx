@@ -56,7 +56,7 @@ function Accessory({ accessory }: AccessoryProps) {
   }, [accessory]);
 
   const condition = accessory?.condition;
-  const updatedAccessoryCondition = condition?.toLowerCase().replace("-", " ");
+  const updatedAccessoryCondition = condition?.replace("-", " ");
 
   return (
     <>

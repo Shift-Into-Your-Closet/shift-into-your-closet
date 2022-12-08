@@ -50,6 +50,13 @@ query allWornApparel {
   }
 }
 
+query newestApparels {
+  allApparel(sort: { _createdAt: DESC }, limit: 4) {
+		...apparel
+    _createdAt
+  }
+}
+
 query allApparelCategories {
   allApparelCategory {
     name

@@ -44,6 +44,13 @@ query allWornShoes {
   }
 }
 
+query newestShoes {
+  allShoe(sort: { _createdAt: DESC }, limit: 4) {
+		...shoe
+    _createdAt
+  }
+}
+
 query allShoeBrands {
   allShoeBrand {
     name

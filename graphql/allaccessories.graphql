@@ -1,37 +1,37 @@
 fragment accessories on Accessories {
-    price
-    brand {
-      name
-      slug {
-        current
-      }
-    }
-    condition
-    category {
-      name
-      slug {
-        current
-      }
-    }
-    mainImage {
-      asset {
-        url
-      }
-    }
-    image {
-      asset {
-        url
-      }
-    }
+  price
+  brand {
     name
     slug {
       current
     }
+  }
+  condition
+  category {
+    name
+    slug {
+      current
+    }
+  }
+  mainImage {
+    asset {
+      url
+    }
+  }
+  image {
+    asset {
+      url
+    }
+  }
+  name
+  slug {
+    current
+  }
 }
 
 query allAccessory {
   allAccessories {
-        ...accessories
+    ...accessories
   }
 }
 
@@ -42,8 +42,15 @@ query accessories($slug: String) {
 }
 
 query allWornAccessories {
-  allAccessories(where: {condition: {eq: "worn"}}) {
-		...accessories
+  allAccessories(where: { condition: { eq: "worn" } }) {
+    ...accessories
+  }
+}
+
+query newestAccessories {
+  allAccessories(sort: { _createdAt: DESC }, limit: 4) {
+    ...accessories
+    _createdAt
   }
 }
 

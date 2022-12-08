@@ -1,8 +1,55 @@
 import type { NextPage } from "next";
 import Head from "next/head";
+import client from "../apollo-client";
 import ShopWithUs from "../components/landing/ShopWithUs";
+import NewArrivals from "../components/landing/NewArrivals";
+import {
+  NewestAccessoriesDocument,
+  NewestAccessoriesQuery,
+  NewestApparelsDocument,
+  NewestApparelsQuery,
+  NewestShoesDocument,
+  NewestShoesQuery,
+} from "../graphql-operations";
 
-const Home: NextPage = () => {
+type HomeProps = {
+  newestAccessories: NewestAccessoriesQuery["allAccessories"];
+  newestApparels: NewestApparelsQuery["allApparel"];
+  newestShoes: NewestShoesQuery["allShoe"];
+};
+
+export async function getStaticProps() {
+  const [
+    { data: newestAccessoriesData },
+    { data: newestApparelData },
+    { data: newestShoesData },
+  ] = await Promise.all([
+    client.query<NewestAccessoriesQuery>({
+      query: NewestAccessoriesDocument,
+    }),
+    client.query<NewestApparelsQuery>({
+      query: NewestApparelsDocument,
+    }),
+    client.query<NewestShoesQuery>({
+      query: NewestShoesDocument,
+    }),
+  ]);
+
+  return {
+    props: {
+      newestAccessories: newestAccessoriesData?.allAccessories ?? [],
+      newestApparels: newestApparelData?.allApparel ?? [],
+      newestShoes: newestShoesData?.allShoe ?? [],
+    },
+    revalidate: 86400, // Revalidate every day
+  };
+}
+
+const Home: NextPage<HomeProps> = ({
+  newestAccessories,
+  newestApparels,
+  newestShoes,
+}: HomeProps) => {
   return (
     <div className="min-h-screen flex flex-col items-center justify-center">
       <Head>
@@ -18,6 +65,14 @@ const Home: NextPage = () => {
           Shift Into Your <strong>Closet</strong>
         </h1>
         <ShopWithUs />
+        <h4 className="text-3xl text-center tracking-widest mb-3 uppercase text-gray-400 font-bold ">
+          New Arrivals
+        </h4>
+        <NewArrivals
+          newestAccessories={newestAccessories}
+          newestApparels={newestApparels}
+          newestShoes={newestShoes}
+        />
       </section>
     </div>
   );

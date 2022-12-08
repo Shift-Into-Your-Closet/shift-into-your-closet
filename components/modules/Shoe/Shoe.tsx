@@ -56,7 +56,7 @@ function Shoe({ shoe }: ShoeProps) {
   }, [shoe]);
 
   const condition = shoe?.condition;
-  const updatedShoeCondition = condition?.toLowerCase().replace("-", " ");
+  const updatedShoeCondition = condition?.replace("-", " ");
 
   return (
     <>

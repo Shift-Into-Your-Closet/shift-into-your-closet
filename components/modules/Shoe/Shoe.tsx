@@ -55,6 +55,9 @@ function Shoe({ shoe }: ShoeProps) {
     return _images;
   }, [shoe]);
 
+  const condition = shoe?.condition;
+  const updatedShoeCondition = condition?.toLowerCase().replace("-", " ");
+
   return (
     <>
       <Head>
@@ -162,7 +165,7 @@ function Shoe({ shoe }: ShoeProps) {
             </div>
             <div className={s.sidebar}>
               <div className="flex mb-6">
-                <h1 className="font-bold uppercase text-blue-400 text-2xl flex-1">
+                <h1 className="font-bold text-blue-400 text-2xl flex-1">
                   {shoe?.name}
                 </h1>
                 <div className="text-2xl pl-3 font-bold text-blue-400">
@@ -179,6 +182,9 @@ function Shoe({ shoe }: ShoeProps) {
                     <span className="rounded-3xl inline-flex bg-white p-2.5">
                       {shoe.size.shoeSize}
                     </span>
+                  </div>
+                  <div className="text-xl  text-blue-400 capitalize">
+                    Condition: {updatedShoeCondition}
                   </div>
                 </div>
               )}

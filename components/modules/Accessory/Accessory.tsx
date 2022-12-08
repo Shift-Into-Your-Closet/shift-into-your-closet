@@ -55,6 +55,9 @@ function Accessory({ accessory }: AccessoryProps) {
     return _images;
   }, [accessory]);
 
+  const condition = accessory?.condition;
+  const updatedAccessoryCondition = condition?.toLowerCase().replace("-", " ");
+
   return (
     <>
       <Head>
@@ -168,6 +171,9 @@ function Accessory({ accessory }: AccessoryProps) {
                 <div className="text-2xl pl-3 font-bold text-blue-400">
                   ${accessory?.price}
                 </div>
+              </div>
+              <div className="text-xl mb-3 text-blue-400 capitalize">
+                Condition: {updatedAccessoryCondition}
               </div>
 
               <Link

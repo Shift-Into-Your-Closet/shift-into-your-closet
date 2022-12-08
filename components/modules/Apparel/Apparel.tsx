@@ -55,6 +55,9 @@ function Apparel({ apparel }: ApparelProps) {
     return _images;
   }, [apparel]);
 
+  const condition = apparel?.condition;
+  const updatedApparelCondition = condition?.toLowerCase().replace("-", " ");
+
   return (
     <>
       <Head>
@@ -162,13 +165,30 @@ function Apparel({ apparel }: ApparelProps) {
             </div>
             <div className={s.sidebar}>
               <div className="flex mb-6">
-                <h1 className="font-bold uppercase text-blue-400 text-2xl flex-1">
+                <h1 className="font-bold text-blue-400 text-2xl flex-1">
                   {apparel?.name}
                 </h1>
                 <div className="text-2xl pl-3 font-bold text-blue-400">
                   ${apparel?.price}
                 </div>
               </div>
+
+              {apparel?.size?.apparelSize &&
+                apparel?.size?.apparelSize.length > 0 && (
+                  <div className="mb-6">
+                    <h2 className="uppercase font-medium text-sm tracking-wide text-blue-400">
+                      Size
+                    </h2>
+                    <div role="listbox" className="flex flex-row py-4">
+                      <span className="rounded-3xl inline-flex bg-white p-2.5">
+                        {apparel.size.apparelSize}
+                      </span>
+                    </div>
+                    <div className="text-xl  text-blue-400 capitalize">
+                      Condition: {updatedApparelCondition}
+                    </div>
+                  </div>
+                )}
 
               <Link
                 href="/apparel-inquiry"

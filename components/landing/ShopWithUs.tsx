@@ -1,18 +1,18 @@
 function ShopWithUs() {
   return (
     <>
-      <section className="max-w-7xl mx-auto mt-5 px-5 sm:px-6 lg:px-8 py-20 sm:py-24 lg:py-24 min-h-screen bg-zinc-800">
-        <h3 className="text-3xl tracking-widest mb-3 uppercase text-gray-400 font-bold ">
-          Shop With Us
-        </h3>
+      <section className="max-w-7xl mx-auto px-5 sm:px-6 lg:px-8 py-14 sm:py-16 lg:py-16 bg-zinc-800">
+        <h4 className="text-3xl tracking-widest mb-3 uppercase text-gray-400 font-bold ">
+          Why Customers Choose Us
+        </h4>
         <p className="mt-3 sm:mt-4 text-xl text-gray-200 font-light">
           Our vision has always been to create a marketplace for everyone. We
           are committed to bridging the gap between the consumer and the
           product.
         </p>
-        <h4 className="mt-10 font-bold uppercase tracking-wide text-2xl bg-gradient-to-r from-blue-400 via-teal-600 to-blue-600 bg-clip-text fill-transparent [-webkit-text-fill-color:transparent]">
-          Why Customers Choose Us
-        </h4>
+        <h5 className="mt-10 font-bold uppercase tracking-wide text-2xl bg-gradient-to-r from-blue-400 via-teal-600 to-blue-600 bg-clip-text fill-transparent [-webkit-text-fill-color:transparent]">
+          Our Values
+        </h5>
         <div className="mt-8 text-xl font-bold sm:text-2xl text-white">
           ✅ Customer Satisfaction
         </div>
@@ -31,7 +31,7 @@ function ShopWithUs() {
           confidence.
         </p>
         <div className="mt-8 text-xl font-bold sm:text-2xl text-white">
-          ✅ Inventory Refresh
+          ✅ Order Guaranteed
         </div>
         <p className="mt-3 sm:mt-4 text-xl text-gray-200 font-light">
           We know how frustrating it can be to receive an email that your order
@@ -40,7 +40,7 @@ function ShopWithUs() {
           Our inventory is updated as items sell out.
         </p>
         <div className="mt-8 text-xl font-bold sm:text-2xl text-white">
-          ✅ Extensive Selection
+          ✅ Inventory Refresh
         </div>
         <p className="mt-3 sm:mt-4 text-xl text-gray-200 font-light">
           Our products are curated worldwide. We offer a wide variety of brands

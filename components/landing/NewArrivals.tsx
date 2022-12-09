@@ -21,7 +21,8 @@ function NewArrivalCard({ imageUrl, name, price }: NewArrivalCardProps) {
             src={imageUrl ?? ""}
             alt={`Image for ${name}`}
             className="object-cover"
-            priority={true}
+            placeholder={"blur"}
+            blurDataURL={imageUrl ?? ""}
             fill
             sizes="(max-width: 768px) 100vw,
                             (max-width: 1200px) 50vw,
@@ -62,7 +63,7 @@ function NewArrivals({
 
   return (
     <>
-      <section className="max-w-7xl mx-auto mt-5 px-5 sm:px-6 lg:px-8 py-20 sm:py-24 lg:py-24 min-h-screen bg-zinc-800">
+      <section className="max-w-7xl mx-auto mt-5 px-5 sm:px-6 lg:px-8 py-14 sm:py-16 lg:py-16 bg-zinc-800">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-x-3 gap-y-6">
           {allNewArrivals?.map((allNewArrival) => (
             <NewArrivalCard

@@ -47,10 +47,10 @@ query allWornAccessories {
   }
 }
 
-query newestAccessories {
-  allAccessories(sort: { _createdAt: DESC }, limit: 4) {
+query featuredAccessories {
+  allAccessories(sort: { price: DESC }, limit: 2) {
     ...accessories
-    _createdAt
+    price
   }
 }
 

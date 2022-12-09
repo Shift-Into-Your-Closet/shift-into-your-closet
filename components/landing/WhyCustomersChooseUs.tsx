@@ -1,4 +1,4 @@
-function ShopWithUs() {
+function WhyCustomersChooseUs() {
   return (
     <>
       <section className="max-w-7xl mx-auto px-5 sm:px-6 lg:px-8 py-14 sm:py-16 lg:py-16 bg-zinc-800">
@@ -51,4 +51,4 @@ function ShopWithUs() {
   );
 }
 
-export default ShopWithUs;
+export default WhyCustomersChooseUs;

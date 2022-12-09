@@ -1,8 +1,20 @@
 import Image from "next/image";
 import Link from "next/link";
 
+import SwiperCore, {
+  Autoplay,
+  Navigation,
+  Pagination,
+  Scrollbar,
+  Keyboard,
+  EffectCreative,
+  Lazy,
+  A11y,
+} from "swiper";
+import { Swiper, SwiperSlide } from "swiper/react";
+import "swiper/swiper-bundle.css";
+
 import {
-  NewestAccessoriesQuery,
   NewestApparelsQuery,
   NewestShoesQuery,
 } from "../../graphql-operations";
@@ -15,6 +27,17 @@ interface NewArrivalCardProps {
   typeName: string | null | undefined;
 }
 
+SwiperCore.use([
+  Autoplay,
+  Navigation,
+  Pagination,
+  Scrollbar,
+  Keyboard,
+  EffectCreative,
+  Lazy,
+  A11y,
+]);
+
 function NewArrivalCard({
   imageUrl,
   name,
@@ -23,12 +46,11 @@ function NewArrivalCard({
   typeName,
 }: NewArrivalCardProps) {
   const updatedTypeName = typeName?.toLowerCase();
-
   return (
     <>
       <Link key={href} href={`/${updatedTypeName}/${href}`}>
         <div className="relative overflow-hidden rounded-sm">
-          <div className="h-72 relative">
+          <div className="h-96 relative">
             <Image
               src={imageUrl ?? ""}
               alt={`Image for ${name}`}
@@ -57,37 +79,55 @@ function NewArrivalCard({
 }
 
 interface NewArrivalsProps {
-  newestAccessories: NewestAccessoriesQuery["allAccessories"];
   newestApparels: NewestApparelsQuery["allApparel"];
   newestShoes: NewestShoesQuery["allShoe"];
 }
 
-function NewArrivals({
-  newestAccessories,
-  newestApparels,
-  newestShoes,
-}: NewArrivalsProps) {
-  const allNewArrivals = [
-    ...newestAccessories,
-    ...newestApparels,
-    ...newestShoes,
-  ];
+function NewArrivals({ newestApparels, newestShoes }: NewArrivalsProps) {
+  const allNewArrivals = [...newestApparels, ...newestShoes];
 
   return (
     <>
-      <section className="max-w-7xl mx-auto mt-5 px-5 sm:px-6 lg:px-8 py-20 sm:py-24 lg:py-24 min-h-screen bg-zinc-800">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-x-3 gap-y-6">
+      <section className="max-w-7xl mx-auto mt-5 px-5 sm:px-6 lg:px-8 py-20 sm:py-24 lg:py-24  bg-zinc-800">
+        <Swiper
+          grabCursor={true}
+          effect={"creative"}
+          creativeEffect={{
+            prev: {
+              shadow: true,
+              translate: [0, 0, -400],
+            },
+            next: {
+              translate: ["100%", 0, 0],
+            },
+          }}
+          autoplay={{
+            delay: 2500,
+            disableOnInteraction: false,
+            pauseOnMouseEnter: true,
+          }}
+          slidesPerView={1}
+          scrollbar={{ draggable: true }}
+          pagination={{ clickable: true }}
+          navigation={true}
+          keyboard={{
+            enabled: true,
+            onlyInViewport: false,
+          }}
+          lazy={true}
+        >
           {allNewArrivals?.map((allNewArrival) => (
-            <NewArrivalCard
-              key={allNewArrival.slug?.current}
-              imageUrl={allNewArrival.mainImage?.asset?.url ?? ""}
-              name={allNewArrival.name}
-              price={allNewArrival.price}
-              href={allNewArrival.slug?.current}
-              typeName={allNewArrival.__typename}
-            />
+            <SwiperSlide key={allNewArrival.slug?.current}>
+              <NewArrivalCard
+                imageUrl={allNewArrival.mainImage?.asset?.url ?? ""}
+                name={allNewArrival.name}
+                price={allNewArrival.price}
+                href={allNewArrival.slug?.current}
+                typeName={allNewArrival.__typename}
+              />
+            </SwiperSlide>
           ))}
-        </div>
+        </Swiper>
       </section>
     </>
   );

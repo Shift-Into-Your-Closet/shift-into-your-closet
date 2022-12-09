@@ -1,32 +1,39 @@
 import Image from "next/image";
 import Link from "next/link";
 
-import { NewestShoesQuery } from "../../graphql-operations";
+import {
+  NewestAccessoriesQuery,
+  NewestApparelsQuery,
+  NewestShoesQuery,
+} from "../../graphql-operations";
 
-interface NewShoeArrivalCardProps {
+interface NewArrivalCardProps {
   imageUrl: string | null | undefined;
   name: string | null | undefined;
   price: number | null | undefined;
   href: string | null | undefined;
+  typeName: string | null | undefined;
 }
 
-function NewShoeArrivalCard({
+function NewArrivalCard({
   imageUrl,
   name,
   price,
   href,
-}: NewShoeArrivalCardProps) {
+  typeName,
+}: NewArrivalCardProps) {
+  const updatedTypeName = typeName?.toLowerCase();
+
   return (
     <>
-      <Link key={href} href={`/shoe/${href}`}>
+      <Link key={href} href={`/${updatedTypeName}/${href}`}>
         <div className="relative overflow-hidden rounded-sm">
           <div className="h-72 relative">
             <Image
               src={imageUrl ?? ""}
               alt={`Image for ${name}`}
               className="object-cover"
-              placeholder={"blur"}
-              blurDataURL={imageUrl ?? ""}
+              priority={true}
               fill
               sizes="(max-width: 768px) 100vw,
                             (max-width: 1200px) 50vw,
@@ -49,22 +56,35 @@ function NewShoeArrivalCard({
   );
 }
 
-interface NewShoeArrivalsProps {
+interface NewArrivalsProps {
+  newestAccessories: NewestAccessoriesQuery["allAccessories"];
+  newestApparels: NewestApparelsQuery["allApparel"];
   newestShoes: NewestShoesQuery["allShoe"];
 }
 
-function NewShoeArrivals({ newestShoes }: NewShoeArrivalsProps) {
+function NewArrivals({
+  newestAccessories,
+  newestApparels,
+  newestShoes,
+}: NewArrivalsProps) {
+  const allNewArrivals = [
+    ...newestAccessories,
+    ...newestApparels,
+    ...newestShoes,
+  ];
+
   return (
     <>
-      <section className="max-w-7xl mx-auto mt-5 px-5 sm:px-6 lg:px-8 bg-zinc-800">
+      <section className="max-w-7xl mx-auto mt-5 px-5 sm:px-6 lg:px-8 py-20 sm:py-24 lg:py-24 min-h-screen bg-zinc-800">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-x-3 gap-y-6">
-          {newestShoes?.map((newestShoe) => (
-            <NewShoeArrivalCard
-              key={newestShoe.slug?.current}
-              imageUrl={newestShoe.mainImage?.asset?.url ?? ""}
-              name={newestShoe.name}
-              price={newestShoe.price}
-              href={newestShoe.slug?.current}
+          {allNewArrivals?.map((allNewArrival) => (
+            <NewArrivalCard
+              key={allNewArrival.slug?.current}
+              imageUrl={allNewArrival.mainImage?.asset?.url ?? ""}
+              name={allNewArrival.name}
+              price={allNewArrival.price}
+              href={allNewArrival.slug?.current}
+              typeName={allNewArrival.__typename}
             />
           ))}
         </div>
@@ -73,4 +93,4 @@ function NewShoeArrivals({ newestShoes }: NewShoeArrivalsProps) {
   );
 }
 
-export default NewShoeArrivals;
+export default NewArrivals;

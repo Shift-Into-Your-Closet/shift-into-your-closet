@@ -8,7 +8,7 @@ import s from "./Apparel.module.css";
 
 import { BiCheckShield } from "react-icons/bi";
 import { CiDeliveryTruck } from "react-icons/ci";
-import { HiChevronUp } from "react-icons/hi";
+import { HiPlus } from "react-icons/hi";
 
 import SwiperCore, {
   Navigation,
@@ -201,9 +201,9 @@ function Apparel({ apparel }: ApparelProps) {
                           <BiCheckShield className="inline w-8 h-8 mr-2" />
                           Authenticity Guaranteed
                         </span>
-                        <HiChevronUp
+                        <HiPlus
                           className={cn(
-                            { ["rotate-180"]: open },
+                            { ["rotate-45"]: open },
                             "w-5 h-5 mr-4 transition-all text-white"
                           )}
                         />
@@ -232,9 +232,9 @@ function Apparel({ apparel }: ApparelProps) {
                           <BiCheckShield className="inline w-8 h-8 mr-2" />
                           Order Guaranteed
                         </span>
-                        <HiChevronUp
+                        <HiPlus
                           className={cn(
-                            { ["rotate-180"]: open },
+                            { ["rotate-45"]: open },
                             "w-5 h-5 mr-4 transition-all text-white"
                           )}
                         />
@@ -262,9 +262,9 @@ function Apparel({ apparel }: ApparelProps) {
                           <CiDeliveryTruck className="inline w-8 h-8 mr-2" />
                           In Stock & Ready To Ship
                         </span>
-                        <HiChevronUp
+                        <HiPlus
                           className={cn(
-                            { ["rotate-180"]: open },
+                            { ["rotate-45"]: open },
                             "w-5 h-5 mr-4 transition-all text-white"
                           )}
                         />

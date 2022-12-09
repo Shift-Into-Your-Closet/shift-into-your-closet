@@ -8,7 +8,7 @@ import s from "./Shoe.module.css";
 
 import { BiCheckShield } from "react-icons/bi";
 import { CiDeliveryTruck } from "react-icons/ci";
-import { HiChevronUp } from "react-icons/hi";
+import { HiPlus } from "react-icons/hi";
 
 import SwiperCore, {
   Navigation,
@@ -171,7 +171,7 @@ function Shoe({ shoe }: ShoeProps) {
               {shoe?.size?.shoeSize && shoe?.size?.shoeSize.length > 0 && (
                 <div className="mb-6">
                   <h2 className="uppercase font-medium text-sm tracking-wide text-blue-400">
-                    Sizes
+                    Size
                   </h2>
                   <div role="listbox" className="flex flex-row py-4">
                     <span className="rounded-3xl inline-flex bg-white p-2.5">
@@ -200,9 +200,9 @@ function Shoe({ shoe }: ShoeProps) {
                           <BiCheckShield className="inline w-8 h-8 mr-2" />
                           Authenticity Guaranteed
                         </span>
-                        <HiChevronUp
+                        <HiPlus
                           className={cn(
-                            { ["rotate-180"]: open },
+                            { ["rotate-45"]: open },
                             "w-5 h-5 mr-4 transition-all text-white"
                           )}
                         />
@@ -231,9 +231,9 @@ function Shoe({ shoe }: ShoeProps) {
                           <BiCheckShield className="inline w-8 h-8 mr-2" />
                           Order Guaranteed
                         </span>
-                        <HiChevronUp
+                        <HiPlus
                           className={cn(
-                            { ["rotate-180"]: open },
+                            { ["rotate-45"]: open },
                             "w-5 h-5 mr-4 transition-all text-white"
                           )}
                         />
@@ -261,9 +261,9 @@ function Shoe({ shoe }: ShoeProps) {
                           <CiDeliveryTruck className="inline w-8 h-8 mr-2" />
                           In Stock & Ready To Ship
                         </span>
-                        <HiChevronUp
+                        <HiPlus
                           className={cn(
-                            { ["rotate-180"]: open },
+                            { ["rotate-45"]: open },
                             "w-5 h-5 mr-4 transition-all text-white"
                           )}
                         />

@@ -57,6 +57,13 @@ query newestApparels {
   }
 }
 
+query featuredApparels {
+  allApparel(sort: { price: DESC }, limit: 2) {
+    ...apparel
+    price
+  }
+}
+
 query allApparelCategories {
   allApparelCategory {
     name

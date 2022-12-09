@@ -2,7 +2,6 @@ import Image from "next/image";
 import Link from "next/link";
 
 import {
-  FeaturedAccessoriesQuery,
   FeaturedApparelsQuery,
   FeaturedShoesQuery,
 } from "../../graphql-operations";
@@ -59,20 +58,11 @@ function StaffPicksCard({
 
 interface StaffPicksProps {
   featuredShoes: FeaturedShoesQuery["allShoe"];
-  featuredAccessories: FeaturedAccessoriesQuery["allAccessories"];
   featuredApparels: FeaturedApparelsQuery["allApparel"];
 }
 
-function StaffPicks({
-  featuredShoes,
-  featuredAccessories,
-  featuredApparels,
-}: StaffPicksProps) {
-  const staffPicks = [
-    ...featuredAccessories,
-    ...featuredApparels,
-    ...featuredShoes,
-  ];
+function StaffPicks({ featuredShoes, featuredApparels }: StaffPicksProps) {
+  const staffPicks = [...featuredShoes, ...featuredApparels];
 
   return (
     <>

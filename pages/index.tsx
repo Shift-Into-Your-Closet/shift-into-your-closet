@@ -2,7 +2,7 @@ import type { NextPage } from "next";
 import Head from "next/head";
 import client from "../apollo-client";
 import ShopWithUs from "../components/landing/ShopWithUs";
-import NewArrivals from "../components/landing/NewArrivals";
+import NewAccessoryArrivals from "../components/landing/NewAccessoryArrivals";
 import FeaturedShoes from "../components/landing/FeaturedShoes";
 import {
   FeaturedShoesQuery,
@@ -14,6 +14,8 @@ import {
   NewestShoesDocument,
   NewestShoesQuery,
 } from "../graphql-operations";
+import NewApparelArrivals from "../components/landing/NewApparelArrivals";
+import NewShoeArrivals from "../components/landing/NewShoeArrivals";
 
 type HomeProps = {
   newestAccessories: NewestAccessoriesQuery["allAccessories"];
@@ -81,11 +83,9 @@ const Home: NextPage<HomeProps> = ({
         <h3 className="text-3xl text-center tracking-widest mb-3 uppercase text-gray-400 font-bold ">
           New Arrivals
         </h3>
-        <NewArrivals
-          newestAccessories={newestAccessories}
-          newestApparels={newestApparels}
-          newestShoes={newestShoes}
-        />
+        <NewAccessoryArrivals newestAccessories={newestAccessories} />
+        <NewApparelArrivals newestApparels={newestApparels} />
+        <NewShoeArrivals newestShoes={newestShoes} />
         <ShopWithUs />
       </section>
     </div>

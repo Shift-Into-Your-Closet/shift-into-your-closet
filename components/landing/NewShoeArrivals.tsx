@@ -1,21 +1,21 @@
 import Image from "next/image";
 import Link from "next/link";
 
-import { FeaturedShoesQuery } from "../../graphql-operations";
+import { NewestShoesQuery } from "../../graphql-operations";
 
-interface FeaturedShoeCardProps {
+interface NewShoeArrivalCardProps {
   imageUrl: string | null | undefined;
   name: string | null | undefined;
   price: number | null | undefined;
   href: string | null | undefined;
 }
 
-function FeaturedShoeCard({
+function NewShoeArrivalCard({
   imageUrl,
   name,
   price,
   href,
-}: FeaturedShoeCardProps) {
+}: NewShoeArrivalCardProps) {
   return (
     <>
       <Link key={href} href={`/shoe/${href}`}>
@@ -49,22 +49,22 @@ function FeaturedShoeCard({
   );
 }
 
-interface FeatureShoeProps {
-  featuredShoes: FeaturedShoesQuery["allShoe"];
+interface NewShoeArrivalsProps {
+  newestShoes: NewestShoesQuery["allShoe"];
 }
 
-function FeaturedShoe({ featuredShoes }: FeatureShoeProps) {
+function NewShoeArrivals({ newestShoes }: NewShoeArrivalsProps) {
   return (
     <>
-      <section className="max-w-7xl mx-auto mt-5 px-5 sm:px-6 lg:px-8 py-14 sm:py-16 lg:py-16 bg-zinc-800">
+      <section className="max-w-7xl mx-auto mt-5 px-5 sm:px-6 lg:px-8 bg-zinc-800">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-x-3 gap-y-6">
-          {featuredShoes?.map((shoe) => (
-            <FeaturedShoeCard
-              key={shoe.slug?.current}
-              imageUrl={shoe.mainImage?.asset?.url ?? ""}
-              name={shoe.name}
-              price={shoe.price}
-              href={shoe.slug?.current}
+          {newestShoes?.map((newestShoe) => (
+            <NewShoeArrivalCard
+              key={newestShoe.slug?.current}
+              imageUrl={newestShoe.mainImage?.asset?.url ?? ""}
+              name={newestShoe.name}
+              price={newestShoe.price}
+              href={newestShoe.slug?.current}
             />
           ))}
         </div>
@@ -73,4 +73,4 @@ function FeaturedShoe({ featuredShoes }: FeatureShoeProps) {
   );
 }
 
-export default FeaturedShoe;
+export default NewShoeArrivals;

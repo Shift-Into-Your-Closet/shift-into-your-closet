@@ -12,14 +12,11 @@ import {
   NewestApparelsQuery,
   NewestShoesDocument,
   NewestShoesQuery,
-  FeaturedAccessoriesQuery,
-  FeaturedAccessoriesDocument,
 } from "../graphql-operations";
 import NewArrivals from "../components/landing/NewArrivals";
 
 type HomeProps = {
   featuredApparels: FeaturedApparelsQuery["allApparel"];
-  featuredAccessories: FeaturedAccessoriesQuery["allAccessories"];
   featuredShoes: FeaturedShoesQuery["allShoe"];
   newestApparels: NewestApparelsQuery["allApparel"];
   newestShoes: NewestShoesQuery["allShoe"];
@@ -27,15 +24,11 @@ type HomeProps = {
 
 export async function getStaticProps() {
   const [
-    { data: featuredAccessoriesData },
     { data: featuredApparelsData },
     { data: featuredShoesData },
     { data: newestApparelData },
     { data: newestShoesData },
   ] = await Promise.all([
-    client.query<FeaturedAccessoriesQuery>({
-      query: FeaturedAccessoriesDocument,
-    }),
     client.query<FeaturedApparelsQuery>({
       query: FeaturedApparelsDocument,
     }),
@@ -52,7 +45,6 @@ export async function getStaticProps() {
 
   return {
     props: {
-      featuredAccessories: featuredAccessoriesData?.allAccessories ?? [],
       featuredApparels: featuredApparelsData?.allApparel ?? [],
       featuredShoes: featuredShoesData?.allShoe ?? [],
       newestApparels: newestApparelData?.allApparel ?? [],
@@ -63,7 +55,6 @@ export async function getStaticProps() {
 }
 
 const Home: NextPage<HomeProps> = ({
-  featuredAccessories,
   featuredApparels,
   featuredShoes,
   newestApparels,
@@ -88,7 +79,6 @@ const Home: NextPage<HomeProps> = ({
         </h2>
         <StaffPicks
           featuredShoes={featuredShoes}
-          featuredAccessories={featuredAccessories}
           featuredApparels={featuredApparels}
         />
         <h3 className="text-3xl text-center tracking-widest mb-3 uppercase text-gray-400 font-bold ">

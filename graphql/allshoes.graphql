@@ -51,6 +51,13 @@ query newestShoes {
   }
 }
 
+query featuredShoes {
+  allShoe(sort: { price: DESC }, limit: 2) {
+    ...shoe
+    price
+  }
+}
+
 query allShoeBrands {
   allShoeBrand {
     name

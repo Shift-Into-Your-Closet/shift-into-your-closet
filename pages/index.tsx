@@ -3,7 +3,10 @@ import Head from "next/head";
 import client from "../apollo-client";
 import ShopWithUs from "../components/landing/ShopWithUs";
 import NewArrivals from "../components/landing/NewArrivals";
+import FeaturedShoes from "../components/landing/FeaturedShoes";
 import {
+  FeaturedShoesQuery,
+  FeaturedShoesDocument,
   NewestAccessoriesDocument,
   NewestAccessoriesQuery,
   NewestApparelsDocument,
@@ -16,14 +19,19 @@ type HomeProps = {
   newestAccessories: NewestAccessoriesQuery["allAccessories"];
   newestApparels: NewestApparelsQuery["allApparel"];
   newestShoes: NewestShoesQuery["allShoe"];
+  featuredShoes: FeaturedShoesQuery["allShoe"];
 };
 
 export async function getStaticProps() {
   const [
+    { data: featuredShoesData },
     { data: newestAccessoriesData },
     { data: newestApparelData },
     { data: newestShoesData },
   ] = await Promise.all([
+    client.query<FeaturedShoesQuery>({
+      query: FeaturedShoesDocument,
+    }),
     client.query<NewestAccessoriesQuery>({
       query: NewestAccessoriesDocument,
     }),
@@ -37,6 +45,7 @@ export async function getStaticProps() {
 
   return {
     props: {
+      featuredShoes: featuredShoesData?.allShoe ?? [],
       newestAccessories: newestAccessoriesData?.allAccessories ?? [],
       newestApparels: newestApparelData?.allApparel ?? [],
       newestShoes: newestShoesData?.allShoe ?? [],
@@ -46,6 +55,7 @@ export async function getStaticProps() {
 }
 
 const Home: NextPage<HomeProps> = ({
+  featuredShoes,
   newestAccessories,
   newestApparels,
   newestShoes,
@@ -64,15 +74,19 @@ const Home: NextPage<HomeProps> = ({
         <h1 className="text-7xl font-title text-center text-white">
           Shift Into Your <strong>Closet</strong>
         </h1>
-        <ShopWithUs />
-        <h4 className="text-3xl text-center tracking-widest mb-3 uppercase text-gray-400 font-bold ">
+        <h2 className="text-3xl text-center tracking-widest mt-10 uppercase text-gray-400 font-bold">
+          Staff Picks
+        </h2>
+        <FeaturedShoes featuredShoes={featuredShoes} />
+        <h3 className="text-3xl text-center tracking-widest mb-3 uppercase text-gray-400 font-bold ">
           New Arrivals
-        </h4>
+        </h3>
         <NewArrivals
           newestAccessories={newestAccessories}
           newestApparels={newestApparels}
           newestShoes={newestShoes}
         />
+        <ShopWithUs />
       </section>
     </div>
   );

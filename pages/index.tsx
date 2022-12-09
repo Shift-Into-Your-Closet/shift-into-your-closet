@@ -13,8 +13,6 @@ import {
   NewestShoesDocument,
   NewestShoesQuery,
 } from "../graphql-operations";
-import NewApparelArrivals from "../components/landing/NewApparelArrivals";
-import NewShoeArrivals from "../components/landing/NewArrivals";
 import NewArrivals from "../components/landing/NewArrivals";
 
 type HomeProps = {

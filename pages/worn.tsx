@@ -3,8 +3,6 @@ import { GetStaticProps, NextPage } from "next";
 import Head from "next/head";
 import Image from "next/image";
 import Link from "next/link";
-import { useRouter } from "next/router";
-import { useMemo } from "react";
 import client from "./../apollo-client";
 import {
   AllWornAccessoriesDocument,
@@ -53,6 +51,8 @@ const Worn: NextPage<WornProps> = ({
   apparels,
   shoes,
 }: WornProps) => {
+  const allWornItems = [...accessories, ...apparels, ...shoes];
+
   return (
     <>
       <Head>
@@ -73,20 +73,22 @@ const Worn: NextPage<WornProps> = ({
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 mt-3 mb-20">
           <div className="col-span-8 lg:col-span-2"></div>
           <div className="col-span-12 lg:col-span-10">
-            {apparels.length || accessories.length || shoes.length > 0 ? (
+            {allWornItems.length > 0 ? (
               <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 animate-fade-in-up">
-                {apparels.map((apparel) => {
+                {allWornItems.map((allWornItem) => {
+                  const typeName = allWornItem.__typename;
+                  const updatedTypeName = typeName?.toLowerCase();
                   return (
                     <Link
-                      key={apparel.slug?.current}
-                      href={`/apparel/${apparel.slug?.current}`}
+                      key={allWornItem.slug?.current}
+                      href={`/${updatedTypeName}/${allWornItem.slug?.current}`}
                     >
                       <div className="relative cursor-pointer overflow-hidden rounded-sm">
                         <div className="h-72 relative">
-                          {apparel.mainImage?.asset?.url && (
+                          {allWornItem.mainImage?.asset?.url && (
                             <Image
-                              src={apparel.mainImage.asset.url}
-                              alt={`Image for ${apparel.name}`}
+                              src={allWornItem.mainImage.asset.url}
+                              alt={`Image for ${allWornItem.name}`}
                               className="object-cover"
                               fill
                               sizes="(max-width: 768px) 100vw,
@@ -98,91 +100,14 @@ const Worn: NextPage<WornProps> = ({
                         <div className="absolute bottom-0 left-0">
                           <div className="bg-black py-3 px-5">
                             <div className="text-white uppercase font-bold pb-1">
-                              {apparel.name}
+                              {allWornItem.name}
                             </div>
                           </div>
                         </div>
                         <div className="absolute top-0 left-0">
                           <div className="bg-black py-1 px-5">
                             <div className="text-xl text-blue-400 font-bold">
-                              ${apparel.price}
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </Link>
-                  );
-                })}
-                {shoes.map((shoe) => {
-                  return (
-                    <Link
-                      key={shoe.slug?.current}
-                      href={`/shoe/${shoe.slug?.current}`}
-                    >
-                      <div className="relative cursor-pointer overflow-hidden rounded-sm">
-                        <div className="h-72 relative">
-                          {shoe.mainImage?.asset?.url && (
-                            <Image
-                              src={shoe.mainImage.asset.url}
-                              alt={`Image for ${shoe.name}`}
-                              className="object-cover"
-                              fill
-                              sizes="(max-width: 768px) 100vw,
-                          (max-width: 1200px) 50vw,
-                          33vw"
-                            />
-                          )}
-                        </div>
-                        <div className="absolute bottom-0 left-0">
-                          <div className="bg-black py-3 px-5">
-                            <div className="text-white uppercase font-bold pb-1">
-                              {shoe.name}
-                            </div>
-                          </div>
-                        </div>
-                        <div className="absolute top-0 left-0">
-                          <div className="bg-black py-1 px-5">
-                            <div className="text-xl text-blue-400 font-bold">
-                              ${shoe.price}
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </Link>
-                  );
-                })}
-                ,
-                {accessories.map((acccessory) => {
-                  return (
-                    <Link
-                      key={acccessory.slug?.current}
-                      href={`/accessory/${acccessory.slug?.current}`}
-                    >
-                      <div className="relative cursor-pointer overflow-hidden rounded-sm">
-                        <div className="h-72 relative">
-                          {acccessory.mainImage?.asset?.url && (
-                            <Image
-                              src={acccessory.mainImage.asset.url}
-                              alt={`Image for ${acccessory.name}`}
-                              className="object-cover"
-                              fill
-                              sizes="(max-width: 768px) 100vw,
-                          (max-width: 1200px) 50vw,
-                          33vw"
-                            />
-                          )}
-                        </div>
-                        <div className="absolute bottom-0 left-0">
-                          <div className="bg-black py-3 px-5">
-                            <div className="text-white uppercase font-bold pb-1">
-                              {acccessory.name}
-                            </div>
-                          </div>
-                        </div>
-                        <div className="absolute top-0 left-0">
-                          <div className="bg-black py-1 px-5">
-                            <div className="text-xl text-blue-400 font-bold">
-                              ${acccessory.price}
+                              ${allWornItem.price}
                             </div>
                           </div>
                         </div>

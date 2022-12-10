@@ -14,7 +14,7 @@ import {
 } from "./../graphql-operations";
 
 type WornProps = {
-  accessories: AllWornAccessoriesQuery["allAccessories"];
+  accessories: AllWornAccessoriesQuery["allAccessory"];
   apparels: AllWornApparelQuery["allApparel"];
   shoes: AllWornShoesQuery["allShoe"];
 };
@@ -38,7 +38,7 @@ export const getStaticProps: GetStaticProps<WornProps> = async () => {
 
   return {
     props: {
-      accessories: wornAccessoriesData?.allAccessories ?? [],
+      accessories: wornAccessoriesData?.allAccessory ?? [],
       apparels: wornApparelData?.allApparel ?? [],
       shoes: wornShoesData?.allShoe ?? [],
     },

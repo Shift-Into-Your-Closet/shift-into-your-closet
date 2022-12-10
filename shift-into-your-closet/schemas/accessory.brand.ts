@@ -1,7 +1,7 @@
 export default {
-  name: "accessoriesBrand",
-  title: "Brand (Accessories)",
-  description: "Accessories Brand",
+  name: "accessoryBrand",
+  title: "Brand (Accessory)",
+  description: "Accessory Brand",
   type: "document",
   fields: [
     {

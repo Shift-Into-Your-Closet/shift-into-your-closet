@@ -22,11 +22,11 @@ import SwiperCore, {
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/swiper-bundle.css";
 
-import { AccessoriesQuery } from "../../../graphql-operations";
+import { AccessoryQuery } from "../../../graphql-operations";
 import { Disclosure, Transition } from "@headlessui/react";
 
 export type AccessoryProps = {
-  accessory: AccessoriesQuery["allAccessories"][0] | undefined;
+  accessory: AccessoryQuery["allAccessory"][0] | undefined;
 };
 
 const siteTitle = "Shift Into Your Closet";

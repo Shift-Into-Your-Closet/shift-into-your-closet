@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 
 import {
+  NewestAccessoriesQuery,
   NewestApparelsQuery,
   NewestShoesQuery,
 } from "../../graphql-operations";
@@ -58,10 +59,19 @@ function NewArrivalCard({
 interface NewArrivalsProps {
   newestApparels: NewestApparelsQuery["allApparel"];
   newestShoes: NewestShoesQuery["allShoe"];
+  newestAccessories: NewestAccessoriesQuery["allAccessory"];
 }
 
-function NewArrivals({ newestApparels, newestShoes }: NewArrivalsProps) {
-  const allNewArrivals = [...newestApparels, ...newestShoes];
+function NewArrivals({
+  newestApparels,
+  newestShoes,
+  newestAccessories,
+}: NewArrivalsProps) {
+  const allNewArrivals = [
+    ...newestApparels,
+    ...newestShoes,
+    ...newestAccessories,
+  ];
 
   return (
     <>
@@ -69,6 +79,7 @@ function NewArrivals({ newestApparels, newestShoes }: NewArrivalsProps) {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-x-3 gap-y-6">
           {allNewArrivals?.map((allNewArrival) => (
             <NewArrivalCard
+              key={allNewArrival.slug?.current}
               imageUrl={allNewArrival.mainImage?.asset?.url ?? ""}
               name={allNewArrival.name}
               price={allNewArrival.price}

@@ -2,9 +2,9 @@ import { GetStaticPaths, GetStaticProps } from "next";
 
 import client from "../../apollo-client";
 import {
-  AccessoriesDocument,
-  AccessoriesFragment,
-  AccessoriesQuery,
+  AccessoryDocument,
+  AccessoryFragment,
+  AccessoryQuery,
   AllAccessoryDocument,
   AllAccessoryQuery,
 } from "../../graphql-operations";
@@ -18,7 +18,7 @@ export const getStaticPaths: GetStaticPaths<{
   ({ data } = await client.query<AllAccessoryQuery>({
     query: AllAccessoryDocument,
   }));
-  const allAccessories: AccessoriesFragment[] = data?.allAccessories ?? [];
+  const allAccessories: AccessoryFragment[] = data?.allAccessory ?? [];
   const slugs = allAccessories
     .map(({ slug }) => slug?.current)
     .filter((slugString): slugString is string => Boolean(slugString));
@@ -34,7 +34,7 @@ export const getStaticPaths: GetStaticPaths<{
 };
 
 type AccessoryProps = {
-  accessory: AccessoriesQuery["allAccessories"][0] | undefined;
+  accessory: AccessoryQuery["allAccessory"][0] | undefined;
 };
 
 export const getStaticProps: GetStaticProps<
@@ -43,14 +43,14 @@ export const getStaticProps: GetStaticProps<
 > = async ({ params }) => {
   let accessoryData;
 
-  ({ data: accessoryData } = await client.query<AccessoriesQuery>({
-    query: AccessoriesDocument,
+  ({ data: accessoryData } = await client.query<AccessoryQuery>({
+    query: AccessoryDocument,
     variables: {
       slug: params?.slug,
     },
   }));
 
-  const accessory = accessoryData?.allAccessories?.[0];
+  const accessory = accessoryData?.allAccessory?.[0];
 
   return {
     props: { accessory },

@@ -1,6 +1,6 @@
 export default {
-  name: "accessoriesCategory",
-  title: "Accessories (Category)",
+  name: "accessoryCategory",
+  title: "Accessory (Category)",
   description: "Please provide the cateogory that your item falls under.",
   type: "document",
   fields: [

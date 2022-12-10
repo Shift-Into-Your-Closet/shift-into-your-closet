@@ -15,8 +15,8 @@ export type Scalars = {
   DateTime: any;
 };
 
-export type Accessories = Document & {
-  __typename?: 'Accessories';
+export type Accessory = Document & {
+  __typename?: 'Accessory';
   /** Date the document was created */
   _createdAt?: Maybe<Scalars['DateTime']>;
   /** Document ID */
@@ -28,9 +28,9 @@ export type Accessories = Document & {
   _type?: Maybe<Scalars['String']>;
   /** Date the document was last modified */
   _updatedAt?: Maybe<Scalars['DateTime']>;
-  brand?: Maybe<Array<Maybe<AccessoriesBrand>>>;
+  brand?: Maybe<Array<Maybe<AccessoryBrand>>>;
   /** What is the category of your accessory? */
-  category?: Maybe<AccessoriesCategory>;
+  category?: Maybe<AccessoryCategory>;
   /** Please provide the condition of your accessory. */
   condition?: Maybe<Scalars['String']>;
   image?: Maybe<Array<Maybe<Image>>>;
@@ -42,8 +42,8 @@ export type Accessories = Document & {
   slug?: Maybe<Slug>;
 };
 
-export type AccessoriesBrand = Document & {
-  __typename?: 'AccessoriesBrand';
+export type AccessoryBrand = Document & {
+  __typename?: 'AccessoryBrand';
   /** Date the document was created */
   _createdAt?: Maybe<Scalars['DateTime']>;
   /** Document ID */
@@ -60,7 +60,7 @@ export type AccessoriesBrand = Document & {
   slug?: Maybe<Slug>;
 };
 
-export type AccessoriesBrandFilter = {
+export type AccessoryBrandFilter = {
   /** Apply filters on document level */
   _?: InputMaybe<Sanity_DocumentFilter>;
   _createdAt?: InputMaybe<DatetimeFilter>;
@@ -73,7 +73,7 @@ export type AccessoriesBrandFilter = {
   slug?: InputMaybe<SlugFilter>;
 };
 
-export type AccessoriesBrandSorting = {
+export type AccessoryBrandSorting = {
   _createdAt?: InputMaybe<SortOrder>;
   _id?: InputMaybe<SortOrder>;
   _key?: InputMaybe<SortOrder>;
@@ -84,8 +84,8 @@ export type AccessoriesBrandSorting = {
   slug?: InputMaybe<SlugSorting>;
 };
 
-export type AccessoriesCategory = Document & {
-  __typename?: 'AccessoriesCategory';
+export type AccessoryCategory = Document & {
+  __typename?: 'AccessoryCategory';
   /** Date the document was created */
   _createdAt?: Maybe<Scalars['DateTime']>;
   /** Document ID */
@@ -102,7 +102,7 @@ export type AccessoriesCategory = Document & {
   slug?: Maybe<Slug>;
 };
 
-export type AccessoriesCategoryFilter = {
+export type AccessoryCategoryFilter = {
   /** Apply filters on document level */
   _?: InputMaybe<Sanity_DocumentFilter>;
   _createdAt?: InputMaybe<DatetimeFilter>;
@@ -115,7 +115,7 @@ export type AccessoriesCategoryFilter = {
   slug?: InputMaybe<SlugFilter>;
 };
 
-export type AccessoriesCategorySorting = {
+export type AccessoryCategorySorting = {
   _createdAt?: InputMaybe<SortOrder>;
   _id?: InputMaybe<SortOrder>;
   _key?: InputMaybe<SortOrder>;
@@ -126,7 +126,7 @@ export type AccessoriesCategorySorting = {
   slug?: InputMaybe<SlugSorting>;
 };
 
-export type AccessoriesFilter = {
+export type AccessoryFilter = {
   /** Apply filters on document level */
   _?: InputMaybe<Sanity_DocumentFilter>;
   _createdAt?: InputMaybe<DatetimeFilter>;
@@ -135,7 +135,7 @@ export type AccessoriesFilter = {
   _rev?: InputMaybe<StringFilter>;
   _type?: InputMaybe<StringFilter>;
   _updatedAt?: InputMaybe<DatetimeFilter>;
-  category?: InputMaybe<AccessoriesCategoryFilter>;
+  category?: InputMaybe<AccessoryCategoryFilter>;
   condition?: InputMaybe<StringFilter>;
   mainImage?: InputMaybe<ImageFilter>;
   name?: InputMaybe<StringFilter>;
@@ -143,7 +143,7 @@ export type AccessoriesFilter = {
   slug?: InputMaybe<SlugFilter>;
 };
 
-export type AccessoriesSorting = {
+export type AccessorySorting = {
   _createdAt?: InputMaybe<SortOrder>;
   _id?: InputMaybe<SortOrder>;
   _key?: InputMaybe<SortOrder>;
@@ -554,9 +554,9 @@ export type IntFilter = {
 
 export type RootQuery = {
   __typename?: 'RootQuery';
-  Accessories?: Maybe<Accessories>;
-  AccessoriesBrand?: Maybe<AccessoriesBrand>;
-  AccessoriesCategory?: Maybe<AccessoriesCategory>;
+  Accessory?: Maybe<Accessory>;
+  AccessoryBrand?: Maybe<AccessoryBrand>;
+  AccessoryCategory?: Maybe<AccessoryCategory>;
   Apparel?: Maybe<Apparel>;
   ApparelBrand?: Maybe<ApparelBrand>;
   ApparelCategory?: Maybe<ApparelCategory>;
@@ -567,9 +567,9 @@ export type RootQuery = {
   Shoe?: Maybe<Shoe>;
   ShoeBrand?: Maybe<ShoeBrand>;
   ShoeSize?: Maybe<ShoeSize>;
-  allAccessories: Array<Accessories>;
-  allAccessoriesBrand: Array<AccessoriesBrand>;
-  allAccessoriesCategory: Array<AccessoriesCategory>;
+  allAccessory: Array<Accessory>;
+  allAccessoryBrand: Array<AccessoryBrand>;
+  allAccessoryCategory: Array<AccessoryCategory>;
   allApparel: Array<Apparel>;
   allApparelBrand: Array<ApparelBrand>;
   allApparelCategory: Array<ApparelCategory>;
@@ -583,17 +583,17 @@ export type RootQuery = {
 };
 
 
-export type RootQueryAccessoriesArgs = {
+export type RootQueryAccessoryArgs = {
   id: Scalars['ID'];
 };
 
 
-export type RootQueryAccessoriesBrandArgs = {
+export type RootQueryAccessoryBrandArgs = {
   id: Scalars['ID'];
 };
 
 
-export type RootQueryAccessoriesCategoryArgs = {
+export type RootQueryAccessoryCategoryArgs = {
   id: Scalars['ID'];
 };
 
@@ -648,27 +648,27 @@ export type RootQueryShoeSizeArgs = {
 };
 
 
-export type RootQueryAllAccessoriesArgs = {
+export type RootQueryAllAccessoryArgs = {
   limit?: InputMaybe<Scalars['Int']>;
   offset?: InputMaybe<Scalars['Int']>;
-  sort?: InputMaybe<Array<AccessoriesSorting>>;
-  where?: InputMaybe<AccessoriesFilter>;
+  sort?: InputMaybe<Array<AccessorySorting>>;
+  where?: InputMaybe<AccessoryFilter>;
 };
 
 
-export type RootQueryAllAccessoriesBrandArgs = {
+export type RootQueryAllAccessoryBrandArgs = {
   limit?: InputMaybe<Scalars['Int']>;
   offset?: InputMaybe<Scalars['Int']>;
-  sort?: InputMaybe<Array<AccessoriesBrandSorting>>;
-  where?: InputMaybe<AccessoriesBrandFilter>;
+  sort?: InputMaybe<Array<AccessoryBrandSorting>>;
+  where?: InputMaybe<AccessoryBrandFilter>;
 };
 
 
-export type RootQueryAllAccessoriesCategoryArgs = {
+export type RootQueryAllAccessoryCategoryArgs = {
   limit?: InputMaybe<Scalars['Int']>;
   offset?: InputMaybe<Scalars['Int']>;
-  sort?: InputMaybe<Array<AccessoriesCategorySorting>>;
-  where?: InputMaybe<AccessoriesCategoryFilter>;
+  sort?: InputMaybe<Array<AccessoryCategorySorting>>;
+  where?: InputMaybe<AccessoryCategoryFilter>;
 };
 
 
@@ -1307,34 +1307,39 @@ export type StringFilter = {
   nin?: InputMaybe<Array<Scalars['String']>>;
 };
 
-export type AccessoriesFragment = { __typename?: 'Accessories', price?: number | null, condition?: string | null, name?: string | null, brand?: Array<{ __typename?: 'AccessoriesBrand', name?: string | null, slug?: { __typename?: 'Slug', current?: string | null } | null } | null> | null, category?: { __typename?: 'AccessoriesCategory', name?: string | null, slug?: { __typename?: 'Slug', current?: string | null } | null } | null, mainImage?: { __typename?: 'Image', asset?: { __typename?: 'SanityImageAsset', url?: string | null } | null } | null, image?: Array<{ __typename?: 'Image', asset?: { __typename?: 'SanityImageAsset', url?: string | null } | null } | null> | null, slug?: { __typename?: 'Slug', current?: string | null } | null };
+export type AccessoryFragment = { __typename?: 'Accessory', price?: number | null, condition?: string | null, name?: string | null, brand?: Array<{ __typename?: 'AccessoryBrand', name?: string | null, slug?: { __typename?: 'Slug', current?: string | null } | null } | null> | null, category?: { __typename?: 'AccessoryCategory', name?: string | null, slug?: { __typename?: 'Slug', current?: string | null } | null } | null, mainImage?: { __typename?: 'Image', asset?: { __typename?: 'SanityImageAsset', url?: string | null } | null } | null, image?: Array<{ __typename?: 'Image', asset?: { __typename?: 'SanityImageAsset', url?: string | null } | null } | null> | null, slug?: { __typename?: 'Slug', current?: string | null } | null };
 
 export type AllAccessoryQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type AllAccessoryQuery = { __typename?: 'RootQuery', allAccessories: Array<{ __typename?: 'Accessories', price?: number | null, condition?: string | null, name?: string | null, brand?: Array<{ __typename?: 'AccessoriesBrand', name?: string | null, slug?: { __typename?: 'Slug', current?: string | null } | null } | null> | null, category?: { __typename?: 'AccessoriesCategory', name?: string | null, slug?: { __typename?: 'Slug', current?: string | null } | null } | null, mainImage?: { __typename?: 'Image', asset?: { __typename?: 'SanityImageAsset', url?: string | null } | null } | null, image?: Array<{ __typename?: 'Image', asset?: { __typename?: 'SanityImageAsset', url?: string | null } | null } | null> | null, slug?: { __typename?: 'Slug', current?: string | null } | null }> };
+export type AllAccessoryQuery = { __typename?: 'RootQuery', allAccessory: Array<{ __typename?: 'Accessory', price?: number | null, condition?: string | null, name?: string | null, brand?: Array<{ __typename?: 'AccessoryBrand', name?: string | null, slug?: { __typename?: 'Slug', current?: string | null } | null } | null> | null, category?: { __typename?: 'AccessoryCategory', name?: string | null, slug?: { __typename?: 'Slug', current?: string | null } | null } | null, mainImage?: { __typename?: 'Image', asset?: { __typename?: 'SanityImageAsset', url?: string | null } | null } | null, image?: Array<{ __typename?: 'Image', asset?: { __typename?: 'SanityImageAsset', url?: string | null } | null } | null> | null, slug?: { __typename?: 'Slug', current?: string | null } | null }> };
 
-export type AccessoriesQueryVariables = Exact<{
+export type AccessoryQueryVariables = Exact<{
   slug?: InputMaybe<Scalars['String']>;
 }>;
 
 
-export type AccessoriesQuery = { __typename?: 'RootQuery', allAccessories: Array<{ __typename?: 'Accessories', price?: number | null, condition?: string | null, name?: string | null, brand?: Array<{ __typename?: 'AccessoriesBrand', name?: string | null, slug?: { __typename?: 'Slug', current?: string | null } | null } | null> | null, category?: { __typename?: 'AccessoriesCategory', name?: string | null, slug?: { __typename?: 'Slug', current?: string | null } | null } | null, mainImage?: { __typename?: 'Image', asset?: { __typename?: 'SanityImageAsset', url?: string | null } | null } | null, image?: Array<{ __typename?: 'Image', asset?: { __typename?: 'SanityImageAsset', url?: string | null } | null } | null> | null, slug?: { __typename?: 'Slug', current?: string | null } | null }> };
+export type AccessoryQuery = { __typename?: 'RootQuery', allAccessory: Array<{ __typename?: 'Accessory', price?: number | null, condition?: string | null, name?: string | null, brand?: Array<{ __typename?: 'AccessoryBrand', name?: string | null, slug?: { __typename?: 'Slug', current?: string | null } | null } | null> | null, category?: { __typename?: 'AccessoryCategory', name?: string | null, slug?: { __typename?: 'Slug', current?: string | null } | null } | null, mainImage?: { __typename?: 'Image', asset?: { __typename?: 'SanityImageAsset', url?: string | null } | null } | null, image?: Array<{ __typename?: 'Image', asset?: { __typename?: 'SanityImageAsset', url?: string | null } | null } | null> | null, slug?: { __typename?: 'Slug', current?: string | null } | null }> };
 
 export type AllWornAccessoriesQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type AllWornAccessoriesQuery = { __typename?: 'RootQuery', allAccessories: Array<{ __typename?: 'Accessories', price?: number | null, condition?: string | null, name?: string | null, brand?: Array<{ __typename?: 'AccessoriesBrand', name?: string | null, slug?: { __typename?: 'Slug', current?: string | null } | null } | null> | null, category?: { __typename?: 'AccessoriesCategory', name?: string | null, slug?: { __typename?: 'Slug', current?: string | null } | null } | null, mainImage?: { __typename?: 'Image', asset?: { __typename?: 'SanityImageAsset', url?: string | null } | null } | null, image?: Array<{ __typename?: 'Image', asset?: { __typename?: 'SanityImageAsset', url?: string | null } | null } | null> | null, slug?: { __typename?: 'Slug', current?: string | null } | null }> };
+export type AllWornAccessoriesQuery = { __typename?: 'RootQuery', allAccessory: Array<{ __typename?: 'Accessory', price?: number | null, condition?: string | null, name?: string | null, brand?: Array<{ __typename?: 'AccessoryBrand', name?: string | null, slug?: { __typename?: 'Slug', current?: string | null } | null } | null> | null, category?: { __typename?: 'AccessoryCategory', name?: string | null, slug?: { __typename?: 'Slug', current?: string | null } | null } | null, mainImage?: { __typename?: 'Image', asset?: { __typename?: 'SanityImageAsset', url?: string | null } | null } | null, image?: Array<{ __typename?: 'Image', asset?: { __typename?: 'SanityImageAsset', url?: string | null } | null } | null> | null, slug?: { __typename?: 'Slug', current?: string | null } | null }> };
+
+export type NewestAccessoriesQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type NewestAccessoriesQuery = { __typename?: 'RootQuery', allAccessory: Array<{ __typename?: 'Accessory', _createdAt?: any | null, price?: number | null, condition?: string | null, name?: string | null, brand?: Array<{ __typename?: 'AccessoryBrand', name?: string | null, slug?: { __typename?: 'Slug', current?: string | null } | null } | null> | null, category?: { __typename?: 'AccessoryCategory', name?: string | null, slug?: { __typename?: 'Slug', current?: string | null } | null } | null, mainImage?: { __typename?: 'Image', asset?: { __typename?: 'SanityImageAsset', url?: string | null } | null } | null, image?: Array<{ __typename?: 'Image', asset?: { __typename?: 'SanityImageAsset', url?: string | null } | null } | null> | null, slug?: { __typename?: 'Slug', current?: string | null } | null }> };
 
 export type FeaturedAccessoriesQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type FeaturedAccessoriesQuery = { __typename?: 'RootQuery', allAccessories: Array<{ __typename?: 'Accessories', price?: number | null, condition?: string | null, name?: string | null, brand?: Array<{ __typename?: 'AccessoriesBrand', name?: string | null, slug?: { __typename?: 'Slug', current?: string | null } | null } | null> | null, category?: { __typename?: 'AccessoriesCategory', name?: string | null, slug?: { __typename?: 'Slug', current?: string | null } | null } | null, mainImage?: { __typename?: 'Image', asset?: { __typename?: 'SanityImageAsset', url?: string | null } | null } | null, image?: Array<{ __typename?: 'Image', asset?: { __typename?: 'SanityImageAsset', url?: string | null } | null } | null> | null, slug?: { __typename?: 'Slug', current?: string | null } | null }> };
+export type FeaturedAccessoriesQuery = { __typename?: 'RootQuery', allAccessory: Array<{ __typename?: 'Accessory', price?: number | null, condition?: string | null, name?: string | null, brand?: Array<{ __typename?: 'AccessoryBrand', name?: string | null, slug?: { __typename?: 'Slug', current?: string | null } | null } | null> | null, category?: { __typename?: 'AccessoryCategory', name?: string | null, slug?: { __typename?: 'Slug', current?: string | null } | null } | null, mainImage?: { __typename?: 'Image', asset?: { __typename?: 'SanityImageAsset', url?: string | null } | null } | null, image?: Array<{ __typename?: 'Image', asset?: { __typename?: 'SanityImageAsset', url?: string | null } | null } | null> | null, slug?: { __typename?: 'Slug', current?: string | null } | null }> };
 
 export type AllAccessoryCategoriesQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type AllAccessoryCategoriesQuery = { __typename?: 'RootQuery', allAccessoriesCategory: Array<{ __typename?: 'AccessoriesCategory', name?: string | null, slug?: { __typename?: 'Slug', current?: string | null } | null }> };
+export type AllAccessoryCategoriesQuery = { __typename?: 'RootQuery', allAccessoryCategory: Array<{ __typename?: 'AccessoryCategory', name?: string | null, slug?: { __typename?: 'Slug', current?: string | null } | null }> };
 
 export type ApparelFragment = { __typename?: 'Apparel', price?: number | null, condition?: string | null, name?: string | null, brand?: Array<{ __typename?: 'ApparelBrand', name?: string | null, slug?: { __typename?: 'Slug', current?: string | null } | null } | null> | null, size?: { __typename?: 'ApparelSize', apparelSize?: string | null } | null, category?: { __typename?: 'ApparelCategory', name?: string | null, slug?: { __typename?: 'Slug', current?: string | null } | null } | null, mainImage?: { __typename?: 'Image', asset?: { __typename?: 'SanityImageAsset', url?: string | null } | null } | null, image?: Array<{ __typename?: 'Image', asset?: { __typename?: 'SanityImageAsset', url?: string | null } | null } | null> | null, slug?: { __typename?: 'Slug', current?: string | null } | null };
 
@@ -1414,14 +1419,15 @@ export type AllShoeSizesQueryVariables = Exact<{ [key: string]: never; }>;
 
 export type AllShoeSizesQuery = { __typename?: 'RootQuery', allShoe: Array<{ __typename?: 'Shoe', size?: { __typename?: 'ShoeSize', shoeSize?: string | null } | null }> };
 
-export const AccessoriesFragmentDoc = {"kind":"Document","definitions":[{"kind":"FragmentDefinition","name":{"kind":"Name","value":"accessories"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Accessories"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"price"}},{"kind":"Field","name":{"kind":"Name","value":"brand"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"slug"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"current"}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"condition"}},{"kind":"Field","name":{"kind":"Name","value":"category"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"slug"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"current"}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"mainImage"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"asset"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"url"}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"image"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"asset"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"url"}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"slug"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"current"}}]}}]}}]} as unknown as DocumentNode<AccessoriesFragment, unknown>;
+export const AccessoryFragmentDoc = {"kind":"Document","definitions":[{"kind":"FragmentDefinition","name":{"kind":"Name","value":"accessory"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Accessory"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"price"}},{"kind":"Field","name":{"kind":"Name","value":"brand"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"slug"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"current"}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"condition"}},{"kind":"Field","name":{"kind":"Name","value":"category"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"slug"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"current"}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"mainImage"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"asset"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"url"}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"image"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"asset"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"url"}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"slug"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"current"}}]}}]}}]} as unknown as DocumentNode<AccessoryFragment, unknown>;
 export const ApparelFragmentDoc = {"kind":"Document","definitions":[{"kind":"FragmentDefinition","name":{"kind":"Name","value":"apparel"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Apparel"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"price"}},{"kind":"Field","name":{"kind":"Name","value":"brand"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"slug"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"current"}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"condition"}},{"kind":"Field","name":{"kind":"Name","value":"size"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"apparelSize"}}]}},{"kind":"Field","name":{"kind":"Name","value":"category"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"slug"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"current"}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"mainImage"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"asset"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"url"}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"image"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"asset"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"url"}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"slug"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"current"}}]}}]}}]} as unknown as DocumentNode<ApparelFragment, unknown>;
 export const ShoeFragmentDoc = {"kind":"Document","definitions":[{"kind":"FragmentDefinition","name":{"kind":"Name","value":"shoe"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Shoe"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"price"}},{"kind":"Field","name":{"kind":"Name","value":"brand"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"slug"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"current"}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"condition"}},{"kind":"Field","name":{"kind":"Name","value":"size"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"shoeSize"}}]}},{"kind":"Field","name":{"kind":"Name","value":"mainImage"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"asset"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"url"}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"image"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"asset"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"url"}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"slug"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"current"}}]}}]}}]} as unknown as DocumentNode<ShoeFragment, unknown>;
-export const AllAccessoryDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"allAccessory"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"allAccessories"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"accessories"}}]}}]}},...AccessoriesFragmentDoc.definitions]} as unknown as DocumentNode<AllAccessoryQuery, AllAccessoryQueryVariables>;
-export const AccessoriesDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"accessories"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"slug"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"allAccessories"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"where"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"slug"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"current"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"eq"},"value":{"kind":"Variable","name":{"kind":"Name","value":"slug"}}}]}}]}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"accessories"}}]}}]}},...AccessoriesFragmentDoc.definitions]} as unknown as DocumentNode<AccessoriesQuery, AccessoriesQueryVariables>;
-export const AllWornAccessoriesDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"allWornAccessories"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"allAccessories"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"where"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"condition"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"eq"},"value":{"kind":"StringValue","value":"worn","block":false}}]}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"accessories"}}]}}]}},...AccessoriesFragmentDoc.definitions]} as unknown as DocumentNode<AllWornAccessoriesQuery, AllWornAccessoriesQueryVariables>;
-export const FeaturedAccessoriesDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"featuredAccessories"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"allAccessories"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"sort"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"price"},"value":{"kind":"EnumValue","value":"DESC"}}]}},{"kind":"Argument","name":{"kind":"Name","value":"limit"},"value":{"kind":"IntValue","value":"2"}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"accessories"}},{"kind":"Field","name":{"kind":"Name","value":"price"}}]}}]}},...AccessoriesFragmentDoc.definitions]} as unknown as DocumentNode<FeaturedAccessoriesQuery, FeaturedAccessoriesQueryVariables>;
-export const AllAccessoryCategoriesDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"allAccessoryCategories"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"allAccessoriesCategory"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"slug"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"current"}}]}}]}}]}}]} as unknown as DocumentNode<AllAccessoryCategoriesQuery, AllAccessoryCategoriesQueryVariables>;
+export const AllAccessoryDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"allAccessory"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"allAccessory"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"accessory"}}]}}]}},...AccessoryFragmentDoc.definitions]} as unknown as DocumentNode<AllAccessoryQuery, AllAccessoryQueryVariables>;
+export const AccessoryDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"accessory"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"slug"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"allAccessory"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"where"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"slug"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"current"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"eq"},"value":{"kind":"Variable","name":{"kind":"Name","value":"slug"}}}]}}]}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"accessory"}}]}}]}},...AccessoryFragmentDoc.definitions]} as unknown as DocumentNode<AccessoryQuery, AccessoryQueryVariables>;
+export const AllWornAccessoriesDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"allWornAccessories"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"allAccessory"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"where"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"condition"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"eq"},"value":{"kind":"StringValue","value":"worn","block":false}}]}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"accessory"}}]}}]}},...AccessoryFragmentDoc.definitions]} as unknown as DocumentNode<AllWornAccessoriesQuery, AllWornAccessoriesQueryVariables>;
+export const NewestAccessoriesDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"newestAccessories"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"allAccessory"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"sort"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"_createdAt"},"value":{"kind":"EnumValue","value":"DESC"}}]}},{"kind":"Argument","name":{"kind":"Name","value":"limit"},"value":{"kind":"IntValue","value":"2"}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"accessory"}},{"kind":"Field","name":{"kind":"Name","value":"_createdAt"}}]}}]}},...AccessoryFragmentDoc.definitions]} as unknown as DocumentNode<NewestAccessoriesQuery, NewestAccessoriesQueryVariables>;
+export const FeaturedAccessoriesDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"featuredAccessories"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"allAccessory"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"sort"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"price"},"value":{"kind":"EnumValue","value":"DESC"}}]}},{"kind":"Argument","name":{"kind":"Name","value":"limit"},"value":{"kind":"IntValue","value":"2"}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"accessory"}},{"kind":"Field","name":{"kind":"Name","value":"price"}}]}}]}},...AccessoryFragmentDoc.definitions]} as unknown as DocumentNode<FeaturedAccessoriesQuery, FeaturedAccessoriesQueryVariables>;
+export const AllAccessoryCategoriesDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"allAccessoryCategories"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"allAccessoryCategory"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"slug"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"current"}}]}}]}}]}}]} as unknown as DocumentNode<AllAccessoryCategoriesQuery, AllAccessoryCategoriesQueryVariables>;
 export const AllApparelsDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"allApparels"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"allApparel"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"apparel"}}]}}]}},...ApparelFragmentDoc.definitions]} as unknown as DocumentNode<AllApparelsQuery, AllApparelsQueryVariables>;
 export const ApparelDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"apparel"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"slug"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"allApparel"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"where"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"slug"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"current"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"eq"},"value":{"kind":"Variable","name":{"kind":"Name","value":"slug"}}}]}}]}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"apparel"}}]}}]}},...ApparelFragmentDoc.definitions]} as unknown as DocumentNode<ApparelQuery, ApparelQueryVariables>;
 export const AllWornApparelDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"allWornApparel"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"allApparel"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"where"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"condition"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"eq"},"value":{"kind":"StringValue","value":"worn","block":false}}]}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"apparel"}}]}}]}},...ApparelFragmentDoc.definitions]} as unknown as DocumentNode<AllWornApparelQuery, AllWornApparelQueryVariables>;

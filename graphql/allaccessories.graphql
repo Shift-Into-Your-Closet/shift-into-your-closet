@@ -1,4 +1,4 @@
-fragment accessories on Accessories {
+fragment accessory on Accessory {
   price
   brand {
     name
@@ -30,32 +30,39 @@ fragment accessories on Accessories {
 }
 
 query allAccessory {
-  allAccessories {
-    ...accessories
+  allAccessory {
+    ...accessory
   }
 }
 
-query accessories($slug: String) {
-  allAccessories(where: { slug: { current: { eq: $slug } } }) {
-    ...accessories
+query accessory($slug: String) {
+  allAccessory(where: { slug: { current: { eq: $slug } } }) {
+    ...accessory
   }
 }
 
 query allWornAccessories {
-  allAccessories(where: { condition: { eq: "worn" } }) {
-    ...accessories
+  allAccessory(where: { condition: { eq: "worn" } }) {
+    ...accessory
+  }
+}
+
+query newestAccessories {
+  allAccessory(sort: { _createdAt: DESC }, limit: 2) {
+    ...accessory
+    _createdAt
   }
 }
 
 query featuredAccessories {
-  allAccessories(sort: { price: DESC }, limit: 2) {
-    ...accessories
+  allAccessory(sort: { price: DESC }, limit: 2) {
+    ...accessory
     price
   }
 }
 
 query allAccessoryCategories {
-  allAccessoriesCategory {
+  allAccessoryCategory {
     name
     slug {
       current

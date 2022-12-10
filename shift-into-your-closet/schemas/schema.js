@@ -10,9 +10,9 @@ import shoeBrand from "./shoe.brand";
 import apparelSize from "./apparel.size";
 import shoeSize from "./shoe.size";
 import apparelCategory from "./apparel.category";
-import accessories from "./accessories";
-import accessoriesBrand from "./accessories.brand";
-import accessoriesCategory from "./accessories.category";
+import accessory from "./accessory";
+import accessoryBrand from "./accessory.brand";
+import accessoryCategory from "./accessory.category";
 
 // Then we give our schema to the builder and provide the result to Sanity
 export default createSchema({
@@ -22,9 +22,9 @@ export default createSchema({
     apparelBrand,
     apparelCategory,
     apparelSize,
-    accessories,
-    accessoriesBrand,
-    accessoriesCategory,
+    accessory,
+    accessoryBrand,
+    accessoryCategory,
     shoe,
     shoeBrand,
     shoeSize,

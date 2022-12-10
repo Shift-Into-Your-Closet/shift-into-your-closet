@@ -1,6 +1,6 @@
 export default {
-  name: "accessories",
-  title: "Accessories",
+  name: "accessory",
+  title: "Accessory",
   type: "document",
   fields: [
     {
@@ -20,7 +20,7 @@ export default {
       of: [
         {
           type: "reference",
-          to: [{ type: "accessoriesBrand" }],
+          to: [{ type: "accessoryBrand" }],
         },
       ],
     },
@@ -44,7 +44,7 @@ export default {
       name: "category",
       title: "Category",
       type: "reference",
-      to: [{ type: "accessoriesCategory" }],
+      to: [{ type: "accessoryCategory" }],
       description: "What is the category of your accessory?",
     },
     {

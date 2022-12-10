@@ -1,39 +1,55 @@
 import type { NextPage } from "next";
 import Head from "next/head";
-import client from "../apollo-client";
-import WhyCustomersChooseUs from "../components/landing/WhyCustomersChooseUs";
+
 import StaffPicks from "../components/landing/StaffPicks";
+import NewArrivals from "../components/landing/NewArrivals";
+import WhyCustomersChooseUs from "../components/landing/WhyCustomersChooseUs";
+
+import client from "../apollo-client";
 import {
-  FeaturedShoesQuery,
-  FeaturedShoesDocument,
+  FeaturedAccessoriesQuery,
+  FeaturedAccessoriesDocument,
   FeaturedApparelsQuery,
   FeaturedApparelsDocument,
+  FeaturedShoesQuery,
+  FeaturedShoesDocument,
+  NewestAccessoriesQuery,
+  NewestAccessoriesDocument,
   NewestApparelsDocument,
   NewestApparelsQuery,
   NewestShoesDocument,
   NewestShoesQuery,
 } from "../graphql-operations";
-import NewArrivals from "../components/landing/NewArrivals";
 
 type HomeProps = {
+  featuredAccessories: FeaturedAccessoriesQuery["allAccessory"];
   featuredApparels: FeaturedApparelsQuery["allApparel"];
   featuredShoes: FeaturedShoesQuery["allShoe"];
+  newestAccessories: NewestAccessoriesQuery["allAccessory"];
   newestApparels: NewestApparelsQuery["allApparel"];
   newestShoes: NewestShoesQuery["allShoe"];
 };
 
 export async function getStaticProps() {
   const [
+    { data: featuredAccessoriesData },
     { data: featuredApparelsData },
     { data: featuredShoesData },
+    { data: newestAccessoriesData },
     { data: newestApparelData },
     { data: newestShoesData },
   ] = await Promise.all([
+    client.query<FeaturedAccessoriesQuery>({
+      query: FeaturedAccessoriesDocument,
+    }),
     client.query<FeaturedApparelsQuery>({
       query: FeaturedApparelsDocument,
     }),
     client.query<FeaturedShoesQuery>({
       query: FeaturedShoesDocument,
+    }),
+    client.query<NewestAccessoriesQuery>({
+      query: NewestAccessoriesDocument,
     }),
     client.query<NewestApparelsQuery>({
       query: NewestApparelsDocument,
@@ -45,8 +61,10 @@ export async function getStaticProps() {
 
   return {
     props: {
+      featuredAccessories: featuredAccessoriesData?.allAccessory ?? [],
       featuredApparels: featuredApparelsData?.allApparel ?? [],
       featuredShoes: featuredShoesData?.allShoe ?? [],
+      newestAccessories: newestAccessoriesData?.allAccessory ?? [],
       newestApparels: newestApparelData?.allApparel ?? [],
       newestShoes: newestShoesData?.allShoe ?? [],
     },
@@ -55,8 +73,10 @@ export async function getStaticProps() {
 }
 
 const Home: NextPage<HomeProps> = ({
+  featuredAccessories,
   featuredApparels,
   featuredShoes,
+  newestAccessories,
   newestApparels,
   newestShoes,
 }: HomeProps) => {
@@ -80,13 +100,15 @@ const Home: NextPage<HomeProps> = ({
         <StaffPicks
           featuredShoes={featuredShoes}
           featuredApparels={featuredApparels}
+          featuredAccessories={featuredAccessories}
         />
         <h3 className="text-3xl text-center tracking-widest mb-3 uppercase text-gray-400 font-bold ">
           New Arrivals
         </h3>
         <NewArrivals
-          newestApparels={newestApparels}
           newestShoes={newestShoes}
+          newestApparels={newestApparels}
+          newestAccessories={newestAccessories}
         />
         <WhyCustomersChooseUs />
       </section>

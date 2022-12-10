@@ -21,7 +21,7 @@ type FormValues = {
 };
 
 type AccessoryInquiryProps = {
-  accessories: AllAccessoryQuery["allAccessories"];
+  accessories: AllAccessoryQuery["allAccessory"];
 };
 
 export const getStaticProps: GetStaticProps<
@@ -33,7 +33,7 @@ export const getStaticProps: GetStaticProps<
   }));
   return {
     props: {
-      accessories: accessoryData?.allAccessories ?? [],
+      accessories: accessoryData?.allAccessory ?? [],
     },
     revalidate: 200,
   };

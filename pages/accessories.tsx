@@ -14,8 +14,8 @@ import {
 } from "./../graphql-operations";
 
 type ApparelProps = {
-  accessories: AllAccessoryQuery["allAccessories"];
-  categories: AllAccessoryCategoriesQuery["allAccessoriesCategory"];
+  accessories: AllAccessoryQuery["allAccessory"];
+  categories: AllAccessoryCategoriesQuery["allAccessoryCategory"];
 };
 
 export const getStaticProps: GetStaticProps<ApparelProps> = async () => {
@@ -29,13 +29,13 @@ export const getStaticProps: GetStaticProps<ApparelProps> = async () => {
       }),
     ]);
 
-  const copy = [...(accessoriesData?.allAccessories ?? [])];
+  const copy = [...(accessoriesData?.allAccessory ?? [])];
   return {
     props: {
       accessories: copy.sort((a, b) =>
         (a.category?.name || "").localeCompare(b.category?.name || "")
       ),
-      categories: accessoriesCategoryData?.allAccessoriesCategory ?? [],
+      categories: accessoriesCategoryData?.allAccessoryCategory ?? [],
     },
     revalidate: 200,
   };

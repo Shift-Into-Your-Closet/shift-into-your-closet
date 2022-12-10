@@ -1,3 +1,5 @@
+import ItemDetail from "../../../components/products/ItemDetail";
+
 import Head from "next/head";
 import Image from "next/image";
 import Link from "next/link";
@@ -5,10 +7,6 @@ import { useMemo } from "react";
 
 import cn from "clsx";
 import s from "./Shoe.module.css";
-
-import { BiCheckShield } from "react-icons/bi";
-import { CiDeliveryTruck } from "react-icons/ci";
-import { HiPlus } from "react-icons/hi";
 
 import SwiperCore, {
   Navigation,
@@ -23,7 +21,6 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/swiper-bundle.css";
 
 import { ShoeQuery } from "../../../graphql-operations";
-import { Disclosure, Transition } from "@headlessui/react";
 
 export type ShoeProps = {
   shoe: ShoeQuery["allShoe"][0] | undefined;
@@ -190,100 +187,19 @@ function Shoe({ shoe }: ShoeProps) {
               >
                 Inquire
               </Link>
-
               <div className="animate-fade-in-up">
-                <Disclosure as="div" className="rounded-md">
-                  {({ open }) => (
-                    <>
-                      <Disclosure.Button className="flex justify-between w-full ml-2 py-2 text-lg font-medium text-left text-black rounded-lg focus:outline-none focus-visible:ring focus-visible:ring-gray-500 focus-visible:ring-opacity-75">
-                        <span className="text-white">
-                          <BiCheckShield className="inline w-8 h-8 mr-2" />
-                          Authenticity Guaranteed
-                        </span>
-                        <HiPlus
-                          className={cn(
-                            { ["rotate-45"]: open },
-                            "w-5 h-5 mr-4 transition-all text-white"
-                          )}
-                        />
-                      </Disclosure.Button>
-                      <Transition
-                        enter="transition duration-500 ease-out"
-                        enterFrom="transform scale-95 opacity-0"
-                        enterTo="transform scale-100 opacity-100"
-                        leave="transition duration-500 ease-out"
-                        leaveFrom="transform scale-100 opacity-100"
-                        leaveTo="transform scale-95 opacity-0"
-                      >
-                        <Disclosure.Panel className="px-4 pt-4 pb-2 text-md text-white">
-                          Every item is guranteed to be 100% authentic. Our
-                          inventory comes from trusted sellers.
-                        </Disclosure.Panel>
-                      </Transition>
-                    </>
-                  )}
-                </Disclosure>
-                <Disclosure as="div" className="rounded-md">
-                  {({ open }) => (
-                    <>
-                      <Disclosure.Button className="flex justify-between w-full ml-2 py-2 text-lg font-medium text-left text-black rounded-lg focus:outline-none focus-visible:ring focus-visible:ring-gray-500 focus-visible:ring-opacity-75">
-                        <span className="text-white">
-                          <BiCheckShield className="inline w-8 h-8 mr-2" />
-                          Order Guaranteed
-                        </span>
-                        <HiPlus
-                          className={cn(
-                            { ["rotate-45"]: open },
-                            "w-5 h-5 mr-4 transition-all text-white"
-                          )}
-                        />
-                      </Disclosure.Button>
-                      <Transition
-                        enter="transition duration-500 ease-out"
-                        enterFrom="transform scale-95 opacity-0"
-                        enterTo="transform scale-100 opacity-100"
-                        leave="transition duration-500 ease-out"
-                        leaveFrom="transform scale-100 opacity-100"
-                        leaveTo="transform scale-95 opacity-0"
-                      >
-                        <Disclosure.Panel className="px-4 pt-4 pb-2 text-md text-white">
-                          We do not cancel orders.
-                        </Disclosure.Panel>
-                      </Transition>
-                    </>
-                  )}
-                </Disclosure>
-                <Disclosure as="div" className="rounded-md">
-                  {({ open }) => (
-                    <>
-                      <Disclosure.Button className="flex justify-between w-full ml-2 py-2 text-lg font-medium text-left text-black rounded-lg focus:outline-none focus-visible:ring focus-visible:ring-gray-500 focus-visible:ring-opacity-75">
-                        <span className="text-white">
-                          <CiDeliveryTruck className="inline w-8 h-8 mr-2" />
-                          In Stock & Ready To Ship
-                        </span>
-                        <HiPlus
-                          className={cn(
-                            { ["rotate-45"]: open },
-                            "w-5 h-5 mr-4 transition-all text-white"
-                          )}
-                        />
-                      </Disclosure.Button>
-                      <Transition
-                        enter="transition duration-500 ease-out"
-                        enterFrom="transform scale-95 opacity-0"
-                        enterTo="transform scale-100 opacity-100"
-                        leave="transition duration-500 ease-out"
-                        leaveFrom="transform scale-100 opacity-100"
-                        leaveTo="transform scale-95 opacity-0"
-                      >
-                        <Disclosure.Panel className="px-4 pt-4 pb-2 text-md text-white">
-                          Orders ship within 24-48 hours excluding weekends and
-                          holdiays.
-                        </Disclosure.Panel>
-                      </Transition>
-                    </>
-                  )}
-                </Disclosure>
+                <ItemDetail index={0} title="Authenticity Guaranteed">
+                  Every item is guranteed to be 100% authentic. Our inventory
+                  comes from trusted sellers. If you would like additional
+                  pictures, please do not hesitate to ask!
+                </ItemDetail>
+                <ItemDetail index={1} title="Order Guaranteed">
+                  We update our inventory as items sell out. Your item will be
+                  on its way to you within 24 hours.
+                </ItemDetail>
+                <ItemDetail index={2} title="In Stock & Ready To Ship">
+                  Orders ship within 24 hours excluding weekends and holdiays.
+                </ItemDetail>
               </div>
             </div>
           </div>

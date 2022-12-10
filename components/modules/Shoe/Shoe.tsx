@@ -129,6 +129,7 @@ function Shoe({ shoe }: ShoeProps) {
                       },
                     }}
                     slidesPerView={1}
+                    navigation={true}
                     pagination={{ clickable: true }}
                     keyboard={{
                       enabled: true,

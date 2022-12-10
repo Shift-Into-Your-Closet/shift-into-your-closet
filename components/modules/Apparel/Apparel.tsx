@@ -1,4 +1,5 @@
-import ItemDetail from "../../../components/products/ItemDetail";
+import s from "../../products/Product.module.css";
+import ProductDetail from "../../products/ProductDetail";
 
 import Head from "next/head";
 import Image from "next/image";
@@ -6,7 +7,6 @@ import Link from "next/link";
 import { useMemo } from "react";
 
 import cn from "clsx";
-import s from "./Apparel.module.css";
 
 import SwiperCore, {
   Navigation,
@@ -190,18 +190,18 @@ function Apparel({ apparel }: ApparelProps) {
                 Inquire
               </Link>
               <div className="animate-fade-in-up">
-                <ItemDetail index={0} title="Authenticity Guaranteed">
+                <ProductDetail index={0} title="Authenticity Guaranteed">
                   Every item is guranteed to be 100% authentic. Our inventory
                   comes from trusted sellers. If you would like additional
                   pictures, please do not hesitate to ask!
-                </ItemDetail>
-                <ItemDetail index={1} title="Order Guaranteed">
+                </ProductDetail>
+                <ProductDetail index={1} title="Order Guaranteed">
                   We update our inventory as items sell out. Your item will be
                   on its way to you within 24 hours.
-                </ItemDetail>
-                <ItemDetail index={2} title="In Stock & Ready To Ship">
+                </ProductDetail>
+                <ProductDetail index={2} title="In Stock & Ready To Ship">
                   Orders ship within 24 hours excluding weekends and holdiays.
-                </ItemDetail>
+                </ProductDetail>
               </div>
             </div>
           </div>

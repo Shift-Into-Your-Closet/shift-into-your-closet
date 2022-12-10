@@ -5,13 +5,13 @@ import { BiCheckShield } from "react-icons/bi";
 import { CiDeliveryTruck } from "react-icons/ci";
 import { HiPlus } from "react-icons/hi";
 
-type ItemDetailProps = {
+type ProductDetailProps = {
   title: string;
   children: string;
   index: number;
 };
 
-function ItemDetail({ title, children, index }: ItemDetailProps) {
+function ProductDetail({ title, children, index }: ProductDetailProps) {
   return (
     <div className="animate-fade-in-up">
       <Disclosure as="div" className="rounded-md">
@@ -55,4 +55,4 @@ function ItemDetail({ title, children, index }: ItemDetailProps) {
   );
 }
 
-export default ItemDetail;
+export default ProductDetail;

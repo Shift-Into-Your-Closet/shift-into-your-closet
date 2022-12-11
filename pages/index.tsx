@@ -1,11 +1,11 @@
 import type { NextPage } from "next";
 import Head from "next/head";
+import client from "../apollo-client";
 
 import StaffPicks from "../components/landing/StaffPicks";
 import NewArrivals from "../components/landing/NewArrivals";
 import WhyCustomersChooseUs from "../components/landing/WhyCustomersChooseUs";
 
-import client from "../apollo-client";
 import {
   FeaturedAccessoriesQuery,
   FeaturedAccessoriesDocument,

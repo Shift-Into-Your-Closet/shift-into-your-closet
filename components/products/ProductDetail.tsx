@@ -1,9 +1,9 @@
 import cn from "clsx";
-import { Disclosure, Transition } from "@headlessui/react";
-import React from "react";
 import { BiCheckShield } from "react-icons/bi";
 import { CiDeliveryTruck } from "react-icons/ci";
 import { HiPlus } from "react-icons/hi";
+
+import { Disclosure, Transition } from "@headlessui/react";
 
 type ProductDetailProps = {
   title: string;

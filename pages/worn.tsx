@@ -1,8 +1,8 @@
-import cn from "clsx";
-import { GetStaticProps, NextPage } from "next";
+import { NextPage, GetStaticProps } from "next";
 import Head from "next/head";
-import Image from "next/image";
 import Link from "next/link";
+import Image from "next/image";
+
 import client from "./../apollo-client";
 import {
   AllWornAccessoriesDocument,

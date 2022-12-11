@@ -1,3 +1,5 @@
+import { useSpring } from "react-spring";
+
 import type { NextPage } from "next";
 import Head from "next/head";
 import client from "../apollo-client";
@@ -20,6 +22,7 @@ import {
   NewestShoesDocument,
   NewestShoesQuery,
 } from "../graphql-operations";
+import { animated } from "react-spring";
 
 type HomeProps = {
   featuredAccessories: FeaturedAccessoriesQuery["allAccessory"];
@@ -72,6 +75,23 @@ export async function getStaticProps() {
   };
 }
 
+const MyAnimatedH1 = () => {
+  const animation = useSpring({
+    from: { opacity: 0 },
+    to: { opacity: 1 },
+    config: { duration: 1000 },
+  });
+  return (
+    <animated.h1
+      style={animation}
+      className="text-7xl font-title text-center text-white"
+    >
+      {" "}
+      Shift Into Your <strong>Closet</strong>{" "}
+    </animated.h1>
+  );
+};
+
 const Home: NextPage<HomeProps> = ({
   featuredAccessories,
   featuredApparels,
@@ -81,7 +101,7 @@ const Home: NextPage<HomeProps> = ({
   newestShoes,
 }: HomeProps) => {
   return (
-    <div>
+    <div className="min-h-screen flex flex-col items-center justify-center">
       <Head>
         <title>Shift Into Your Closet</title>
         <link rel="icon" href="/favicon.ico" />
@@ -91,15 +111,18 @@ const Home: NextPage<HomeProps> = ({
         <meta name="viewport" content="width=device-width" />
       </Head>
       <section className="max-w-7xl mx-auto mt-5 px-5 sm:px-6 lg:px-8 py-20 sm:py-24 lg:py-24 font-roboto min-h-screen">
-        <h1 className="text-7xl font-title text-center text-white">
-          Shift Into Your <strong>Closet</strong>
-        </h1>
+        <MyAnimatedH1 />
+        <h2 className="text-3xl text-center tracking-widest mt-10 uppercase text-gray-400 font-bold">
+          Staff Picks
+        </h2>
         <StaffPicks
           featuredShoes={featuredShoes}
           featuredApparels={featuredApparels}
           featuredAccessories={featuredAccessories}
         />
-
+        <h3 className="text-3xl text-center tracking-widest mb-3 uppercase text-gray-400 font-bold ">
+          New Arrivals
+        </h3>
         <NewArrivals
           newestShoes={newestShoes}
           newestApparels={newestApparels}

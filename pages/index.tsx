@@ -86,8 +86,7 @@ const MyAnimatedH1 = () => {
       style={animation}
       className="text-7xl font-title text-center text-white"
     >
-      {" "}
-      Shift Into Your <strong>Closet</strong>{" "}
+      Shift Into Your <strong>Closet</strong>
     </animated.h1>
   );
 };
@@ -112,17 +111,11 @@ const Home: NextPage<HomeProps> = ({
       </Head>
       <section className="max-w-7xl mx-auto mt-5 px-5 sm:px-6 lg:px-8 py-20 sm:py-24 lg:py-24 font-roboto min-h-screen">
         <MyAnimatedH1 />
-        <h2 className="text-3xl text-center tracking-widest mt-10 uppercase text-gray-400 font-bold">
-          Staff Picks
-        </h2>
         <StaffPicks
           featuredShoes={featuredShoes}
           featuredApparels={featuredApparels}
           featuredAccessories={featuredAccessories}
         />
-        <h3 className="text-3xl text-center tracking-widest mb-3 uppercase text-gray-400 font-bold ">
-          New Arrivals
-        </h3>
         <NewArrivals
           newestShoes={newestShoes}
           newestApparels={newestApparels}

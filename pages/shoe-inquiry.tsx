@@ -183,7 +183,8 @@ const ShoeInquiry: NextPage<ShoeInquiryProps> = ({
                   {...register("email", {
                     required: "Email is required",
                     pattern: {
-                      value: /^([a-z0-9_\.-]+)@([\da-z\.-]+)\.([a-z\.]{2,6})$/,
+                      value:
+                        /^([a-zA-z0-9_\.-+]+)@([\da-z\.-+]+)\.([a-z\.]{2,6})$/,
                       message: "Please enter a valid email",
                     },
                   })}

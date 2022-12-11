@@ -102,7 +102,6 @@ const Home: NextPage<HomeProps> = ({
 }: HomeProps) => {
   return (
     <>
-      {" "}
       <Head>
         <title>Shift Into Your Closet</title>
         <link rel="icon" href="/favicon.ico" />

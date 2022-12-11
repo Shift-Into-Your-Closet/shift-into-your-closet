@@ -117,6 +117,7 @@ function NewArrivals({
           autoplay={{
             delay: 2500,
             disableOnInteraction: false,
+            pauseOnMouseEnter: true,
           }}
         >
           {allNewArrivals?.map((allNewArrival) => (

@@ -34,7 +34,7 @@ const AboutUs: NextPage = () => {
         id="about-us"
       >
         <Breadcrumbs />
-        <h1 className="mt-5 text-3xl font-extrabold tracking-tight sm:text-4xl">
+        <h1 className="sr-only mt-5 text-3xl font-extrabold tracking-tight sm:text-4xl">
           About Us
         </h1>
         <p className="mt-4 text-xl font-light">

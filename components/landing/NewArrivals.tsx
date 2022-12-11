@@ -1,6 +1,19 @@
 import Image from "next/image";
 import Link from "next/link";
 
+import SwiperCore, {
+  Autoplay,
+  Navigation,
+  Pagination,
+  Scrollbar,
+  Keyboard,
+  EffectCreative,
+  Lazy,
+  A11y,
+} from "swiper";
+import { Swiper, SwiperSlide } from "swiper/react";
+import "swiper/swiper-bundle.css";
+
 import {
   NewestAccessoriesQuery,
   NewestApparelsQuery,
@@ -15,6 +28,17 @@ interface NewArrivalCardProps {
   typeName: string | null | undefined;
 }
 
+SwiperCore.use([
+  Autoplay,
+  Navigation,
+  Pagination,
+  Scrollbar,
+  Keyboard,
+  EffectCreative,
+  Lazy,
+  A11y,
+]);
+
 function NewArrivalCard({
   imageUrl,
   name,
@@ -27,13 +51,12 @@ function NewArrivalCard({
     <>
       <Link key={href} href={`/${updatedTypeName}/${href}`}>
         <div className="relative overflow-hidden rounded-sm">
-          <div className="h-72 relative">
+          <div className="h-80 relative">
             <Image
               src={imageUrl ?? ""}
               alt={`Image for ${name}`}
               className="object-cover"
-              placeholder={"blur"}
-              blurDataURL={imageUrl ?? ""}
+              priority={true}
               fill
               sizes="(max-width: 768px) 100vw,
                             (max-width: 1200px) 50vw,
@@ -75,19 +98,39 @@ function NewArrivals({
 
   return (
     <>
-      <section className="max-w-7xl mx-auto mt-5 px-5 sm:px-6 lg:px-8 py-20 sm:py-24 lg:py-24  bg-zinc-800">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-x-3 gap-y-6">
+      <section>
+        <h3 className="text-3xl text-center tracking-widest mb-10 uppercase text-gray-400 font-bold ">
+          New Arrivals
+        </h3>
+        <Swiper
+          className="w-full"
+          grabCursor={true}
+          slidesPerView={2}
+          scrollbar={{ draggable: true }}
+          pagination={{ clickable: true }}
+          navigation={true}
+          keyboard={{
+            enabled: true,
+            onlyInViewport: false,
+          }}
+          lazy={true}
+          autoplay={{
+            delay: 2500,
+            disableOnInteraction: false,
+          }}
+        >
           {allNewArrivals?.map((allNewArrival) => (
-            <NewArrivalCard
-              key={allNewArrival.slug?.current}
-              imageUrl={allNewArrival.mainImage?.asset?.url ?? ""}
-              name={allNewArrival.name}
-              price={allNewArrival.price}
-              href={allNewArrival.slug?.current}
-              typeName={allNewArrival.__typename}
-            />
+            <SwiperSlide key={allNewArrival.slug?.current}>
+              <NewArrivalCard
+                imageUrl={allNewArrival.mainImage?.asset?.url ?? ""}
+                name={allNewArrival.name}
+                price={allNewArrival.price}
+                href={allNewArrival.slug?.current}
+                typeName={allNewArrival.__typename}
+              />
+            </SwiperSlide>
           ))}
-        </div>
+        </Swiper>
       </section>
     </>
   );

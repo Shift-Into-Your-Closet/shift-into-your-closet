@@ -2,7 +2,7 @@ function WhyCustomersChooseUs() {
   return (
     <>
       <section className="max-w-7xl mx-auto px-5 sm:px-6 lg:px-8 py-14 sm:py-16 lg:py-16 bg-zinc-800">
-        <h4 className="text-3xl tracking-widest mb-3 uppercase text-gray-400 font-bold ">
+        <h4 className="text-3xl tracking-widest mb-3 text-gray-400 font-bold ">
           Why Customers Choose Us
         </h4>
         <p className="mt-3 sm:mt-4 text-xl text-gray-200 font-light">

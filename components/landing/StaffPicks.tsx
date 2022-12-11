@@ -77,6 +77,9 @@ function StaffPicks({
   return (
     <>
       <section className="max-w-7xl mx-auto mt-5 px-5 sm:px-6 lg:px-8 py-14 sm:py-16 lg:py-16 bg-zinc-800">
+        <h2 className="text-3xl text-center tracking-widest mb-10 uppercase text-gray-400 font-bold ">
+          Staff Picks 🔥
+        </h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-x-3 gap-y-6">
           {staffPicks?.map((staffPick) => (
             <StaffPicksCard

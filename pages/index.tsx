@@ -101,7 +101,7 @@ const Home: NextPage<HomeProps> = ({
   newestShoes,
 }: HomeProps) => {
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center">
+    <>
       <Head>
         <title>Shift Into Your Closet</title>
         <link rel="icon" href="/favicon.ico" />
@@ -130,7 +130,7 @@ const Home: NextPage<HomeProps> = ({
         />
         <WhyCustomersChooseUs />
       </section>
-    </div>
+    </>
   );
 };
 

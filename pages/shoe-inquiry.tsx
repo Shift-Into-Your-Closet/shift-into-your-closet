@@ -93,7 +93,7 @@ const ShoeInquiry: NextPage<ShoeInquiryProps> = ({
       </Head>
 
       <div className="max-w-screen-xl m-auto w-11/12">
-        <h1 className="text-3xl sm:text-5xl text-center py-6 font-bold font-roboto text-white capitalize">
+        <h1 className="sr-only text-3xl sm:text-5xl text-center py-6 font-bold font-roboto text-white capitalize">
           Shoe Inquiry
         </h1>
       </div>

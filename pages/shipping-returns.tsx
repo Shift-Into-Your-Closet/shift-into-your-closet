@@ -36,7 +36,7 @@ const ShippingReturns: NextPage = () => {
         id="shipping-returns"
       >
         <Breadcrumbs />
-        <h1 className="mt-5 text-3xl font-extrabold tracking-tight sm:text-4xl">
+        <h1 className="sr-only mt-5 text-3xl font-extrabold tracking-tight sm:text-4xl">
           Shipping & Return Policy
         </h1>
         <p className="mt-4 text-xl font-light">

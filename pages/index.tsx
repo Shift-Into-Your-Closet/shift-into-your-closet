@@ -81,7 +81,7 @@ const Home: NextPage<HomeProps> = ({
   newestShoes,
 }: HomeProps) => {
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center">
+    <div>
       <Head>
         <title>Shift Into Your Closet</title>
         <link rel="icon" href="/favicon.ico" />
@@ -94,17 +94,12 @@ const Home: NextPage<HomeProps> = ({
         <h1 className="text-7xl font-title text-center text-white">
           Shift Into Your <strong>Closet</strong>
         </h1>
-        <h2 className="text-3xl text-center tracking-widest mt-10 uppercase text-gray-400 font-bold">
-          Staff Picks
-        </h2>
         <StaffPicks
           featuredShoes={featuredShoes}
           featuredApparels={featuredApparels}
           featuredAccessories={featuredAccessories}
         />
-        <h3 className="text-3xl text-center tracking-widest mb-3 uppercase text-gray-400 font-bold ">
-          New Arrivals
-        </h3>
+
         <NewArrivals
           newestShoes={newestShoes}
           newestApparels={newestApparels}

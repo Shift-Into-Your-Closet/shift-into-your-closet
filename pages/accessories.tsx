@@ -1,10 +1,11 @@
-import cn from "clsx";
-import { GetStaticProps, NextPage } from "next";
-import Head from "next/head";
-import Image from "next/image";
-import Link from "next/link";
-import { useRouter } from "next/router";
 import { useMemo } from "react";
+import { NextPage, GetStaticProps } from "next";
+import { useRouter } from "next/router";
+import Head from "next/head";
+import Link from "next/link";
+import Image from "next/image";
+
+import cn from "clsx";
 import client from "./../apollo-client";
 import {
   AllAccessoryCategoriesDocument,

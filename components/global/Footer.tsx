@@ -23,7 +23,7 @@ const shopLinks = [
 const customerServiceLinks = [
   {
     name: "About Us",
-    link: "about-us",
+    link: "/about-us",
   },
   {
     name: "Contact",
@@ -31,7 +31,7 @@ const customerServiceLinks = [
   },
   {
     name: "Shipping & Return Policy",
-    link: "shipping-returns",
+    link: "/shipping-returns",
   },
   {
     name: "Wishlist",

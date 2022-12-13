@@ -99,7 +99,7 @@ function NewArrivals({
   return (
     <>
       <section>
-        <h3 className="text-3xl text-center tracking-widest mb-10 uppercase text-gray-400 font-bold">
+        <h3 className="text-3xl text-center tracking-widest my-16 uppercase text-gray-400 font-bold">
           New Arrivals
         </h3>
         <Swiper

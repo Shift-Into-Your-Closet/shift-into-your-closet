@@ -1,5 +1,9 @@
+import { useState } from "react";
+
 import Image from "next/image";
 import Link from "next/link";
+
+import cn from "clsx";
 
 import {
   FeaturedAccessoriesQuery,
@@ -19,6 +23,7 @@ function StaffPicksCard({
   imageUrl,
   name,
   price,
+
   href,
   typeName,
 }: StaffPicksCardProps) {
@@ -26,15 +31,18 @@ function StaffPicksCard({
 
   return (
     <>
-      <Link key={href} href={`/${updatedTypeName}/${href}`}>
+      <Link
+        key={href}
+        as={`/${updatedTypeName}/${href}`}
+        href={`/${updatedTypeName}/${href}`}
+      >
         <div className="relative overflow-hidden rounded-sm">
-          <div className="h-72 relative">
+          <div className="h-80 relative">
             <Image
               src={imageUrl ?? ""}
               alt={`Image for ${name}`}
               className="object-cover"
-              placeholder={"blur"}
-              blurDataURL={imageUrl ?? ""}
+              priority={true}
               fill
               sizes="(max-width: 768px) 100vw,
                             (max-width: 1200px) 50vw,
@@ -61,9 +69,11 @@ interface StaffPicksProps {
   featuredShoes: FeaturedShoesQuery["allShoe"];
   featuredApparels: FeaturedApparelsQuery["allApparel"];
   featuredAccessories: FeaturedAccessoriesQuery["allAccessory"];
+  hasShowMore?: boolean;
 }
 
-function StaffPicks({
+function OurServices({
+  hasShowMore = false,
   featuredShoes,
   featuredApparels,
   featuredAccessories,
@@ -74,12 +84,23 @@ function StaffPicks({
     ...featuredAccessories,
   ];
 
+  const [showMore, setShowMore] = useState(!hasShowMore);
   return (
-    <>
-      <section className="max-w-7xl mx-auto mt-5 px-5 sm:px-6 lg:px-8 py-14 sm:py-16 lg:py-16 ">
-        <h2 className="text-3xl text-center tracking-widest mb-10 uppercase text-gray-400 font-bold ">
-          Staff Picks 🔥
+    <div className="relative max-w-5xl mx-auto my-1">
+      <div className="flex pb-12 flex-col items-center justify-center">
+        <h2 className="text-3xl text-center tracking-widest mt-6 uppercase text-gray-400 font-bold ">
+          Staff Picks
         </h2>
+        <p className="mx-auto mt-3 max-w-2xl text-md sm:text-xl font-roboto sm:mt-4 text-center text-xl text-gray-200 font-light">
+          Check out some must haves!
+        </p>
+      </div>
+      <div
+        className={cn({
+          ["max-h-[44.5rem]"]: !showMore,
+          ["overflow-hidden"]: !showMore,
+        })}
+      >
         <div className="grid grid-cols-1 md:grid-cols-2 gap-x-3 gap-y-6">
           {staffPicks?.map((staffPick) => (
             <StaffPicksCard
@@ -92,9 +113,30 @@ function StaffPicks({
             />
           ))}
         </div>
-      </section>
-    </>
+        {hasShowMore && (
+          <div
+            className={cn("inset-x-0 flex justify-center absolute", {
+              ["pt-32"]: !showMore,
+              ["bg-gradient-to-t bottom-0 pb-0 pointer-events-none from-black"]:
+                !showMore,
+            })}
+          >
+            {!showMore && (
+              <button
+                type="button"
+                onClick={() => {
+                  setShowMore(!showMore);
+                }}
+                className="relative focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-2 text-sm text-white font-semibold h-12 px-6 rounded-lg flex items-center bg-zinc-700 hover:bg-zinc-500 pointer-events-auto"
+              >
+                Show More...
+              </button>
+            )}
+          </div>
+        )}
+      </div>
+    </div>
   );
 }
 
-export default StaffPicks;
+export default OurServices;

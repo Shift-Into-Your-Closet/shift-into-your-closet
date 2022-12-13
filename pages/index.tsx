@@ -1,4 +1,4 @@
-import { useSpring } from "react-spring";
+import { animated, useSpring } from "react-spring";
 
 import type { NextPage } from "next";
 import Head from "next/head";
@@ -22,7 +22,6 @@ import {
   NewestShoesDocument,
   NewestShoesQuery,
 } from "../graphql-operations";
-import { animated } from "react-spring";
 
 type HomeProps = {
   featuredAccessories: FeaturedAccessoriesQuery["allAccessory"];
@@ -75,11 +74,11 @@ export async function getStaticProps() {
   };
 }
 
-const MyAnimatedH1 = () => {
+const ShiftIntoYourCloset = () => {
   const animation = useSpring({
     from: { opacity: 0 },
     to: { opacity: 1 },
-    config: { duration: 1000 },
+    config: { duration: 3000 },
   });
   return (
     <animated.h1
@@ -110,7 +109,7 @@ const Home: NextPage<HomeProps> = ({
         <meta name="viewport" content="width=device-width" />
       </Head>
       <section className="max-w-7xl mx-auto mt-5 px-5 sm:px-6 lg:px-8 py-20 sm:py-24 lg:py-24 font-roboto min-h-screen">
-        <MyAnimatedH1 />
+        <ShiftIntoYourCloset />
         <StaffPicks
           featuredShoes={featuredShoes}
           featuredApparels={featuredApparels}

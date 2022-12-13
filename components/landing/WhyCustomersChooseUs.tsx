@@ -1,51 +1,93 @@
+import Link from "next/link";
+import { useSpring, animated } from "react-spring";
+
+import { HiArrowRight, HiRefresh } from "react-icons/hi";
+import { SlPeople } from "react-icons/sl";
+import { IoMdPeople } from "react-icons/io";
+import { BiCheckShield } from "react-icons/bi";
+
+const AnimatedWhyCustomersChooseUs = () => {
+  const animation = useSpring({
+    from: { opacity: 0 },
+    to: { opacity: 1 },
+    config: { duration: 3000 },
+  });
+  return (
+    <animated.h4
+      style={animation}
+      className="-mt-2 max-w-xl text-left md:text-right text-5xl font-extrabold text-accent-0 leading-none tracking-tight"
+    >
+      Why Customers Choose Us.
+    </animated.h4>
+  );
+};
+
 function WhyCustomersChooseUs() {
   return (
     <>
-      <section className="max-w-7xl mx-auto px-5 sm:px-6 lg:px-8 py-14 sm:py-16 lg:py-16">
-        <h4 className="text-3xl tracking-widest mb-3 text-gray-400 font-bold ">
-          Why Customers Choose Us
-        </h4>
-        <p className="mt-3 sm:mt-4 text-xl text-gray-200 font-light">
-          Our vision has always been to create a marketplace for everyone. We
-          are committed to bridging the gap between the consumer and the
-          product.
-        </p>
-        <h5 className="mt-10 font-bold uppercase tracking-wide text-2xl bg-gradient-to-r from-blue-400 via-teal-600 to-blue-600 bg-clip-text fill-transparent [-webkit-text-fill-color:transparent]">
-          Our Values
-        </h5>
-        <div className="mt-8 text-xl font-bold sm:text-2xl text-white">
-          ✅ Customer Satisfaction
+      <section className="border-t">
+        <div className="mx-auto max-w-7xl px-6 py-32 w-full  text-white">
+          <div className="flex flex-col md:flex-row justify-center mx-auto">
+            <AnimatedWhyCustomersChooseUs />
+            <div className="mt-0 md:ml-6 max-w-4xl mb-1 text-lg leading-8">
+              <p className="mt-3 sm:mt-4 md:mt-0 text-xl text-left text-gray-200 font-light">
+                Our vision has always been to create a marketplace for everyone.
+                We are committed to bridging the gap between the consumer and
+                the product.
+              </p>
+              <Link
+                href="/about-us"
+                className="flex items-center text-accent-0 pt-3 font-bold hover:underline cursor-pointer w-max-content"
+              >
+                Our story
+                <HiArrowRight className="ml-1" />
+              </Link>
+            </div>
+          </div>
         </div>
-        <p className="mt-3 sm:mt-4 text-xl text-gray-200 font-light">
-          We strive to be able to provide the best customer experience possible.
-          We will provide additional pictures upon request to ensure that our
-          customers are receiving exactly what they see. We aim to provide great
-          customer support with a 24 hour turnaround time on any and all
-          inquiries.
-        </p>
-        <div className="mt-8 text-xl font-bold sm:text-2xl text-white">
-          ✅ Authenticity Guaranteed
+        <div className="w-full">
+          <div className="m-auto w-3/4 md:max-w-screen-xl">
+            <div className="flex flex-col gap-4 mx-auto lg:flex-row">
+              <div className="flex flex-col md:flex-row flex-1 gap-4">
+                <div className="flex flex-col flex-1 items-center gap-4">
+                  <div className="text-5xl text-white">
+                    <SlPeople />
+                  </div>
+                  <span className="text-white font-roboto font-bold text-xl sm:text-2xl text-center">
+                    Customer Satisfaction
+                  </span>
+                </div>
+                <div className="flex flex-col flex-1 items-center gap-4">
+                  <div className="text-5xl text-white">
+                    <BiCheckShield />
+                  </div>
+                  <span className="text-white font-roboto font-bold  text-2xl text-center">
+                    Authenticity Guaranteed
+                  </span>
+                </div>
+              </div>
+
+              <div className="flex flex-col md:flex-row flex-1 gap-4">
+                <div className="flex flex-col flex-1 items-center gap-4">
+                  <div className="text-5xl text-white">
+                    <BiCheckShield />
+                  </div>
+                  <span className="text-white font-roboto font-bold text-2xl text-center">
+                    Order Guaranteed
+                  </span>
+                </div>
+                <div className="flex flex-col flex-1 items-center gap-4">
+                  <div className="text-5xl text-white">
+                    <HiRefresh />
+                  </div>
+                  <span className="text-white font-roboto font-bold text-2xl text-center">
+                    Inventory Refresh
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
-        <p className="mt-3 sm:mt-4 text-xl text-gray-200 font-light">
-          All of our products are 100% authentic. Please purchase with complete
-          confidence.
-        </p>
-        <div className="mt-8 text-xl font-bold sm:text-2xl text-white">
-          ✅ Order Guaranteed
-        </div>
-        <p className="mt-3 sm:mt-4 text-xl text-gray-200 font-light">
-          We know how frustrating it can be to receive an email that your order
-          has been cancelled due to an item being out of stock. Please rest
-          assured that our inventory will reflect what is currently available.
-          Our inventory is updated as items sell out.
-        </p>
-        <div className="mt-8 text-xl font-bold sm:text-2xl text-white">
-          ✅ Inventory Refresh
-        </div>
-        <p className="mt-3 sm:mt-4 text-xl text-gray-200 font-light">
-          Our products are curated worldwide. We offer a wide variety of brands
-          ranging from designer to streetwear and more!
-        </p>
       </section>
     </>
   );

@@ -1,6 +1,11 @@
+import { Disclosure, Transition } from "@headlessui/react";
 import { NextPage } from "next";
 import Head from "next/head";
 import Link from "next/link";
+import { HiChevronRight, HiChevronUp, HiPlus } from "react-icons/hi";
+import faqs from "../utils/data/faqs";
+
+import cn from "clsx";
 
 type AboutProps = {
   title: string;
@@ -86,16 +91,6 @@ const AboutUs: NextPage = () => {
           </a>
           .
         </p>
-        <About title="How It Works">
-          <p>
-            We are an email to order service. Emails will be responded to in the
-            order that they are received. We will do our best to provide a reply
-            ASAP. Item(s) will be removed from our site as the item or size
-            sells out. Please expect a delayed response during observed
-            holidays. We are located in the Bay Area (PDT) and our response time
-            may vary in different time zones.
-          </p>
-        </About>
         <About title="An Accessible Marketplace">
           <p>
             We are always looking to grow and expand our selection. If an item
@@ -110,6 +105,45 @@ const AboutUs: NextPage = () => {
             general public.
           </p>
         </About>
+        <p className="text-center text-xl mt-10">
+          (Frequently Asked Questions)
+        </p>
+        <p className="mb-10 text-xl text-center">
+          Questions or concerns? Please feel free to check out our FAQ below!
+        </p>
+        {faqs.map((faq, index) => (
+          <div className="my-2.5" key={index}>
+            <Disclosure as="div">
+              {({ open }) => {
+                return (
+                  <>
+                    <Disclosure.Button className="flex text-xl font-bold items-center">
+                      <HiChevronRight
+                        className={cn(
+                          { ["rotate-90"]: open },
+                          "w-5 h-5 mr-4 transition-all"
+                        )}
+                      />
+                      <h3 className="text-left flex flex-1">{faq.question}</h3>
+                    </Disclosure.Button>
+                    <Transition
+                      enter="transition duration-100 ease-out"
+                      enterFrom="transform scale-95 opacity-0"
+                      enterTo="transform scale-100 opacity-100"
+                      leave="transition duration-75 ease-out"
+                      leaveFrom="transform scale-100 opacity-100"
+                      leaveTo="transform scale-95 opacity-0"
+                    >
+                      <Disclosure.Panel className="mt-3 sm:mt-4 text-xl text-gray-200 font-light">
+                        {faq.answer}
+                      </Disclosure.Panel>
+                    </Transition>
+                  </>
+                );
+              }}
+            </Disclosure>
+          </div>
+        ))}
       </section>
     </>
   );

@@ -17,7 +17,7 @@
   }
   
   .imageContainer {
-    @apply text-center h-full relative;
+    @apply text-center h-full relative aspect-square;
   }
   
   .imageContainer > span {

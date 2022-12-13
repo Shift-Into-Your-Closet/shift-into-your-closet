@@ -114,6 +114,7 @@ const Home: NextPage<HomeProps> = ({
           featuredShoes={featuredShoes}
           featuredApparels={featuredApparels}
           featuredAccessories={featuredAccessories}
+          hasShowMore={true}
         />
         <NewArrivals
           newestShoes={newestShoes}

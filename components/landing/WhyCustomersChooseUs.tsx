@@ -3,7 +3,6 @@ import { useSpring, animated } from "react-spring";
 
 import { HiArrowRight, HiRefresh } from "react-icons/hi";
 import { SlPeople } from "react-icons/sl";
-import { IoMdPeople } from "react-icons/io";
 import { BiCheckShield } from "react-icons/bi";
 
 const AnimatedWhyCustomersChooseUs = () => {
@@ -25,8 +24,8 @@ const AnimatedWhyCustomersChooseUs = () => {
 function WhyCustomersChooseUs() {
   return (
     <>
-      <section className="border-t">
-        <div className="mx-auto max-w-7xl px-6 py-32 w-full  text-white">
+      <section className="my-28">
+        <div className="mx-auto max-w-7xl px-6 py-32  w-full text-white">
           <div className="flex flex-col md:flex-row justify-center mx-auto">
             <AnimatedWhyCustomersChooseUs />
             <div className="mt-0 md:ml-6 max-w-4xl mb-1 text-lg leading-8">

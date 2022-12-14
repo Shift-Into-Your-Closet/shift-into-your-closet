@@ -182,7 +182,7 @@ const ShoeInquiry: NextPage<ShoeInquiryProps> = ({
                     htmlFor="firstName"
                     className="block mb-2 mt-5 text-sm font-roboto font-regular text-gray-900"
                   >
-                    Legal First Name
+                    First Name
                   </label>
                   <input
                     placeholder="First Name"
@@ -204,7 +204,7 @@ const ShoeInquiry: NextPage<ShoeInquiryProps> = ({
                     htmlFor="lastName"
                     className="block mb-2 mt-5 text-sm font-roboto font-regular text-gray-900"
                   >
-                    Legal Last Name
+                    Last Name
                   </label>
                   <input
                     placeholder="Last Name"

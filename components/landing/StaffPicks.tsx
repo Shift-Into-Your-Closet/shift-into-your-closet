@@ -86,7 +86,7 @@ function OurServices({
 
   const [showMore, setShowMore] = useState(!hasShowMore);
   return (
-    <div className="relative max-w-5xl mx-auto my-1">
+    <div className="relative max-w-5xl mx-auto my-28">
       <div className="flex pb-12 flex-col items-center justify-center">
         <h2 className="text-3xl text-center tracking-widest mt-6 uppercase text-gray-400 font-bold ">
           Staff Picks

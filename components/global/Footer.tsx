@@ -3,6 +3,10 @@ import Link from "next/link";
 
 const shopLinks = [
   {
+    name: "All",
+    link: "/all",
+  },
+  {
     name: "Shoes",
     link: "/shoes",
   },
@@ -55,7 +59,7 @@ function Footer() {
           </div>
           <div className="flex-none w-1/2 space-y-4 md:space-y-0 md:flex">
             <div className="md:flex-none md:w-1/2 text-left lg:text-right">
-              <div className="text-slate-200 text-sm pb-2">Shop</div>
+              <div className="text-slate-200 text-sm pb-2">Products</div>
               {shopLinks.map(({ name, link }) => {
                 return (
                   <div

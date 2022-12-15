@@ -4,6 +4,7 @@ import type { NextPage } from "next";
 import Head from "next/head";
 import client from "../apollo-client";
 
+import ShopNow from "../components/landing/ShopNow";
 import StaffPicks from "../components/landing/StaffPicks";
 import NewArrivals from "../components/landing/NewArrivals";
 import WhyCustomersChooseUs from "../components/landing/WhyCustomersChooseUs";
@@ -110,6 +111,7 @@ const Home: NextPage<HomeProps> = ({
       </Head>
       <section className="max-w-7xl mx-auto mt-5 px-5 sm:px-6 lg:px-8 py-20 sm:py-24 lg:py-24 font-roboto min-h-screen">
         <ShiftIntoYourCloset />
+        <ShopNow />
         <StaffPicks
           featuredShoes={featuredShoes}
           featuredApparels={featuredApparels}

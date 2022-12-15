@@ -27,14 +27,14 @@ function StaffPicksCard({
   href,
   typeName,
 }: StaffPicksCardProps) {
-  const updatedTypeName = typeName?.toLowerCase();
+  const uppercaseTypeName = typeName?.toLowerCase();
 
   return (
     <>
       <Link
         key={href}
-        as={`/${updatedTypeName}/${href}`}
-        href={`/${updatedTypeName}/${href}`}
+        as={`/${uppercaseTypeName}/${href}`}
+        href={`/${uppercaseTypeName}/${href}`}
       >
         <div className="relative overflow-hidden rounded-sm">
           <div className="h-80 relative">

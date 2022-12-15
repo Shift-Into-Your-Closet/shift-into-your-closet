@@ -46,10 +46,10 @@ function NewArrivalCard({
   href,
   typeName,
 }: NewArrivalCardProps) {
-  const updatedTypeName = typeName?.toLowerCase();
+  const uppercaseTypeName = typeName?.toLowerCase();
   return (
     <>
-      <Link key={href} href={`/${updatedTypeName}/${href}`}>
+      <Link key={href} href={`/${uppercaseTypeName}/${href}`}>
         <div className="relative overflow-hidden rounded-sm">
           <div className="h-80 relative">
             <Image

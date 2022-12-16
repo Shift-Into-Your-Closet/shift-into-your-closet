@@ -130,7 +130,9 @@ const Shoes: NextPage<ShoeProps> = ({ shoes, brands }: ShoeProps) => {
                 })}
               </div>
             ) : (
-              <div className="text-sm">No shoes found.</div>
+              <div className="text-sm text-white">
+                No shoes found. Please check back as we get in new items weekly.
+              </div>
             )}
           </div>
         </div>

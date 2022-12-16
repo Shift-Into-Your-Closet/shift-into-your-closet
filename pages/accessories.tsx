@@ -141,7 +141,10 @@ const Accessories: NextPage<ApparelProps> = ({
                 })}
               </div>
             ) : (
-              <div className="text-sm">No accessories found.</div>
+              <div className="text-sm text-white">
+                No accessories found. Please check back as we get in new items
+                weekly.
+              </div>
             )}
           </div>
         </div>

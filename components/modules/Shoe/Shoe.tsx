@@ -141,7 +141,7 @@ function Shoe({ shoe }: ShoeProps) {
                       <div key={image} className={s.imageContainer}>
                         <SwiperSlide key={index}>
                           <Image
-                            className="bg-cover"
+                            className="aspect-square"
                             src={image ?? ""}
                             alt={image || "Shoe Image"}
                             height={600}

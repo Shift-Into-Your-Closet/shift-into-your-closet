@@ -141,7 +141,7 @@ function Accessory({ accessory }: AccessoryProps) {
                       <div key={image} className={s.imageContainer}>
                         <SwiperSlide key={index}>
                           <Image
-                            className="bg-cover"
+                            className="aspect-square"
                             src={image ?? ""}
                             alt={image || "Accessirt Image"}
                             height={600}

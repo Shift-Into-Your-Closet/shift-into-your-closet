@@ -141,7 +141,7 @@ function Apparel({ apparel }: ApparelProps) {
                       <div key={image} className={s.imageContainer}>
                         <SwiperSlide key={index}>
                           <Image
-                            className="bg-cover"
+                            className="aspect-square"
                             src={image ?? ""}
                             alt={image || "Apparel Image"}
                             height={600}

@@ -52,7 +52,7 @@ query newestShoes {
 }
 
 query featuredShoes {
-  allShoe(sort: { price: DESC }, limit: 6) {
+  allShoe(sort: { price: DESC }, limit: 7) {
     ...shoe
     price
   }

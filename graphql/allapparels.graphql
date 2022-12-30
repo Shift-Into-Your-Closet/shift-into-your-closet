@@ -58,7 +58,7 @@ query newestApparels {
 }
 
 query featuredApparels {
-  allApparel(sort: { price: DESC }, limit: 2) {
+  allApparel(sort: { price: DESC }, limit: 3) {
     ...apparel
     price
   }

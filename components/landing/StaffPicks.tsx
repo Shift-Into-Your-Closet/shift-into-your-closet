@@ -72,7 +72,7 @@ interface StaffPicksProps {
   hasShowMore?: boolean;
 }
 
-function OurServices({
+function StaffPicks({
   hasShowMore = false,
   featuredShoes,
   featuredApparels,
@@ -139,4 +139,4 @@ function OurServices({
   );
 }
 
-export default OurServices;
+export default StaffPicks;

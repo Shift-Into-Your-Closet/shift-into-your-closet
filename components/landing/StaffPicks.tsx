@@ -6,7 +6,6 @@ import Link from "next/link";
 import cn from "clsx";
 
 import {
-  FeaturedAccessoriesQuery,
   FeaturedApparelsQuery,
   FeaturedShoesQuery,
 } from "../../graphql-operations";
@@ -68,7 +67,6 @@ function StaffPicksCard({
 interface StaffPicksProps {
   featuredShoes: FeaturedShoesQuery["allShoe"];
   featuredApparels: FeaturedApparelsQuery["allApparel"];
-  featuredAccessories: FeaturedAccessoriesQuery["allAccessory"];
   hasShowMore?: boolean;
 }
 
@@ -76,13 +74,8 @@ function StaffPicks({
   hasShowMore = false,
   featuredShoes,
   featuredApparels,
-  featuredAccessories,
 }: StaffPicksProps) {
-  const staffPicks = [
-    ...featuredShoes,
-    ...featuredApparels,
-    ...featuredAccessories,
-  ];
+  const staffPicks = [...featuredShoes, ...featuredApparels];
 
   const [showMore, setShowMore] = useState(!hasShowMore);
   return (

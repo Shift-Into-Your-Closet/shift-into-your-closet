@@ -73,6 +73,15 @@ query allApparelCategories {
   }
 }
 
+query allApparelBrands {
+  allApparelBrand {
+    name
+    slug {
+      current
+    }
+  }
+}
+
 query allApparelSizes {
   allApparel {
     size {

@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import { NextPage, GetStaticProps } from "next";
 import { useRouter } from "next/router";
 import Head from "next/head";
@@ -8,27 +8,40 @@ import Image from "next/image";
 import cn from "clsx";
 import client from "./../apollo-client";
 import {
-  AllApparelCategoriesDocument,
-  AllApparelCategoriesQuery,
+  AllApparelBrandsDocument,
+  AllApparelBrandsQuery,
   AllApparelsDocument,
   AllApparelsQuery,
 } from "./../graphql-operations";
 
+import { Combobox } from "@headlessui/react";
+
 type ApparelProps = {
   apparels: AllApparelsQuery["allApparel"];
-  categories: AllApparelCategoriesQuery["allApparelCategory"];
+  brands: AllApparelBrandsQuery["allApparelBrand"];
 };
 
-export const getStaticProps: GetStaticProps<ApparelProps> = async () => {
-  const [{ data: apparelData }, { data: apparelCategoryData }] =
-    await Promise.all([
+export const getStaticProps: GetStaticProps<ApparelProps> = async (context) => {
+  const { params = {} } = context;
+  const page = Number(params.page) || 1;
+  const perPage = Number(params.perPage) || 9;
+  const offset = (page - 1) * perPage;
+  const limit = perPage;
+
+  const [{ data: apparelData }, { data: apparelBrandData }] = await Promise.all(
+    [
       client.query<AllApparelsQuery>({
         query: AllApparelsDocument,
+        variables: {
+          offset,
+          limit,
+        },
       }),
-      client.query<AllApparelCategoriesQuery>({
-        query: AllApparelCategoriesDocument,
+      client.query<AllApparelBrandsQuery>({
+        query: AllApparelBrandsDocument,
       }),
-    ]);
+    ]
+  );
 
   const copy = [...(apparelData?.allApparel ?? [])];
   return {
@@ -36,7 +49,7 @@ export const getStaticProps: GetStaticProps<ApparelProps> = async () => {
       apparels: copy.sort((a, b) =>
         (a.category?.name || "").localeCompare(b.category?.name || "")
       ),
-      categories: apparelCategoryData?.allApparelCategory ?? [],
+      brands: apparelBrandData?.allApparelBrand ?? [],
     },
     revalidate: 200,
   };
@@ -44,18 +57,58 @@ export const getStaticProps: GetStaticProps<ApparelProps> = async () => {
 
 const Apparel: NextPage<ApparelProps> = ({
   apparels,
-  categories,
+  brands,
 }: ApparelProps) => {
+  const [selectedApparel, setSelectedApparel] = useState("");
+  const [query, setQuery] = useState("");
+
   const router = useRouter();
-  const { category: activeCategory } = router.query;
+  const activeBrand = router.query.brand || "";
+  const page = Number(router.query.page) || 1;
+  const perPage = Number(router.query.perPage) || 9;
+  const offset = (page - 1) * perPage;
+  const limit = perPage;
+
+  const autocompleteApparel =
+    query === ""
+      ? apparels
+      : apparels.filter((apparel) => {
+          return apparel.name?.toLowerCase().includes(query.toLowerCase());
+        });
 
   const filteredApparel = useMemo(() => {
-    return activeCategory
-      ? apparels.filter(
-          (apparel) => apparel.category?.slug?.current === activeCategory
+    const brandApparel = activeBrand
+      ? autocompleteApparel.filter((apparel) =>
+          apparel.brand?.some((brand) => brand?.slug?.current === activeBrand)
         )
-      : apparels;
-  }, [activeCategory, apparels]);
+      : autocompleteApparel;
+    return brandApparel.slice(offset, offset + limit);
+  }, [activeBrand, autocompleteApparel, offset, limit]);
+
+  const brandApparel = activeBrand
+    ? apparels.filter((apparel) =>
+        apparel.brand?.some((brand) => brand?.slug?.current === activeBrand)
+      )
+    : apparels;
+
+  const brandPages = Math.ceil(brandApparel.length / perPage);
+
+  const prevPage = page - 1;
+  const nextPage = page + 1;
+
+  const prevLink =
+    prevPage > 0
+      ? `/shoes?page=${prevPage}&perPage=${perPage}${
+          activeBrand ? `&category=${activeBrand}` : ""
+        }`
+      : null;
+
+  const nextLink =
+    nextPage <= brandPages
+      ? `/shoes?page=${nextPage}&perPage=${perPage}${
+          activeBrand ? `&category=${activeBrand}` : ""
+        }`
+      : null;
 
   return (
     <>
@@ -71,25 +124,45 @@ const Apparel: NextPage<ApparelProps> = ({
         id="apparel"
         className="max-w-7xl mx-auto px-5 sm:px-6 lg:px-8 py-20 sm:py-24 lg:py-24 animate-fade-in-up min-h-screen"
       >
+        <Combobox
+          as="div"
+          value={selectedApparel}
+          onChange={setSelectedApparel}
+          className="w-full"
+          aria-label="Search Apparel"
+        >
+          <Combobox.Input
+            placeholder="Search Apparel"
+            className="w-full border border-accent-4 rounded-sm p-2 text-black bg-gray-200"
+            onChange={(event) => setQuery(event.target.value)}
+          />
+          {filteredApparel.length > 0 && (
+            <Combobox.Options>
+              {autocompleteApparel.map((apparel) => (
+                <Combobox.Option key={apparel.name} value={apparel.name} />
+              ))}
+            </Combobox.Options>
+          )}
+        </Combobox>
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 mt-3 mb-20">
           <div className="col-span-8 lg:col-span-2">
             <Link href="/apparel">
               <button className="block leading-5 text-white no-underline font-bold tracking-wide hover:text-blue-400 hover:bg-accent-1 hover:bg-transparent hover:text-accent-8 focus:outline-none focus:bg-accent-1 focus:text-accent-8 mb-4">
-                All Categories
+                All Brands
               </button>
             </Link>
-            {categories?.map((category) => (
+            {brands?.map((brand) => (
               <Link
-                key={category.slug?.current}
-                href={`/apparel?category=${category?.slug?.current}`}
+                key={brand.slug?.current}
+                href={`/apparel?brand=${brand?.slug?.current}`}
               >
                 <button
                   className={cn(
                     "block text-sm leading-5 text-white hover:text-blue-400 hover:bg-accent-1 hover:bg-transparent hover:text-accent-8 focus:outline-none focus:bg-accent-1 focus:text-accent-8 mb-2",
-                    { underline: activeCategory === category.slug?.current }
+                    { underline: activeBrand === brand.slug?.current }
                   )}
                 >
-                  {category.name}
+                  {brand.name}
                 </button>
               </Link>
             ))}
@@ -144,6 +217,31 @@ const Apparel: NextPage<ApparelProps> = ({
               </div>
             )}
           </div>
+        </div>
+        <div className="flex justify-evenly gap-x-12">
+          {filteredApparel.length > 0 && (
+            <div className="flex mt-12 mb-4 text-white">
+              {prevLink && (
+                <Link
+                  href={prevLink}
+                  className="block py-4 px-4 ml-auto text-base font-semibold text-white hover:text-accent-4 tracking-wide transition-all duration-200 rounded-md"
+                >
+                  Previous
+                </Link>
+              )}
+              <p className="m-4">
+                Page {page} of {brandPages}
+              </p>
+              {nextLink && (
+                <Link
+                  href={nextLink}
+                  className="block py-4 px-4 ml-auto text-base font-semibold text-white hover:text-accent-4 tracking-wide transition-all duration-200 rounded-md"
+                >
+                  Next
+                </Link>
+              )}
+            </div>
+          )}
         </div>
       </section>
     </>

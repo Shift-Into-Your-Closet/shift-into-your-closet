@@ -4,14 +4,11 @@ import type { NextPage } from "next";
 import Head from "next/head";
 import client from "../apollo-client";
 
-import ShopNow from "../components/landing/ShopNow";
 import StaffPicks from "../components/landing/StaffPicks";
 import NewArrivals from "../components/landing/NewArrivals";
 import WhyCustomersChooseUs from "../components/landing/WhyCustomersChooseUs";
 
 import {
-  FeaturedAccessoriesQuery,
-  FeaturedAccessoriesDocument,
   FeaturedApparelsQuery,
   FeaturedApparelsDocument,
   FeaturedShoesQuery,
@@ -25,7 +22,6 @@ import {
 } from "../graphql-operations";
 
 type HomeProps = {
-  featuredAccessories: FeaturedAccessoriesQuery["allAccessory"];
   featuredApparels: FeaturedApparelsQuery["allApparel"];
   featuredShoes: FeaturedShoesQuery["allShoe"];
   newestAccessories: NewestAccessoriesQuery["allAccessory"];
@@ -35,16 +31,12 @@ type HomeProps = {
 
 export async function getStaticProps() {
   const [
-    { data: featuredAccessoriesData },
     { data: featuredApparelsData },
     { data: featuredShoesData },
     { data: newestAccessoriesData },
     { data: newestApparelData },
     { data: newestShoesData },
   ] = await Promise.all([
-    client.query<FeaturedAccessoriesQuery>({
-      query: FeaturedAccessoriesDocument,
-    }),
     client.query<FeaturedApparelsQuery>({
       query: FeaturedApparelsDocument,
     }),
@@ -64,7 +56,6 @@ export async function getStaticProps() {
 
   return {
     props: {
-      featuredAccessories: featuredAccessoriesData?.allAccessory ?? [],
       featuredApparels: featuredApparelsData?.allApparel ?? [],
       featuredShoes: featuredShoesData?.allShoe ?? [],
       newestAccessories: newestAccessoriesData?.allAccessory ?? [],
@@ -92,7 +83,6 @@ const ShiftIntoYourCloset = () => {
 };
 
 const Home: NextPage<HomeProps> = ({
-  featuredAccessories,
   featuredApparels,
   featuredShoes,
   newestAccessories,
@@ -111,11 +101,9 @@ const Home: NextPage<HomeProps> = ({
       </Head>
       <section className="max-w-7xl mx-auto mt-5 px-5 sm:px-6 lg:px-8 py-20 sm:py-24 lg:py-24 font-roboto min-h-screen">
         <ShiftIntoYourCloset />
-        <ShopNow />
         <StaffPicks
           featuredShoes={featuredShoes}
           featuredApparels={featuredApparels}
-          featuredAccessories={featuredAccessories}
           hasShowMore={true}
         />
         <NewArrivals

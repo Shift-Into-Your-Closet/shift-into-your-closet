@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import { NextPage, GetStaticProps } from "next";
 import { useRouter } from "next/router";
 import Head from "next/head";
@@ -8,25 +8,37 @@ import Image from "next/image";
 import cn from "clsx";
 import client from "./../apollo-client";
 import {
-  AllAccessoryCategoriesDocument,
-  AllAccessoryCategoriesQuery,
+  AllAccessoryBrandsDocument,
+  AllAccessoryBrandsQuery,
   AllAccessoryDocument,
   AllAccessoryQuery,
 } from "./../graphql-operations";
 
+import { Combobox } from "@headlessui/react";
+
 type ApparelProps = {
   accessories: AllAccessoryQuery["allAccessory"];
-  categories: AllAccessoryCategoriesQuery["allAccessoryCategory"];
+  brands: AllAccessoryBrandsQuery["allAccessoryBrand"];
 };
 
-export const getStaticProps: GetStaticProps<ApparelProps> = async () => {
-  const [{ data: accessoriesData }, { data: accessoriesCategoryData }] =
+export const getStaticProps: GetStaticProps<ApparelProps> = async (context) => {
+  const { params = {} } = context;
+  const page = Number(params.page) || 1;
+  const perPage = Number(params.perPage) || 9;
+  const offset = (page - 1) * perPage;
+  const limit = perPage;
+
+  const [{ data: accessoriesData }, { data: accessoriesBrandData }] =
     await Promise.all([
       client.query<AllAccessoryQuery>({
         query: AllAccessoryDocument,
+        variables: {
+          offset,
+          limit,
+        },
       }),
-      client.query<AllAccessoryCategoriesQuery>({
-        query: AllAccessoryCategoriesDocument,
+      client.query<AllAccessoryBrandsQuery>({
+        query: AllAccessoryBrandsDocument,
       }),
     ]);
 
@@ -36,7 +48,7 @@ export const getStaticProps: GetStaticProps<ApparelProps> = async () => {
       accessories: copy.sort((a, b) =>
         (a.category?.name || "").localeCompare(b.category?.name || "")
       ),
-      categories: accessoriesCategoryData?.allAccessoryCategory ?? [],
+      brands: accessoriesBrandData?.allAccessoryBrand ?? [],
     },
     revalidate: 200,
   };
@@ -44,18 +56,58 @@ export const getStaticProps: GetStaticProps<ApparelProps> = async () => {
 
 const Accessories: NextPage<ApparelProps> = ({
   accessories,
-  categories,
+  brands,
 }: ApparelProps) => {
+  const [selectedAccessory, setSelectedAccessory] = useState("");
+  const [query, setQuery] = useState("");
+
   const router = useRouter();
-  const { category: activeCategory } = router.query;
+  const activeBrand = router.query.brand || "";
+  const page = Number(router.query.page) || 1;
+  const perPage = Number(router.query.perPage) || 9;
+  const offset = (page - 1) * perPage;
+  const limit = perPage;
+
+  const autocompleteAccessories =
+    query === ""
+      ? accessories
+      : accessories.filter((accessory) => {
+          return accessory.name?.toLowerCase().includes(query.toLowerCase());
+        });
 
   const filteredAccessories = useMemo(() => {
-    return activeCategory
-      ? accessories.filter(
-          (accessory) => accessory.category?.slug?.current === activeCategory
+    const brandAccessories = activeBrand
+      ? autocompleteAccessories.filter((accessory) =>
+          accessory.brand?.some((brand) => brand?.slug?.current === activeBrand)
         )
-      : accessories;
-  }, [activeCategory, accessories]);
+      : autocompleteAccessories;
+    return brandAccessories.slice(offset, offset + limit);
+  }, [activeBrand, autocompleteAccessories, offset, limit]);
+
+  const brandAccessories = activeBrand
+    ? accessories.filter((accessory) =>
+        accessory.brand?.some((brand) => brand?.slug?.current === activeBrand)
+      )
+    : accessories;
+
+  const brandPages = Math.ceil(brandAccessories.length / perPage);
+
+  const prevPage = page - 1;
+  const nextPage = page + 1;
+
+  const prevLink =
+    prevPage > 0
+      ? `/accessories?page=${prevPage}&perPage=${perPage}${
+          activeBrand ? `&category=${activeBrand}` : ""
+        }`
+      : null;
+
+  const nextLink =
+    nextPage <= brandPages
+      ? `/accessories?page=${nextPage}&perPage=${perPage}${
+          activeBrand ? `&category=${activeBrand}` : ""
+        }`
+      : null;
 
   return (
     <>
@@ -74,25 +126,45 @@ const Accessories: NextPage<ApparelProps> = ({
         id="accessories"
         className="max-w-7xl mx-auto px-5 sm:px-6 lg:px-8 py-20 sm:py-24 lg:py-24 animate-fade-in-up min-h-screen"
       >
+        <Combobox
+          as="div"
+          value={selectedAccessory}
+          onChange={setSelectedAccessory}
+          className="w-full"
+          aria-label="Search Accessories"
+        >
+          <Combobox.Input
+            placeholder="Search Accessories"
+            className="w-full border border-accent-4 rounded-sm p-2 text-black bg-gray-200"
+            onChange={(event) => setQuery(event.target.value)}
+          />
+          {filteredAccessories.length > 0 && (
+            <Combobox.Options>
+              {autocompleteAccessories.map((accessory) => (
+                <Combobox.Option key={accessory.name} value={accessory.name} />
+              ))}
+            </Combobox.Options>
+          )}
+        </Combobox>
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 mt-3 mb-20">
           <div className="col-span-8 lg:col-span-2">
             <Link href="/accessories">
               <button className="block leading-5 text-white no-underline font-bold tracking-wide hover:text-blue-400 hover:bg-accent-1 hover:bg-transparent hover:text-accent-8 focus:outline-none focus:bg-accent-1 focus:text-accent-8 mb-4">
-                All Categories
+                All Brands
               </button>
             </Link>
-            {categories?.map((category) => (
+            {brands?.map((brand) => (
               <Link
-                key={category.slug?.current}
-                href={`/accessories?category=${category?.slug?.current}`}
+                key={brand.slug?.current}
+                href={`/accessories?brand=${brand?.slug?.current}`}
               >
                 <button
                   className={cn(
                     "block text-sm leading-5 text-white hover:text-blue-400 hover:bg-accent-1 hover:bg-transparent hover:text-accent-8 focus:outline-none focus:bg-accent-1 focus:text-accent-8  mb-2",
-                    { underline: activeCategory === category.slug?.current }
+                    { underline: activeBrand === brand.slug?.current }
                   )}
                 >
-                  {category.name}
+                  {brand.name}
                 </button>
               </Link>
             ))}

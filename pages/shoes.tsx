@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import { NextPage, GetStaticProps } from "next";
 import { useRouter } from "next/router";
 import Head from "next/head";
@@ -14,15 +14,27 @@ import {
   AllShoesQuery,
 } from "./../graphql-operations";
 
+import { Combobox } from "@headlessui/react";
+
 type ShoeProps = {
   shoes: AllShoesQuery["allShoe"];
   brands: AllShoeBrandsQuery["allShoeBrand"];
 };
 
-export const getStaticProps: GetStaticProps<ShoeProps> = async () => {
+export const getStaticProps: GetStaticProps<ShoeProps> = async (context) => {
+  const { params = {} } = context;
+  const page = Number(params.page) || 1;
+  const perPage = Number(params.perPage) || 9;
+  const offset = (page - 1) * perPage;
+  const limit = perPage;
+
   const [{ data: shoeData }, { data: shoeBrandData }] = await Promise.all([
     client.query<AllShoesQuery>({
       query: AllShoesDocument,
+      variables: {
+        offset,
+        limit,
+      },
     }),
     client.query<AllShoeBrandsQuery>({
       query: AllShoeBrandsDocument,
@@ -40,15 +52,56 @@ export const getStaticProps: GetStaticProps<ShoeProps> = async () => {
 };
 
 const Shoes: NextPage<ShoeProps> = ({ shoes, brands }: ShoeProps) => {
+  const [selectedShoe, setSelectedShoe] = useState("");
+  const [query, setQuery] = useState("");
+
   const router = useRouter();
-  const { brand: activeBrand } = router.query;
+  const activeBrand = router.query.brand || "";
+  const page = Number(router.query.page) || 1;
+  const perPage = Number(router.query.perPage) || 9;
+  const offset = (page - 1) * perPage;
+  const limit = perPage;
+
+  const autocompleteShoes =
+    query === ""
+      ? shoes
+      : shoes.filter((shoe) => {
+          return shoe.name?.toLowerCase().includes(query.toLowerCase());
+        });
+
   const filteredShoes = useMemo(() => {
-    return activeBrand
-      ? shoes.filter((shoe) =>
+    const brandShoes = activeBrand
+      ? autocompleteShoes.filter((shoe) =>
           shoe.brand?.some((brand) => brand?.slug?.current === activeBrand)
         )
-      : shoes;
-  }, [activeBrand, shoes]);
+      : autocompleteShoes;
+    return brandShoes.slice(offset, offset + limit);
+  }, [activeBrand, autocompleteShoes, offset, limit]);
+
+  const brandShoes = activeBrand
+    ? shoes.filter((shoe) =>
+        shoe.brand?.some((brand) => brand?.slug?.current === activeBrand)
+      )
+    : shoes;
+
+  const brandPages = Math.ceil(brandShoes.length / perPage);
+
+  const prevPage = page - 1;
+  const nextPage = page + 1;
+
+  const prevLink =
+    prevPage > 0
+      ? `/shoes?page=${prevPage}&perPage=${perPage}${
+          activeBrand ? `&category=${activeBrand}` : ""
+        }`
+      : null;
+
+  const nextLink =
+    nextPage <= brandPages
+      ? `/shoes?page=${nextPage}&perPage=${perPage}${
+          activeBrand ? `&category=${activeBrand}` : ""
+        }`
+      : null;
 
   return (
     <>
@@ -64,6 +117,26 @@ const Shoes: NextPage<ShoeProps> = ({ shoes, brands }: ShoeProps) => {
         id="shoes"
         className="max-w-7xl mx-auto px-5 sm:px-6 lg:px-8 py-20 sm:py-24 lg:py-24 animate-fade-in-up min-h-screen"
       >
+        <Combobox
+          as="div"
+          value={selectedShoe}
+          onChange={setSelectedShoe}
+          className="w-full"
+          aria-label="Search Shoes"
+        >
+          <Combobox.Input
+            placeholder="Search Shoes"
+            className="w-full border border-accent-4 rounded-sm p-2 text-black bg-gray-200"
+            onChange={(event) => setQuery(event.target.value)}
+          />
+          {filteredShoes.length > 0 && (
+            <Combobox.Options>
+              {autocompleteShoes.map((shoe) => (
+                <Combobox.Option key={shoe.name} value={shoe.name} />
+              ))}
+            </Combobox.Options>
+          )}
+        </Combobox>
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 mt-3 mb-20">
           <div className="col-span-8 lg:col-span-2">
             <Link href="/shoes">
@@ -135,6 +208,31 @@ const Shoes: NextPage<ShoeProps> = ({ shoes, brands }: ShoeProps) => {
               </div>
             )}
           </div>
+        </div>
+        <div className="flex justify-evenly gap-x-12">
+          {filteredShoes.length > 0 && (
+            <div className="flex mt-12 mb-4 text-white">
+              {prevLink && (
+                <Link
+                  href={prevLink}
+                  className="block py-4 px-4 ml-auto text-base font-semibold text-white hover:text-accent-4 tracking-wide transition-all duration-200 rounded-md"
+                >
+                  Previous
+                </Link>
+              )}
+              <p className="m-4">
+                Page {page} of {brandPages}
+              </p>
+              {nextLink && (
+                <Link
+                  href={nextLink}
+                  className="block py-4 px-4 ml-auto text-base font-semibold text-white hover:text-accent-4 tracking-wide transition-all duration-200 rounded-md"
+                >
+                  Next
+                </Link>
+              )}
+            </div>
+          )}
         </div>
       </section>
     </>

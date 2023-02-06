@@ -54,6 +54,16 @@ query newestAccessories {
   }
 }
 
+query allAccessoryBrands {
+  allAccessoryBrand {
+    name
+    slug {
+      current
+    }
+  }
+}
+
+
 query allAccessoryCategories {
   allAccessoryCategory {
     name

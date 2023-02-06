@@ -42,10 +42,13 @@ export const getStaticProps: GetStaticProps<ShoeProps> = async (context) => {
   ]);
 
   const copy = [...(shoeData?.allShoe ?? [])];
+  const sortedBrands = [...(shoeBrandData?.allShoeBrand || [])].sort((a, b) =>
+    (a.name || "").localeCompare(b.name || "")
+  );
   return {
     props: {
       shoes: copy.sort((a, b) => (a.name || "").localeCompare(b.name || "")),
-      brands: shoeBrandData?.allShoeBrand ?? [],
+      brands: sortedBrands,
     },
     revalidate: 200,
   };

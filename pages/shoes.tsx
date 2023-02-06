@@ -24,7 +24,7 @@ type ShoeProps = {
 export const getStaticProps: GetStaticProps<ShoeProps> = async (context) => {
   const { params = {} } = context;
   const page = Number(params.page) || 1;
-  const perPage = Number(params.perPage) || 9;
+  const perPage = Number(params.perPage) || 12;
   const offset = (page - 1) * perPage;
   const limit = perPage;
 
@@ -45,6 +45,7 @@ export const getStaticProps: GetStaticProps<ShoeProps> = async (context) => {
   const sortedBrands = [...(shoeBrandData?.allShoeBrand || [])].sort((a, b) =>
     (a.name || "").localeCompare(b.name || "")
   );
+
   return {
     props: {
       shoes: copy.sort((a, b) => (a.name || "").localeCompare(b.name || "")),
@@ -55,13 +56,18 @@ export const getStaticProps: GetStaticProps<ShoeProps> = async (context) => {
 };
 
 const Shoes: NextPage<ShoeProps> = ({ shoes, brands }: ShoeProps) => {
-  const [selectedShoe, setSelectedShoe] = useState("");
+  const [selectedApparel, setSelectedApparel] = useState("");
   const [query, setQuery] = useState("");
+  const [sortPrice, setSortPrice] = useState("");
+
+  const handleSortOrder = () => {
+    setSortPrice(sortPrice === "asc" ? "desc" : "asc");
+  };
 
   const router = useRouter();
   const activeBrand = router.query.brand || "";
   const page = Number(router.query.page) || 1;
-  const perPage = Number(router.query.perPage) || 9;
+  const perPage = Number(router.query.perPage) || 12;
   const offset = (page - 1) * perPage;
   const limit = perPage;
 
@@ -73,13 +79,19 @@ const Shoes: NextPage<ShoeProps> = ({ shoes, brands }: ShoeProps) => {
         });
 
   const filteredShoes = useMemo(() => {
-    const brandShoes = activeBrand
+    let brandShoes = activeBrand
       ? autocompleteShoes.filter((shoe) =>
           shoe.brand?.some((brand) => brand?.slug?.current === activeBrand)
         )
       : autocompleteShoes;
+    brandShoes.sort((a, b) => {
+      if (sortPrice === "asc") {
+        return (a.price || 0) - (b.price || 0);
+      }
+      return (b.price || 0) - (a.price || 0);
+    });
     return brandShoes.slice(offset, offset + limit);
-  }, [activeBrand, autocompleteShoes, offset, limit]);
+  }, [activeBrand, autocompleteShoes, offset, limit, sortPrice]);
 
   const brandShoes = activeBrand
     ? shoes.filter((shoe) =>
@@ -94,14 +106,14 @@ const Shoes: NextPage<ShoeProps> = ({ shoes, brands }: ShoeProps) => {
 
   const prevLink =
     prevPage > 0
-      ? `/shoes?page=${prevPage}&perPage=${perPage}${
+      ? `/apparel?page=${prevPage}&perPage=${perPage}${
           activeBrand ? `&category=${activeBrand}` : ""
         }`
       : null;
 
   const nextLink =
     nextPage <= brandPages
-      ? `/shoes?page=${nextPage}&perPage=${perPage}${
+      ? `/apparel?page=${nextPage}&perPage=${perPage}${
           activeBrand ? `&category=${activeBrand}` : ""
         }`
       : null;
@@ -112,7 +124,7 @@ const Shoes: NextPage<ShoeProps> = ({ shoes, brands }: ShoeProps) => {
         <title>Shoes | Shift Into Your Closet</title>
         <link rel="apple-touch-icon" href="/path/to/apple-touch-icon.png" />
         <meta name="theme-color" content="#60A5FA" />
-        <meta name="description" content="shoes at Shift Into Your Closet" />
+        <meta name="description" content="Shoes at Shift Into Your Closet" />
         <meta name="keywords" content="shoes, shift into your closet" />
         <meta name="viewport" content="width=device-width" />
       </Head>
@@ -122,13 +134,13 @@ const Shoes: NextPage<ShoeProps> = ({ shoes, brands }: ShoeProps) => {
       >
         <Combobox
           as="div"
-          value={selectedShoe}
-          onChange={setSelectedShoe}
+          value={selectedApparel}
+          onChange={setSelectedApparel}
           className="w-full"
-          aria-label="Search Shoes"
+          aria-label="Search Apparel"
         >
           <Combobox.Input
-            placeholder="Search Shoes"
+            placeholder="Search Apparel"
             className="w-full border border-accent-4 rounded-sm p-2 text-black bg-gray-200"
             onChange={(event) => setQuery(event.target.value)}
           />
@@ -154,7 +166,7 @@ const Shoes: NextPage<ShoeProps> = ({ shoes, brands }: ShoeProps) => {
               >
                 <button
                   className={cn(
-                    "block text-sm leading-5 text-white hover:text-blue-400 hover:bg-accent-1 hover:bg-transparent hover:text-accent-8 focus:outline-none focus:bg-accent-1 focus:text-accent-8  mb-2",
+                    "block text-sm leading-5 text-white hover:text-blue-400 hover:bg-accent-1 hover:bg-transparent hover:text-accent-8 focus:outline-none focus:bg-accent-1 focus:text-accent-8 mb-2",
                     { underline: activeBrand === brand.slug?.current }
                   )}
                 >
@@ -163,7 +175,8 @@ const Shoes: NextPage<ShoeProps> = ({ shoes, brands }: ShoeProps) => {
               </Link>
             ))}
           </div>
-          <div className="col-span-12 lg:col-span-10">
+
+          <div className="col-span-10 lg:col-span-8">
             {filteredShoes.length > 0 ? (
               <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 animate-fade-in-up">
                 {filteredShoes.map((shoe) => {
@@ -179,10 +192,11 @@ const Shoes: NextPage<ShoeProps> = ({ shoes, brands }: ShoeProps) => {
                               src={shoe.mainImage.asset.url}
                               alt={`Image for ${shoe.name}`}
                               className="object-cover"
+                              priority={true}
                               fill
                               sizes="(max-width: 768px) 100vw,
-                          (max-width: 1200px) 50vw,
-                          33vw"
+                            (max-width: 1200px) 50vw,
+                            33vw"
                             />
                           )}
                         </div>
@@ -210,6 +224,20 @@ const Shoes: NextPage<ShoeProps> = ({ shoes, brands }: ShoeProps) => {
                 No shoes found. Please check back as we get in new items weekly.
               </div>
             )}
+          </div>
+          <div className="col-span-8 lg:col-span-2">
+            <button
+              className="block leading-5 text-white no-underline font-bold tracking-wide hover:text-blue-400 hover:bg-accent-1 hover:bg-transparent hover:text-accent-8 focus:outline-none focus:bg-accent-1 focus:text-accent-8 mb-4"
+              onClick={handleSortOrder}
+            >
+              Price: Low to High {sortPrice === "asc"}
+            </button>
+            <button
+              className="block leading-5 text-white no-underline font-bold tracking-wide hover:text-blue-400 hover:bg-accent-1 hover:bg-transparent hover:text-accent-8 focus:outline-none focus:bg-accent-1 focus:text-accent-8 mb-4"
+              onClick={handleSortOrder}
+            >
+              Price: High to Low{sortPrice === "desc"}
+            </button>
           </div>
         </div>
         <div className="flex justify-evenly gap-x-12">

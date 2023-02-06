@@ -24,7 +24,7 @@ type ApparelProps = {
 export const getStaticProps: GetStaticProps<ApparelProps> = async (context) => {
   const { params = {} } = context;
   const page = Number(params.page) || 1;
-  const perPage = Number(params.perPage) || 9;
+  const perPage = Number(params.perPage) || 12;
   const offset = (page - 1) * perPage;
   const limit = perPage;
 
@@ -55,7 +55,6 @@ export const getStaticProps: GetStaticProps<ApparelProps> = async (context) => {
     },
     revalidate: 200,
   };
-
 };
 
 const Apparel: NextPage<ApparelProps> = ({
@@ -64,11 +63,16 @@ const Apparel: NextPage<ApparelProps> = ({
 }: ApparelProps) => {
   const [selectedApparel, setSelectedApparel] = useState("");
   const [query, setQuery] = useState("");
+  const [sortPrice, setSortPrice] = useState("");
+
+  const handleSortOrder = () => {
+    setSortPrice(sortPrice === "asc" ? "desc" : "asc");
+  };
 
   const router = useRouter();
   const activeBrand = router.query.brand || "";
   const page = Number(router.query.page) || 1;
-  const perPage = Number(router.query.perPage) || 9;
+  const perPage = Number(router.query.perPage) || 12;
   const offset = (page - 1) * perPage;
   const limit = perPage;
 
@@ -80,13 +84,19 @@ const Apparel: NextPage<ApparelProps> = ({
         });
 
   const filteredApparel = useMemo(() => {
-    const brandApparel = activeBrand
+    let brandApparel = activeBrand
       ? autocompleteApparel.filter((apparel) =>
           apparel.brand?.some((brand) => brand?.slug?.current === activeBrand)
         )
       : autocompleteApparel;
+    brandApparel.sort((a, b) => {
+      if (sortPrice === "asc") {
+        return (a.price || 0) - (b.price || 0);
+      }
+      return (b.price || 0) - (a.price || 0);
+    });
     return brandApparel.slice(offset, offset + limit);
-  }, [activeBrand, autocompleteApparel, offset, limit]);
+  }, [activeBrand, autocompleteApparel, offset, limit, sortPrice]);
 
   const brandApparel = activeBrand
     ? apparels.filter((apparel) =>
@@ -170,7 +180,8 @@ const Apparel: NextPage<ApparelProps> = ({
               </Link>
             ))}
           </div>
-          <div className="col-span-12 lg:col-span-10">
+
+          <div className="col-span-10 lg:col-span-8">
             {filteredApparel.length > 0 ? (
               <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 animate-fade-in-up">
                 {filteredApparel.map((apparel) => {
@@ -219,6 +230,20 @@ const Apparel: NextPage<ApparelProps> = ({
                 weekly.
               </div>
             )}
+          </div>
+          <div className="col-span-8 lg:col-span-2">
+            <button
+              className="block leading-5 text-white no-underline font-bold tracking-wide hover:text-blue-400 hover:bg-accent-1 hover:bg-transparent hover:text-accent-8 focus:outline-none focus:bg-accent-1 focus:text-accent-8 mb-4"
+              onClick={handleSortOrder}
+            >
+              Price: Low to High {sortPrice === "asc"}
+            </button>
+            <button
+              className="block leading-5 text-white no-underline font-bold tracking-wide hover:text-blue-400 hover:bg-accent-1 hover:bg-transparent hover:text-accent-8 focus:outline-none focus:bg-accent-1 focus:text-accent-8 mb-4"
+              onClick={handleSortOrder}
+            >
+              Price: High to Low{sortPrice === "desc"}
+            </button>
           </div>
         </div>
         <div className="flex justify-evenly gap-x-12">

@@ -64,9 +64,14 @@ const Apparel: NextPage<ApparelProps> = ({
   const [selectedApparel, setSelectedApparel] = useState("");
   const [query, setQuery] = useState("");
   const [sortPrice, setSortPrice] = useState("");
+  const [condition, setCondition] = useState("");
 
   const handleSortOrder = () => {
     setSortPrice(sortPrice === "asc" ? "desc" : "asc");
+  };
+
+  const handleSelectedCondition = (selectedCondition: string) => {
+    setCondition(selectedCondition);
   };
 
   const router = useRouter();
@@ -89,6 +94,12 @@ const Apparel: NextPage<ApparelProps> = ({
           apparel.brand?.some((brand) => brand?.slug?.current === activeBrand)
         )
       : autocompleteApparel;
+
+    brandApparel = brandApparel.filter((apparel) => {
+      if (!condition) return true;
+      return apparel.condition === condition;
+    });
+
     brandApparel.sort((a, b) => {
       if (sortPrice === "asc") {
         return (a.price || 0) - (b.price || 0);
@@ -96,7 +107,7 @@ const Apparel: NextPage<ApparelProps> = ({
       return (b.price || 0) - (a.price || 0);
     });
     return brandApparel.slice(offset, offset + limit);
-  }, [activeBrand, autocompleteApparel, offset, limit, sortPrice]);
+  }, [activeBrand, autocompleteApparel, offset, limit, sortPrice, condition]);
 
   const brandApparel = activeBrand
     ? apparels.filter((apparel) =>
@@ -243,6 +254,24 @@ const Apparel: NextPage<ApparelProps> = ({
               onClick={handleSortOrder}
             >
               Price: High to Low{sortPrice === "desc"}
+            </button>
+            <button
+              className="block leading-5 text-white no-underline font-bold tracking-wide hover:text-blue-400 hover:bg-accent-1 hover:bg-transparent hover:text-accent-8 focus:outline-none focus:bg-accent-1 focus:text-accent-8 mb-4"
+              onClick={() => handleSelectedCondition("brand-new")}
+            >
+              Brand New
+            </button>
+            <button
+              className="block leading-5 text-white no-underline font-bold tracking-wide hover:text-blue-400 hover:bg-accent-1 hover:bg-transparent hover:text-accent-8 focus:outline-none focus:bg-accent-1 focus:text-accent-8 mb-4"
+              onClick={() => handleSelectedCondition("tried-on")}
+            >
+              Tried On
+            </button>
+            <button
+              className="block leading-5 text-white no-underline font-bold tracking-wide hover:text-blue-400 hover:bg-accent-1 hover:bg-transparent hover:text-accent-8 focus:outline-none focus:bg-accent-1 focus:text-accent-8 mb-4"
+              onClick={() => handleSelectedCondition("worn")}
+            >
+              Worn
             </button>
           </div>
         </div>

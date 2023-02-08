@@ -122,14 +122,14 @@ const Apparel: NextPage<ApparelProps> = ({
 
   const prevLink =
     prevPage > 0
-      ? `/shoes?page=${prevPage}&perPage=${perPage}${
+      ? `/apparel?page=${prevPage}&perPage=${perPage}${
           activeBrand ? `&category=${activeBrand}` : ""
         }`
       : null;
 
   const nextLink =
     nextPage <= brandPages
-      ? `/shoes?page=${nextPage}&perPage=${perPage}${
+      ? `/apparel?page=${nextPage}&perPage=${perPage}${
           activeBrand ? `&category=${activeBrand}` : ""
         }`
       : null;

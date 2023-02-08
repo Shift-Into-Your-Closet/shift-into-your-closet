@@ -118,14 +118,14 @@ const Shoes: NextPage<ShoeProps> = ({ shoes, brands }: ShoeProps) => {
 
   const prevLink =
     prevPage > 0
-      ? `/apparel?page=${prevPage}&perPage=${perPage}${
+      ? `/shoes?page=${prevPage}&perPage=${perPage}${
           activeBrand ? `&category=${activeBrand}` : ""
         }`
       : null;
 
   const nextLink =
     nextPage <= brandPages
-      ? `/apparel?page=${nextPage}&perPage=${perPage}${
+      ? `/shoes?page=${nextPage}&perPage=${perPage}${
           activeBrand ? `&category=${activeBrand}` : ""
         }`
       : null;

@@ -7,6 +7,7 @@ import client from "../apollo-client";
 import StaffPicks from "../components/landing/StaffPicks";
 import NewArrivals from "../components/landing/NewArrivals";
 import WhyCustomersChooseUs from "../components/landing/WhyCustomersChooseUs";
+import BackToTopButton from "../components/ui/BackToTopButton";
 
 import {
   FeaturedApparelsQuery,
@@ -112,6 +113,9 @@ const Home: NextPage<HomeProps> = ({
           newestAccessories={newestAccessories}
         />
         <WhyCustomersChooseUs />
+        <div className="flex justify-end">
+          <BackToTopButton />
+        </div>
       </section>
     </>
   );

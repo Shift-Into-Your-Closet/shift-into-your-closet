@@ -15,6 +15,7 @@ import {
 } from "./../graphql-operations";
 
 import { Combobox } from "@headlessui/react";
+import BackToTopButton from "../components/ui/BackToTopButton";
 
 type ShoeProps = {
   shoes: AllShoesQuery["allShoe"];
@@ -248,7 +249,7 @@ const Shoes: NextPage<ShoeProps> = ({ shoes, brands }: ShoeProps) => {
               className="block leading-5 text-white no-underline font-bold tracking-wide hover:text-blue-400 hover:bg-accent-1 hover:bg-transparent hover:text-accent-8 focus:outline-none focus:bg-accent-1 focus:text-accent-8 mb-4"
               onClick={handleSortOrder}
             >
-              Price: High to Low{sortPrice === "desc"}
+              Price: High to Low {sortPrice === "desc"}
             </button>
             <button
               className="block leading-5 text-white no-underline font-bold tracking-wide hover:text-blue-400 hover:bg-accent-1 hover:bg-transparent hover:text-accent-8 focus:outline-none focus:bg-accent-1 focus:text-accent-8 mb-4"
@@ -294,6 +295,9 @@ const Shoes: NextPage<ShoeProps> = ({ shoes, brands }: ShoeProps) => {
               )}
             </div>
           )}
+        </div>
+        <div className="flex justify-end">
+          <BackToTopButton />
         </div>
       </section>
     </>

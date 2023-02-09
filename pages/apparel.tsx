@@ -15,6 +15,7 @@ import {
 } from "./../graphql-operations";
 
 import { Combobox } from "@headlessui/react";
+import BackToTopButton from "../components/ui/BackToTopButton";
 
 type ApparelProps = {
   apparels: AllApparelsQuery["allApparel"];
@@ -299,6 +300,9 @@ const Apparel: NextPage<ApparelProps> = ({
               )}
             </div>
           )}
+        </div>
+        <div className="flex justify-end">
+          <BackToTopButton />
         </div>
       </section>
     </>

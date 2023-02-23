@@ -67,8 +67,8 @@ const Apparel: NextPage<ApparelProps> = ({
   const [sortPrice, setSortPrice] = useState("");
   const [condition, setCondition] = useState("");
 
-  const handleSortOrder = () => {
-    setSortPrice(sortPrice === "asc" ? "desc" : "asc");
+  const handleSortOrder = (order: string) => {
+    setSortPrice(order);
   };
 
   const handleSelectedCondition = (selectedCondition: string) => {
@@ -104,9 +104,12 @@ const Apparel: NextPage<ApparelProps> = ({
     brandApparel.sort((a, b) => {
       if (sortPrice === "asc") {
         return (a.price || 0) - (b.price || 0);
+      } else if (sortPrice === "desc") {
+        return (b.price || 0) - (a.price || 0);
       }
-      return (b.price || 0) - (a.price || 0);
+      return 0;
     });
+
     return brandApparel.slice(offset, offset + limit);
   }, [activeBrand, autocompleteApparel, offset, limit, sortPrice, condition]);
 
@@ -246,15 +249,15 @@ const Apparel: NextPage<ApparelProps> = ({
           <div className="col-span-8 lg:col-span-2">
             <button
               className="block leading-5 text-white no-underline font-bold tracking-wide hover:text-blue-400 hover:bg-accent-1 hover:bg-transparent hover:text-accent-8 focus:outline-none focus:bg-accent-1 focus:text-accent-8 mb-4"
-              onClick={handleSortOrder}
+              onClick={() => handleSortOrder("asc")}
             >
-              Price: Low to High {sortPrice === "asc"}
+              Price: Low to High
             </button>
             <button
               className="block leading-5 text-white no-underline font-bold tracking-wide hover:text-blue-400 hover:bg-accent-1 hover:bg-transparent hover:text-accent-8 focus:outline-none focus:bg-accent-1 focus:text-accent-8 mb-4"
-              onClick={handleSortOrder}
+              onClick={() => handleSortOrder("desc")}
             >
-              Price: High to Low{sortPrice === "desc"}
+              Price: High to Low
             </button>
             <button
               className="block leading-5 text-white no-underline font-bold tracking-wide hover:text-blue-400 hover:bg-accent-1 hover:bg-transparent hover:text-accent-8 focus:outline-none focus:bg-accent-1 focus:text-accent-8 mb-4"

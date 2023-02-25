@@ -198,26 +198,6 @@ const Footwear: NextPage<FootwearProps> = ({
         id="shoes"
         className="max-w-7xl mx-auto px-5 sm:px-6 lg:px-8 py-20 sm:py-24 lg:py-24 animate-fade-in-up min-h-screen"
       >
-        <Combobox
-          as="div"
-          value={selectedShoe}
-          onChange={setSelectedShoe}
-          className="w-full"
-          aria-label="Search Shoes"
-        >
-          <Combobox.Input
-            placeholder="Search Shoes"
-            className="w-full border border-accent-4 rounded-sm p-2 text-black bg-gray-200"
-            onChange={(event) => setQuery(event.target.value)}
-          />
-          {filteredShoes.length > 0 && (
-            <Combobox.Options>
-              {autocompleteShoes.map((shoe) => (
-                <Combobox.Option key={shoe.name} value={shoe.name} />
-              ))}
-            </Combobox.Options>
-          )}
-        </Combobox>
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 mt-3 mb-20">
           <div className="col-span-8 lg:col-span-2">
             <div className="space-y-4">
@@ -504,13 +484,35 @@ const Footwear: NextPage<FootwearProps> = ({
           </div>
 
           <div className="col-span-10 lg:col-span-8">
+            <div className="mb-5">
+              <Combobox
+                as="div"
+                value={selectedShoe}
+                onChange={setSelectedShoe}
+                className="w-full"
+                aria-label="Search Shoes"
+              >
+                <Combobox.Input
+                  placeholder="Search Shoes"
+                  className="w-full border border-accent-4 rounded-sm p-2 text-black bg-gray-200"
+                  onChange={(event) => setQuery(event.target.value)}
+                />
+                {filteredShoes.length > 0 && (
+                  <Combobox.Options>
+                    {autocompleteShoes.map((shoe) => (
+                      <Combobox.Option key={shoe.name} value={shoe.name} />
+                    ))}
+                  </Combobox.Options>
+                )}
+              </Combobox>
+            </div>
             {filteredShoes.length > 0 ? (
               <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 animate-fade-in-up">
                 {filteredShoes.map((shoe) => {
                   return (
                     <Link
                       key={shoe.slug?.current}
-                      href={`/footwear/${shoe.slug?.current}`}
+                      href={`/shoes/${shoe.slug?.current}`}
                     >
                       <div className="relative cursor-pointer overflow-hidden rounded-sm">
                         <div className="h-72 relative">

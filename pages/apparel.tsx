@@ -10,16 +10,19 @@ import client from "./../apollo-client";
 import {
   AllApparelBrandsDocument,
   AllApparelBrandsQuery,
+  AllApparelCategoriesDocument,
+  AllApparelCategoriesQuery,
   AllApparelsDocument,
   AllApparelsQuery,
 } from "./../graphql-operations";
 
-import { Combobox } from "@headlessui/react";
+import { Combobox, Listbox } from "@headlessui/react";
 import BackToTopButton from "../components/ui/BackToTopButton";
 
 type ApparelProps = {
   apparels: AllApparelsQuery["allApparel"];
   brands: AllApparelBrandsQuery["allApparelBrand"];
+  categories: AllApparelCategoriesQuery["allApparelCategory"];
 };
 
 export const getStaticProps: GetStaticProps<ApparelProps> = async (context) => {
@@ -29,20 +32,25 @@ export const getStaticProps: GetStaticProps<ApparelProps> = async (context) => {
   const offset = (page - 1) * perPage;
   const limit = perPage;
 
-  const [{ data: apparelData }, { data: apparelBrandData }] = await Promise.all(
-    [
-      client.query<AllApparelsQuery>({
-        query: AllApparelsDocument,
-        variables: {
-          offset,
-          limit,
-        },
-      }),
-      client.query<AllApparelBrandsQuery>({
-        query: AllApparelBrandsDocument,
-      }),
-    ]
-  );
+  const [
+    { data: apparelData },
+    { data: apparelBrandData },
+    { data: apparelCategoryData },
+  ] = await Promise.all([
+    client.query<AllApparelsQuery>({
+      query: AllApparelsDocument,
+      variables: {
+        offset,
+        limit,
+      },
+    }),
+    client.query<AllApparelBrandsQuery>({
+      query: AllApparelBrandsDocument,
+    }),
+    client.query<AllApparelCategoriesQuery>({
+      query: AllApparelCategoriesDocument,
+    }),
+  ]);
 
   const copy = [...(apparelData?.allApparel ?? [])];
   const sortedBrands = [...(apparelBrandData?.allApparelBrand || [])].sort(
@@ -53,6 +61,7 @@ export const getStaticProps: GetStaticProps<ApparelProps> = async (context) => {
     props: {
       apparels: copy.sort((a, b) => (a.name || "").localeCompare(b.name || "")),
       brands: sortedBrands,
+      categories: apparelCategoryData?.allApparelCategory ?? [],
     },
     revalidate: 200,
   };
@@ -61,19 +70,50 @@ export const getStaticProps: GetStaticProps<ApparelProps> = async (context) => {
 const Apparel: NextPage<ApparelProps> = ({
   apparels,
   brands,
+  categories,
 }: ApparelProps) => {
   const [selectedApparel, setSelectedApparel] = useState("");
   const [query, setQuery] = useState("");
+  const [selectedBrand, setSelectedBrand] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState("");
   const [sortPrice, setSortPrice] = useState("");
-  const [condition, setCondition] = useState("");
 
-  const handleSortOrder = (order: string) => {
-    setSortPrice(order);
-  };
+  const [condition, setCondition] = useState("");
 
   const handleSelectedCondition = (selectedCondition: string) => {
     setCondition(selectedCondition);
   };
+
+  const capitalizeWords = (str: string) => {
+    return str.replace(/\b\w/g, (c) => c.toUpperCase());
+  };
+
+  const handleSelectedBrand = (selectedBrand: string) => {
+    setSelectedBrand(selectedBrand);
+  };
+
+  const handleSelectedCategory = (selectedCategory: string) => {
+    setSelectedCategory(selectedCategory);
+  };
+
+  const handleSortOrder = (selectedSortPrice: string) => {
+    setSortPrice(selectedSortPrice);
+  };
+
+  const sortPriceOptions = [
+    { value: "asc", text: "Low to High" },
+    { value: "desc", text: "High to Low" },
+  ];
+
+  const conditionOptions = [
+    { value: "brand-new", text: "Brand New" },
+    { value: "tried-on", text: "Tried On" },
+    { value: "worn", text: "Worn" },
+  ];
+
+  const selectedPriceOption = sortPriceOptions.find(
+    (option) => option.value === sortPrice
+  );
 
   const router = useRouter();
   const activeBrand = router.query.brand || "";
@@ -90,28 +130,42 @@ const Apparel: NextPage<ApparelProps> = ({
         });
 
   const filteredApparel = useMemo(() => {
-    let brandApparel = activeBrand
+    let brandApparel = selectedBrand
       ? autocompleteApparel.filter((apparel) =>
-          apparel.brand?.some((brand) => brand?.slug?.current === activeBrand)
+          apparel.brand?.some((brand) => brand?.name === selectedBrand)
         )
       : autocompleteApparel;
+
+    brandApparel = selectedCategory
+      ? brandApparel.filter(
+          (apparel) => apparel.category?.name === selectedCategory
+        )
+      : brandApparel;
 
     brandApparel = brandApparel.filter((apparel) => {
       if (!condition) return true;
       return apparel.condition === condition;
     });
 
-    brandApparel.sort((a, b) => {
-      if (sortPrice === "asc") {
-        return (a.price || 0) - (b.price || 0);
-      } else if (sortPrice === "desc") {
-        return (b.price || 0) - (a.price || 0);
-      }
-      return 0;
-    });
+    if (sortPrice === "asc") {
+      brandApparel.sort((a, b) => (a.price || 0) - (b.price || 0));
+    } else if (sortPrice === "desc") {
+      brandApparel.sort((a, b) => (b.price || 0) - (a.price || 0));
+    }
 
     return brandApparel.slice(offset, offset + limit);
-  }, [activeBrand, autocompleteApparel, offset, limit, sortPrice, condition]);
+  }, [
+    selectedBrand,
+    autocompleteApparel,
+    offset,
+    limit,
+    selectedCategory,
+    condition,
+    sortPrice,
+  ]);
+  // function capitalizeWords(str: string) {
+  //   return str.replace(/\b\w/g, (c) => c.toUpperCase());
+  // }
 
   const brandApparel = activeBrand
     ? apparels.filter((apparel) =>
@@ -174,26 +228,291 @@ const Apparel: NextPage<ApparelProps> = ({
         </Combobox>
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 mt-3 mb-20">
           <div className="col-span-8 lg:col-span-2">
-            <Link href="/apparel">
-              <button className="block leading-5 text-white no-underline font-bold tracking-wide hover:text-blue-400 hover:bg-accent-1 hover:bg-transparent hover:text-accent-8 focus:outline-none focus:bg-accent-1 focus:text-accent-8 mb-4">
-                All Brands
-              </button>
-            </Link>
-            {brands?.map((brand) => (
-              <Link
-                key={brand.slug?.current}
-                href={`/apparel?brand=${brand?.slug?.current}`}
+            <div className="space-y-4">
+              {/* Brand Filter */}
+              <Listbox value={selectedBrand} onChange={handleSelectedBrand}>
+                <div className="relative">
+                  <Listbox.Button className="relative w-full py-2 pl-3 pr-10 text-left bg-white rounded-md shadow-sm cursor-pointer focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+                    <span className="block truncate">
+                      {selectedBrand || "All Brands"}
+                    </span>
+                    <span className="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
+                      <svg
+                        className="w-5 h-5 text-gray-400"
+                        viewBox="0 0 20 20"
+                        fill="currentColor"
+                      >
+                        <path
+                          fillRule="evenodd"
+                          clipRule="evenodd"
+                          d="M6.293 7.707a1 1 0 010-1.414l3-3a1 1 0 011.414 0l3 3a1 1 0 11-1.414 1.414L11 6.414V16a1 1 0 11-2 0V6.414L7.707 8.121a1 1 0 01-1.414-1.414z"
+                        />
+                      </svg>
+                    </span>
+                  </Listbox.Button>
+                  <Listbox.Options className="absolute z-10 w-full py-1 mt-1 overflow-auto text-base bg-white rounded-md shadow-lg max-h-60 ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
+                    <Listbox.Option
+                      key="all-brands"
+                      value=""
+                      className={({ active }) =>
+                        cn(
+                          active ? "text-white bg-blue-600" : "text-gray-900",
+                          "cursor-default select-none relative py-2 pl-10 pr-4"
+                        )
+                      }
+                    >
+                      {({ selected, active }) => (
+                        <>
+                          <span
+                            className={cn(
+                              selected ? "font-semibold" : "font-normal",
+                              "block truncate"
+                            )}
+                          >
+                            All Brands
+                          </span>
+                        </>
+                      )}
+                    </Listbox.Option>
+                    {brands?.map((brand) => (
+                      <Listbox.Option
+                        key={brand.slug?.current}
+                        value={brand.name}
+                        className={({ active }) =>
+                          cn(
+                            active ? "text-white bg-blue-600" : "text-gray-900",
+                            "cursor-default select-none relative py-2 pl-10 pr-4"
+                          )
+                        }
+                      >
+                        {({ selected, active }) => (
+                          <>
+                            <span
+                              className={cn(
+                                selected ? "font-semibold" : "font-normal",
+                                "block truncate"
+                              )}
+                            >
+                              {brand.name}
+                            </span>
+                          </>
+                        )}
+                      </Listbox.Option>
+                    ))}
+                  </Listbox.Options>
+                </div>
+              </Listbox>
+
+              {/* Category Filter */}
+              <Listbox
+                value={selectedCategory}
+                onChange={handleSelectedCategory}
               >
-                <button
-                  className={cn(
-                    "block text-sm leading-5 text-white hover:text-blue-400 hover:bg-accent-1 hover:bg-transparent hover:text-accent-8 focus:outline-none focus:bg-accent-1 focus:text-accent-8 mb-2",
-                    { underline: activeBrand === brand.slug?.current }
-                  )}
-                >
-                  {brand.name}
-                </button>
-              </Link>
-            ))}
+                <div className="relative">
+                  <Listbox.Button className="relative w-full py-2 pl-3 pr-10 text-left bg-white rounded-md shadow-sm cursor-pointer focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+                    <span className="block truncate">
+                      {selectedCategory || "All Categories"}
+                    </span>
+                    <span className="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
+                      <svg
+                        className="w-5 h-5 text-gray-400"
+                        viewBox="0 0 20 20"
+                        fill="currentColor"
+                      >
+                        <path
+                          fillRule="evenodd"
+                          clipRule="evenodd"
+                          d="M6.293 7.707a1 1 0 010-1.414l3-3a1 1 0 011.414 0l3 3a1 1 0 11-1.414 1.414L11 6.414V16a1 1 0 11-2 0V6.414L7.707 8.121a1 1 0 01-1.414-1.414z"
+                        />
+                      </svg>
+                    </span>
+                  </Listbox.Button>
+                  <Listbox.Options className="absolute z-10 w-full py-1 mt-1 overflow-auto text-base bg-white rounded-md shadow-lg max-h-60 ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
+                    <Listbox.Option
+                      key="all-categories"
+                      value=""
+                      className={({ active }) =>
+                        cn(
+                          active ? "text-white bg-blue-600" : "text-gray-900",
+                          "cursor-default select-none relative py-2 pl-10 pr-4"
+                        )
+                      }
+                    >
+                      {({ selected, active }) => (
+                        <>
+                          <span
+                            className={cn(
+                              selected ? "font-semibold" : "font-normal",
+                              "block truncate"
+                            )}
+                          >
+                            All Categories
+                          </span>
+                        </>
+                      )}
+                    </Listbox.Option>
+
+                    {categories?.map((category) => (
+                      <Listbox.Option
+                        key={category.slug?.current}
+                        value={category.name}
+                        className={({ active }) =>
+                          cn(
+                            active ? "text-white bg-blue-600" : "text-gray-900",
+                            "cursor-default select-none relative py-2 pl-10 pr-4"
+                          )
+                        }
+                      >
+                        {({ selected, active }) => (
+                          <>
+                            <span
+                              className={cn(
+                                selected ? "font-semibold" : "font-normal",
+                                "block truncate"
+                              )}
+                            >
+                              {category.name}
+                            </span>
+                          </>
+                        )}
+                      </Listbox.Option>
+                    ))}
+                  </Listbox.Options>
+                </div>
+              </Listbox>
+
+              {/* Price */}
+              <Listbox value={sortPrice} onChange={handleSortOrder}>
+                <div className="relative">
+                  <Listbox.Button className="relative w-full py-2 pl-3 pr-10 text-left bg-white rounded-md shadow-sm cursor-pointer focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+                    <span className="block truncate">
+                      {selectedPriceOption?.text || "Sort by Price"}
+                    </span>
+                    <span className="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
+                      <svg
+                        className="w-5 h-5 text-gray-400"
+                        viewBox="0 0 20 20"
+                        fill="currentColor"
+                      >
+                        <path
+                          fillRule="evenodd"
+                          clipRule="evenodd"
+                          d="M6.293 7.707a1 1 0 010-1.414l3-3a1 1 0 011.414 0l3 3a1 1 0 11-1.414 1.414L11 6.414V16a1 1 0 11-2 0V6.414L7.707 8.121a1 1 0 01-1.414-1.414z"
+                        />
+                      </svg>
+                    </span>
+                  </Listbox.Button>
+                  <Listbox.Options className="absolute z-10 w-full py-1 mt-1 overflow-auto text-base bg-white rounded-md shadow-lg max-h-60 ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
+                    {sortPriceOptions.map((option) => (
+                      <Listbox.Option
+                        key={option.value}
+                        value={option.value}
+                        className={({ active }) =>
+                          cn(
+                            active ? "text-white bg-blue-600" : "text-gray-900",
+                            "cursor-default select-none relative py-2 pl-10 pr-4"
+                          )
+                        }
+                        onClick={() => handleSortOrder(option.value)}
+                      >
+                        {({ selected, active }) => (
+                          <>
+                            <span
+                              className={cn(
+                                selected ? "font-semibold" : "font-normal",
+                                "block truncate"
+                              )}
+                            >
+                              {option.text}
+                            </span>
+                          </>
+                        )}
+                      </Listbox.Option>
+                    ))}
+                  </Listbox.Options>
+                </div>
+              </Listbox>
+              {/* Condition Filter */}
+              <Listbox value={condition} onChange={handleSelectedCondition}>
+                <div className="relative">
+                  <Listbox.Button className="w-full py-2 pl-3 pr-10 text-left bg-white rounded-lg shadow-md cursor-pointer focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+                    <span className="block truncate">
+                      {condition
+                        ? capitalizeWords(condition.replace("-", " "))
+                        : "Filter by Condition"}
+                    </span>
+                    <span className="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        className="w-5 h-5 text-gray-400"
+                        viewBox="0 0 20 20"
+                        fill="currentColor"
+                        aria-hidden="true"
+                      >
+                        <path
+                          fillRule="evenodd"
+                          d="M5.293 6.707a1 1 0 0 1 0-1.414l3-3a1 1 0 0 1 1.414 0l3 3a1 1 0 0 1-1.414 1.414L10 5.414V16a1 1 0 1 1-2 0V5.414L6.707 6.707a1 1 0 0 1-1.414 0z"
+                          clipRule="evenodd"
+                        />
+                      </svg>
+                    </span>
+                  </Listbox.Button>
+                  <Listbox.Options className="absolute z-10 w-full py-1 mt-1 overflow-auto text-base bg-white rounded-md shadow-lg max-h-60 ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
+                    <Listbox.Option
+                      key="all-conditions"
+                      value=""
+                      className={({ active }) =>
+                        cn(
+                          active ? "text-white bg-blue-600" : "text-gray-900",
+                          "cursor-default select-none relative py-2 pl-10 pr-4"
+                        )
+                      }
+                    >
+                      {({ selected, active }) => (
+                        <>
+                          <span
+                            className={cn(
+                              selected ? "font-semibold" : "font-normal",
+                              "block truncate"
+                            )}
+                          >
+                            All Conditions
+                          </span>
+                        </>
+                      )}
+                    </Listbox.Option>
+
+                    {/*  */}
+                    {conditionOptions.map((option) => (
+                      <Listbox.Option
+                        key={option.value}
+                        value={option.value}
+                        className={({ active }) =>
+                          cn(
+                            active ? "text-white bg-blue-600" : "text-gray-900",
+                            "cursor-default select-none relative py-2 pl-10 pr-4"
+                          )
+                        }
+                        onClick={() => handleSortOrder(option.value)}
+                      >
+                        {({ selected, active }) => (
+                          <>
+                            <span
+                              className={cn(
+                                selected ? "font-semibold" : "font-normal",
+                                "block truncate"
+                              )}
+                            >
+                              {option.text}
+                            </span>
+                          </>
+                        )}
+                      </Listbox.Option>
+                    ))}
+                  </Listbox.Options>
+                </div>
+              </Listbox>
+            </div>
           </div>
 
           <div className="col-span-10 lg:col-span-8">
@@ -247,36 +566,7 @@ const Apparel: NextPage<ApparelProps> = ({
             )}
           </div>
           <div className="col-span-8 lg:col-span-2">
-            <button
-              className="block leading-5 text-white no-underline font-bold tracking-wide hover:text-blue-400 hover:bg-accent-1 hover:bg-transparent hover:text-accent-8 focus:outline-none focus:bg-accent-1 focus:text-accent-8 mb-4"
-              onClick={() => handleSortOrder("asc")}
-            >
-              Price: Low to High
-            </button>
-            <button
-              className="block leading-5 text-white no-underline font-bold tracking-wide hover:text-blue-400 hover:bg-accent-1 hover:bg-transparent hover:text-accent-8 focus:outline-none focus:bg-accent-1 focus:text-accent-8 mb-4"
-              onClick={() => handleSortOrder("desc")}
-            >
-              Price: High to Low
-            </button>
-            <button
-              className="block leading-5 text-white no-underline font-bold tracking-wide hover:text-blue-400 hover:bg-accent-1 hover:bg-transparent hover:text-accent-8 focus:outline-none focus:bg-accent-1 focus:text-accent-8 mb-4"
-              onClick={() => handleSelectedCondition("brand-new")}
-            >
-              Brand New
-            </button>
-            <button
-              className="block leading-5 text-white no-underline font-bold tracking-wide hover:text-blue-400 hover:bg-accent-1 hover:bg-transparent hover:text-accent-8 focus:outline-none focus:bg-accent-1 focus:text-accent-8 mb-4"
-              onClick={() => handleSelectedCondition("tried-on")}
-            >
-              Tried On
-            </button>
-            <button
-              className="block leading-5 text-white no-underline font-bold tracking-wide hover:text-blue-400 hover:bg-accent-1 hover:bg-transparent hover:text-accent-8 focus:outline-none focus:bg-accent-1 focus:text-accent-8 mb-4"
-              onClick={() => handleSelectedCondition("worn")}
-            >
-              Worn
-            </button>
+            <div className="space-y-4">{/*  */}</div>
           </div>
         </div>
         <div className="flex justify-evenly gap-x-12">

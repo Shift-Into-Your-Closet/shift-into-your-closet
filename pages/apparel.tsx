@@ -202,26 +202,6 @@ const Apparel: NextPage<ApparelProps> = ({
         id="apparel"
         className="max-w-7xl mx-auto px-5 sm:px-6 lg:px-8 py-20 sm:py-24 lg:py-24 animate-fade-in-up min-h-screen"
       >
-        <Combobox
-          as="div"
-          value={selectedApparel}
-          onChange={setSelectedApparel}
-          className="w-full"
-          aria-label="Search Apparel"
-        >
-          <Combobox.Input
-            placeholder="Search Apparel"
-            className="w-full border border-accent-4 rounded-sm p-2 text-black bg-gray-200"
-            onChange={(event) => setQuery(event.target.value)}
-          />
-          {filteredApparel.length > 0 && (
-            <Combobox.Options>
-              {autocompleteApparel.map((apparel) => (
-                <Combobox.Option key={apparel.name} value={apparel.name} />
-              ))}
-            </Combobox.Options>
-          )}
-        </Combobox>
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 mt-3 mb-20">
           <div className="col-span-8 lg:col-span-2">
             <div className="space-y-4">
@@ -512,6 +492,31 @@ const Apparel: NextPage<ApparelProps> = ({
           </div>
 
           <div className="col-span-10 lg:col-span-8">
+            <div className="mb-5">
+              <Combobox
+                as="div"
+                value={selectedApparel}
+                onChange={setSelectedApparel}
+                className="w-full"
+                aria-label="Search Apparel"
+              >
+                <Combobox.Input
+                  placeholder="Search Apparel"
+                  className="w-full border border-accent-4 rounded-sm p-2 text-black bg-gray-200"
+                  onChange={(event) => setQuery(event.target.value)}
+                />
+                {filteredApparel.length > 0 && (
+                  <Combobox.Options>
+                    {autocompleteApparel.map((apparel) => (
+                      <Combobox.Option
+                        key={apparel.name}
+                        value={apparel.name}
+                      />
+                    ))}
+                  </Combobox.Options>
+                )}
+              </Combobox>
+            </div>
             {filteredApparel.length > 0 ? (
               <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 animate-fade-in-up">
                 {filteredApparel.map((apparel) => {

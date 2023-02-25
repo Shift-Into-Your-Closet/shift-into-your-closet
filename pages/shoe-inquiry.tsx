@@ -1,7 +1,8 @@
-import { Fragment, SetStateAction, useState } from "react";
+import { Fragment, useState } from "react";
 
 import Head from "next/head";
 import Link from "next/link";
+import { useRouter } from "next/router";
 import { GetStaticProps, NextPage } from "next";
 
 import client from "../apollo-client";
@@ -15,7 +16,7 @@ import { Transition } from "@headlessui/react";
 type FormValues = {
   firstName: string;
   lastName: string;
-  subject: string;
+  subject: string | string[];
   email: string;
   message: string;
 };
@@ -40,8 +41,10 @@ export const getStaticProps: GetStaticProps<ShoeInquiryProps> = async () => {
 const ShoeInquiry: NextPage<ShoeInquiryProps> = ({
   shoes,
 }: ShoeInquiryProps) => {
+  const router = useRouter();
+  const { shoeName } = router.query;
+
   const [formSpreeState, sendToFormSpree] = useFormSpree("xvoywvlv");
-  const [userChoice, setUserChoice] = useState("");
 
   const {
     register,
@@ -52,11 +55,13 @@ const ShoeInquiry: NextPage<ShoeInquiryProps> = ({
     defaultValues: {
       firstName: "",
       lastName: "",
-      subject: "",
+      subject: shoeName ?? "",
       email: "",
       message: "",
     },
   });
+
+  const [userChoice, setUserChoice] = useState(shoeName ?? "");
 
   const onSubmit = (data: FormValues) => {
     sendToFormSpree(data);
@@ -68,9 +73,7 @@ const ShoeInquiry: NextPage<ShoeInquiryProps> = ({
     }, 2000);
   };
 
-  const handleUserChoice = (e: {
-    target: { value: SetStateAction<string> };
-  }) => {
+  const handleUserChoice = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setUserChoice(e.target.value);
   };
 
@@ -261,18 +264,24 @@ const ShoeInquiry: NextPage<ShoeInquiryProps> = ({
                   {...register("subject", {
                     required: true,
                   })}
-                  value={userChoice}
                   onChange={handleUserChoice}
+                  value={userChoice}
                 >
-                  {shoes.map((shoes) => (
+                  {shoes.map((shoe) => (
                     <option
-                      key={shoes.name ?? "Shoe name"}
-                      value={shoes.name ?? "Shoe name"}
+                      key={shoe.name ?? "Shoe..."}
+                      value={shoe.name ?? ""}
                     >
-                      {shoes.name}
+                      {shoe.name ?? "Shoe Name..."}
                     </option>
                   ))}
                 </select>
+                {errors.subject && (
+                  <span className="absolute mt-20 ml-2 text-red-500 font-roboto">
+                    required
+                  </span>
+                )}
+
                 {errors.subject && (
                   <span className="absolute mt-20 ml-2 text-red-500 font-roboto">
                     required

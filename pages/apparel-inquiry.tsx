@@ -2,6 +2,7 @@ import { Fragment, SetStateAction, useState } from "react";
 
 import Head from "next/head";
 import Link from "next/link";
+import { useRouter } from "next/router";
 import { GetStaticProps, NextPage } from "next";
 
 import client from "../apollo-client";
@@ -15,7 +16,7 @@ import { Transition } from "@headlessui/react";
 type FormValues = {
   firstName: string;
   lastName: string;
-  subject: string;
+  subject: string | string[];
   email: string;
   message: string;
 };
@@ -40,8 +41,10 @@ export const getStaticProps: GetStaticProps<ApparelInquiryProps> = async () => {
 const ApparelInquiry: NextPage<ApparelInquiryProps> = ({
   apparels,
 }: ApparelInquiryProps) => {
+  const router = useRouter();
+  const { apparelName } = router.query;
+
   const [formSpreeState, sendToFormSpree] = useFormSpree("xvoywvlv");
-  const [userChoice, setUserChoice] = useState("");
 
   const {
     register,
@@ -52,11 +55,13 @@ const ApparelInquiry: NextPage<ApparelInquiryProps> = ({
     defaultValues: {
       firstName: "",
       lastName: "",
-      subject: "",
+      subject: apparelName ?? "",
       email: "",
       message: "",
     },
   });
+
+  const [userChoice, setUserChoice] = useState(apparelName ?? "");
 
   const onSubmit = (data: FormValues) => {
     sendToFormSpree(data);
@@ -68,9 +73,7 @@ const ApparelInquiry: NextPage<ApparelInquiryProps> = ({
     }, 2000);
   };
 
-  const handleUserChoice = (e: {
-    target: { value: SetStateAction<string> };
-  }) => {
+  const handleUserChoice = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setUserChoice(e.target.value);
   };
 
@@ -261,15 +264,15 @@ const ApparelInquiry: NextPage<ApparelInquiryProps> = ({
                   {...register("subject", {
                     required: true,
                   })}
-                  value={userChoice}
                   onChange={handleUserChoice}
+                  value={userChoice}
                 >
                   {apparels.map((apparel) => (
                     <option
-                      key={apparel.name ?? "Apparel name"}
-                      value={apparel.name ?? "Apparel name"}
+                      key={apparel.name ?? "Apparel Name"}
+                      value={apparel.name ?? ""}
                     >
-                      {apparel.name}
+                      {apparel.name ?? "Apparel Name"}
                     </option>
                   ))}
                 </select>

@@ -77,7 +77,6 @@ const Apparel: NextPage<ApparelProps> = ({
   const [selectedBrand, setSelectedBrand] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("");
   const [sortPrice, setSortPrice] = useState("");
-
   const [condition, setCondition] = useState("");
 
   const handleSelectedCondition = (selectedCondition: string) => {
@@ -163,9 +162,6 @@ const Apparel: NextPage<ApparelProps> = ({
     condition,
     sortPrice,
   ]);
-  // function capitalizeWords(str: string) {
-  //   return str.replace(/\b\w/g, (c) => c.toUpperCase());
-  // }
 
   const brandApparel = activeBrand
     ? apparels.filter((apparel) =>

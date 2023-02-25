@@ -50,6 +50,13 @@ export default {
       description: "What is the size of your shoes?",
     },
     {
+      name: "category",
+      title: "Category",
+      type: "reference",
+      to: [{ type: "footwearCategory" }],
+      description: "What is the category of this item?",
+    },
+    {
       name: "mainImage",
       title: "Main Image",
       type: "image",

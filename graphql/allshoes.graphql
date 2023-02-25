@@ -1,34 +1,40 @@
 fragment shoe on Shoe {
-    price
-    brand {
-      name
-      slug {
-        current
-      }
-    }
-    condition
-    size {
-      shoeSize
-    }
-    mainImage {
-      asset {
-        url
-      }
-    }
-    image {
-      asset {
-        url
-      }
-    }
+  price
+  brand {
     name
     slug {
       current
     }
+  }
+  condition
+  size {
+    shoeSize
+  }
+  category {
+    name
+    slug {
+      current
+    }
+  }
+  mainImage {
+    asset {
+      url
+    }
+  }
+  image {
+    asset {
+      url
+    }
+  }
+  name
+  slug {
+    current
+  }
 }
 
 query allShoes {
   allShoe {
-        ...shoe
+    ...shoe
   }
 }
 
@@ -39,14 +45,14 @@ query shoe($slug: String) {
 }
 
 query allWornShoes {
-  allShoe(where: {condition: {eq: "worn"}}) {
-		...shoe
+  allShoe(where: { condition: { eq: "worn" } }) {
+    ...shoe
   }
 }
 
 query newestShoes {
   allShoe(sort: { _createdAt: DESC }, limit: 4) {
-		...shoe
+    ...shoe
     _createdAt
   }
 }
@@ -60,6 +66,15 @@ query featuredShoes {
 
 query allShoeBrands {
   allShoeBrand {
+    name
+    slug {
+      current
+    }
+  }
+}
+
+query allFootwearCategories {
+  allFootwearCategory {
     name
     slug {
       current

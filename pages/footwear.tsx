@@ -6,26 +6,26 @@ import Link from "next/link";
 import Image from "next/image";
 
 import cn from "clsx";
-import client from "./../apollo-client";
+import client from "../apollo-client";
 import {
-  AllAccessoryBrandsDocument,
-  AllAccessoryBrandsQuery,
-  AllAccessoryCategoriesDocument,
-  AllAccessoryCategoriesQuery,
-  AllAccessoryDocument,
-  AllAccessoryQuery,
-} from "./../graphql-operations";
+  AllFootwearCategoriesDocument,
+  AllFootwearCategoriesQuery,
+  AllShoeBrandsDocument,
+  AllShoeBrandsQuery,
+  AllShoesDocument,
+  AllShoesQuery,
+} from "../graphql-operations";
 
 import { Combobox, Listbox } from "@headlessui/react";
 import BackToTopButton from "../components/ui/BackToTopButton";
 
-type AccessoryProps = {
-  accessories: AllAccessoryQuery["allAccessory"];
-  brands: AllAccessoryBrandsQuery["allAccessoryBrand"];
-  categories: AllAccessoryCategoriesQuery["allAccessoryCategory"];
+type FootwearProps = {
+  shoes: AllShoesQuery["allShoe"];
+  brands: AllShoeBrandsQuery["allShoeBrand"];
+  categories: AllFootwearCategoriesQuery["allFootwearCategory"];
 };
 
-export const getStaticProps: GetStaticProps<AccessoryProps> = async (
+export const getStaticProps: GetStaticProps<FootwearProps> = async (
   context
 ) => {
   const { params = {} } = context;
@@ -35,51 +35,50 @@ export const getStaticProps: GetStaticProps<AccessoryProps> = async (
   const limit = perPage;
 
   const [
-    { data: accessoryData },
-    { data: accessoryBrandData },
-    { data: accessoryCategoryData },
+    { data: shoeData },
+    { data: shoeBrandData },
+    { data: footwearCategoryData },
   ] = await Promise.all([
-    client.query<AllAccessoryQuery>({
-      query: AllAccessoryDocument,
+    client.query<AllShoesQuery>({
+      query: AllShoesDocument,
       variables: {
         offset,
         limit,
       },
     }),
-    client.query<AllAccessoryBrandsQuery>({
-      query: AllAccessoryBrandsDocument,
+    client.query<AllShoeBrandsQuery>({
+      query: AllShoeBrandsDocument,
     }),
-    client.query<AllAccessoryCategoriesQuery>({
-      query: AllAccessoryCategoriesDocument,
+    client.query<AllFootwearCategoriesQuery>({
+      query: AllFootwearCategoriesDocument,
     }),
   ]);
 
-  const copy = [...(accessoryData?.allAccessory ?? [])];
-  const sortedBrands = [...(accessoryBrandData?.allAccessoryBrand || [])].sort(
-    (a, b) => (a.name || "").localeCompare(b.name || "")
+  const copy = [...(shoeData?.allShoe ?? [])];
+  const sortedBrands = [...(shoeBrandData?.allShoeBrand || [])].sort((a, b) =>
+    (a.name || "").localeCompare(b.name || "")
   );
 
   return {
     props: {
-      accessories: copy.sort((a, b) =>
-        (a.name || "").localeCompare(b.name || "")
-      ),
+      shoes: copy.sort((a, b) => (a.name || "").localeCompare(b.name || "")),
       brands: sortedBrands,
-      categories: accessoryCategoryData?.allAccessoryCategory ?? [],
+      categories: footwearCategoryData?.allFootwearCategory ?? [],
     },
     revalidate: 200,
   };
 };
 
-const Accessories: NextPage<AccessoryProps> = ({
-  accessories,
+const Footwear: NextPage<FootwearProps> = ({
+  shoes,
   brands,
   categories,
-}: AccessoryProps) => {
-  const [selectedAccessory, setSelectedAccessory] = useState("");
+}: FootwearProps) => {
+  const [selectedShoe, setSelectedShoe] = useState("");
   const [query, setQuery] = useState("");
   const [selectedBrand, setSelectedBrand] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("");
+
   const [sortPrice, setSortPrice] = useState("");
   const [condition, setCondition] = useState("");
 
@@ -125,32 +124,30 @@ const Accessories: NextPage<AccessoryProps> = ({
   const offset = (page - 1) * perPage;
   const limit = perPage;
 
-  const autocompleteAccessories =
+  const autocompleteShoes =
     query === ""
-      ? accessories
-      : accessories.filter((accessory) => {
-          return accessory.name?.toLowerCase().includes(query.toLowerCase());
+      ? shoes
+      : shoes.filter((shoe) => {
+          return shoe.name?.toLowerCase().includes(query.toLowerCase());
         });
 
-  const filteredAccessories = useMemo(() => {
-    let brandAccessory = selectedBrand
-      ? autocompleteAccessories.filter((accessory) =>
-          accessory.brand?.some((brand) => brand?.name === selectedBrand)
+  const filteredShoes = useMemo(() => {
+    let brandShoes = selectedBrand
+      ? autocompleteShoes.filter((shoe) =>
+          shoe.brand?.some((brand) => brand?.name === selectedBrand)
         )
-      : autocompleteAccessories;
+      : autocompleteShoes;
 
-    brandAccessory = selectedCategory
-      ? brandAccessory.filter(
-          (accessory) => accessory.category?.name === selectedCategory
-        )
-      : brandAccessory;
+    brandShoes = selectedCategory
+      ? brandShoes.filter((shoe) => shoe.category?.name === selectedCategory)
+      : brandShoes;
 
-    brandAccessory = brandAccessory.filter((accessory) => {
+    brandShoes = brandShoes.filter((shoe) => {
       if (!condition) return true;
-      return accessory.condition === condition;
+      return shoe.condition === condition;
     });
 
-    brandAccessory.sort((a, b) => {
+    brandShoes.sort((a, b) => {
       if (sortPrice === "asc") {
         return (a.price || 0) - (b.price || 0);
       } else if (sortPrice === "desc") {
@@ -159,75 +156,64 @@ const Accessories: NextPage<AccessoryProps> = ({
       return 0;
     });
 
-    return brandAccessory.slice(offset, offset + limit);
-  }, [
-    activeBrand,
-    autocompleteAccessories,
-    offset,
-    limit,
-    selectedCategory,
-    sortPrice,
-    condition,
-  ]);
+    return brandShoes.slice(offset, offset + limit);
+  }, [selectedBrand, autocompleteShoes, offset, limit, sortPrice, condition]);
 
-  const brandAccessory = activeBrand
-    ? accessories.filter((accessory) =>
-        accessory.brand?.some((brand) => brand?.slug?.current === activeBrand)
+  const brandShoes = selectedBrand
+    ? shoes.filter((shoe) =>
+        shoe.brand?.some((brand) => brand?.slug?.current === selectedBrand)
       )
-    : accessories;
+    : shoes;
 
-  const brandPages = Math.ceil(brandAccessory.length / perPage);
+  const brandPages = Math.ceil(brandShoes.length / perPage);
 
   const prevPage = page - 1;
   const nextPage = page + 1;
 
   const prevLink =
     prevPage > 0
-      ? `/accessories?page=${prevPage}&perPage=${perPage}${
-          activeBrand ? `&category=${activeBrand}` : ""
+      ? `/shoes?page=${prevPage}&perPage=${perPage}${
+          activeBrand ? `&brand=${activeBrand}` : ""
         }`
       : null;
 
   const nextLink =
     nextPage <= brandPages
-      ? `/accessories?page=${nextPage}&perPage=${perPage}${
-          activeBrand ? `&category=${activeBrand}` : ""
+      ? `/shoes?page=${nextPage}&perPage=${perPage}${
+          activeBrand ? `&brand=${activeBrand}` : ""
         }`
       : null;
 
   return (
     <>
       <Head>
-        <title>Accessories | Shift Into Your Closet</title>
+        <title>Shoes | Shift Into Your Closet</title>
         <link rel="apple-touch-icon" href="/path/to/apple-touch-icon.png" />
         <meta name="theme-color" content="#60A5FA" />
-        <meta
-          name="description"
-          content="Accessories at Shift Into Your Closet"
-        />
-        <meta name="keywords" content="accessories, shift into your closet" />
+        <meta name="description" content="Shoes at Shift Into Your Closet" />
+        <meta name="keywords" content="shoes, shift into your closet" />
         <meta name="viewport" content="width=device-width" />
       </Head>
       <section
-        id="accessories"
+        id="shoes"
         className="max-w-7xl mx-auto px-5 sm:px-6 lg:px-8 py-20 sm:py-24 lg:py-24 animate-fade-in-up min-h-screen"
       >
         <Combobox
           as="div"
-          value={selectedAccessory}
-          onChange={setSelectedAccessory}
+          value={selectedShoe}
+          onChange={setSelectedShoe}
           className="w-full"
-          aria-label="Search Accessories"
+          aria-label="Search Shoes"
         >
           <Combobox.Input
-            placeholder="Search Accessories"
+            placeholder="Search Shoes"
             className="w-full border border-accent-4 rounded-sm p-2 text-black bg-gray-200"
             onChange={(event) => setQuery(event.target.value)}
           />
-          {filteredAccessories.length > 0 && (
+          {filteredShoes.length > 0 && (
             <Combobox.Options>
-              {autocompleteAccessories.map((accessory) => (
-                <Combobox.Option key={accessory.name} value={accessory.name} />
+              {autocompleteShoes.map((shoe) => (
+                <Combobox.Option key={shoe.name} value={shoe.name} />
               ))}
             </Combobox.Options>
           )}
@@ -308,7 +294,6 @@ const Accessories: NextPage<AccessoryProps> = ({
                   </Listbox.Options>
                 </div>
               </Listbox>
-
               {/* Category Filter */}
               <Listbox
                 value={selectedCategory}
@@ -386,7 +371,6 @@ const Accessories: NextPage<AccessoryProps> = ({
                   </Listbox.Options>
                 </div>
               </Listbox>
-
               {/* Price Filter */}
               <Listbox value={sortPrice} onChange={handleSortOrder}>
                 <div className="relative">
@@ -438,7 +422,7 @@ const Accessories: NextPage<AccessoryProps> = ({
                   </Listbox.Options>
                 </div>
               </Listbox>
-
+              {/* Condition Filter */}
               <Listbox value={condition} onChange={handleSelectedCondition}>
                 <div className="relative">
                   <Listbox.Button className="w-full py-2 pl-3 pr-10 text-left bg-white rounded-lg shadow-md cursor-pointer focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
@@ -487,8 +471,6 @@ const Accessories: NextPage<AccessoryProps> = ({
                         </>
                       )}
                     </Listbox.Option>
-
-                    {/*  */}
                     {conditionOptions.map((option) => (
                       <Listbox.Option
                         key={option.value}
@@ -522,20 +504,20 @@ const Accessories: NextPage<AccessoryProps> = ({
           </div>
 
           <div className="col-span-10 lg:col-span-8">
-            {filteredAccessories.length > 0 ? (
+            {filteredShoes.length > 0 ? (
               <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 animate-fade-in-up">
-                {filteredAccessories.map((accessory) => {
+                {filteredShoes.map((shoe) => {
                   return (
                     <Link
-                      key={accessory.slug?.current}
-                      href={`/accessory/${accessory.slug?.current}`}
+                      key={shoe.slug?.current}
+                      href={`/footwear/${shoe.slug?.current}`}
                     >
                       <div className="relative cursor-pointer overflow-hidden rounded-sm">
                         <div className="h-72 relative">
-                          {accessory.mainImage?.asset?.url && (
+                          {shoe.mainImage?.asset?.url && (
                             <Image
-                              src={accessory.mainImage.asset.url}
-                              alt={`Image for ${accessory.name}`}
+                              src={shoe.mainImage.asset.url}
+                              alt={`Image for ${shoe.name}`}
                               className="object-cover"
                               priority={true}
                               fill
@@ -548,14 +530,14 @@ const Accessories: NextPage<AccessoryProps> = ({
                         <div className="absolute bottom-0 left-0">
                           <div className="bg-black py-3 px-5">
                             <div className="text-white uppercase font-bold pb-1">
-                              {accessory.name}
+                              {shoe.name}
                             </div>
                           </div>
                         </div>
                         <div className="absolute top-0 left-0">
                           <div className="bg-black py-1 px-5">
                             <div className="text-xl text-blue-400 font-bold">
-                              ${accessory.price}
+                              ${shoe.price}
                             </div>
                           </div>
                         </div>
@@ -566,15 +548,14 @@ const Accessories: NextPage<AccessoryProps> = ({
               </div>
             ) : (
               <div className="text-sm text-white">
-                No accessories found. Please check back as we get in new items
-                weekly.
+                No shoes found. Please check back as we get in new items weekly.
               </div>
             )}
           </div>
           <div className="col-span-8 lg:col-span-2"></div>
         </div>
         <div className="flex justify-evenly gap-x-12">
-          {filteredAccessories.length > 0 && (
+          {filteredShoes.length > 0 && (
             <div className="flex mt-12 mb-4 text-white">
               {prevLink && (
                 <Link
@@ -606,4 +587,4 @@ const Accessories: NextPage<AccessoryProps> = ({
   );
 };
 
-export default Accessories;
+export default Footwear;

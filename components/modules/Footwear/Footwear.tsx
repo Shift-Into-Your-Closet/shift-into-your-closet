@@ -22,7 +22,7 @@ import "swiper/swiper-bundle.css";
 
 import { ShoeQuery } from "../../../graphql-operations";
 
-export type ShoeProps = {
+export type FootwearProps = {
   shoe: ShoeQuery["allShoe"][0] | undefined;
 };
 
@@ -38,7 +38,7 @@ SwiperCore.use([
   A11y,
 ]);
 
-function Shoe({ shoe }: ShoeProps) {
+function Footwear({ shoe }: FootwearProps) {
   const images = useMemo(() => {
     const _images = [];
     if (shoe?.mainImage?.asset?.url) {
@@ -63,7 +63,7 @@ function Shoe({ shoe }: ShoeProps) {
           name="description"
           content={`${shoe?.name} Shift Into Your Closet`}
         />
-        <meta name="keywords" content="shoes, shift into your closet" />
+        <meta name="keywords" content="footwear, shift into your closet" />
         <meta name="viewport" content="width=device-width" />
       </Head>
 
@@ -101,10 +101,10 @@ function Shoe({ shoe }: ShoeProps) {
                   ></path>
                 </svg>
                 <Link
-                  href="/shoes"
+                  href="/footwear"
                   className="ml-1 text-lg font-regular md:ml-2 cursor-pointer hover:text-blue-400"
                 >
-                  Shoes
+                  Footwear
                 </Link>
               </div>
             </li>
@@ -209,4 +209,4 @@ function Shoe({ shoe }: ShoeProps) {
     </>
   );
 }
-export default Shoe;
+export default Footwear;

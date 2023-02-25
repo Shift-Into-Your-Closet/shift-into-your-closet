@@ -9,7 +9,7 @@ import {
   ShoeQuery,
 } from "../../graphql-operations";
 
-import _Shoe from "../../components/modules/Shoe";
+import _Footwear from "../../components/modules/Footwear";
 
 export const getStaticPaths: GetStaticPaths<{
   slug: string;
@@ -59,6 +59,6 @@ export const getStaticProps: GetStaticProps<
   };
 };
 
-const Shoe = _Shoe;
+const Footwear = _Footwear;
 
-export default Shoe;
+export default Footwear;

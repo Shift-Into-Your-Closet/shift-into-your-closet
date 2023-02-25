@@ -3,6 +3,7 @@ import { Fragment, SetStateAction, useState } from "react";
 import Head from "next/head";
 import Link from "next/link";
 import { GetStaticProps, NextPage } from "next";
+import { useRouter } from "next/router";
 
 import client from "../apollo-client";
 import { AllAccessoryDocument, AllAccessoryQuery } from "../graphql-operations";
@@ -15,7 +16,7 @@ import { Transition } from "@headlessui/react";
 type FormValues = {
   firstName: string;
   lastName: string;
-  subject: string;
+  subject: string | string[];
   email: string;
   message: string;
 };
@@ -42,8 +43,10 @@ export const getStaticProps: GetStaticProps<
 const ApparelInquiry: NextPage<AccessoryInquiryProps> = ({
   accessories,
 }: AccessoryInquiryProps) => {
+  const router = useRouter();
+  const { accessoryName } = router.query;
+
   const [formSpreeState, sendToFormSpree] = useFormSpree("xvoywvlv");
-  const [userChoice, setUserChoice] = useState("");
 
   const {
     register,
@@ -54,11 +57,13 @@ const ApparelInquiry: NextPage<AccessoryInquiryProps> = ({
     defaultValues: {
       firstName: "",
       lastName: "",
-      subject: "",
+      subject: accessoryName ?? "",
       email: "",
       message: "",
     },
   });
+
+  const [userChoice, setUserChoice] = useState(accessoryName ?? "");
 
   const onSubmit = (data: FormValues) => {
     sendToFormSpree(data);
@@ -70,9 +75,7 @@ const ApparelInquiry: NextPage<AccessoryInquiryProps> = ({
     }, 2000);
   };
 
-  const handleUserChoice = (e: {
-    target: { value: SetStateAction<string> };
-  }) => {
+  const handleUserChoice = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setUserChoice(e.target.value);
   };
 
@@ -262,15 +265,15 @@ const ApparelInquiry: NextPage<AccessoryInquiryProps> = ({
                   {...register("subject", {
                     required: true,
                   })}
-                  value={userChoice}
                   onChange={handleUserChoice}
+                  value={userChoice}
                 >
                   {accessories.map((accessory) => (
                     <option
-                      key={accessory.name ?? "Accessory name"}
-                      value={accessory.name ?? "Accessory name"}
+                      key={accessory.name ?? "Accessory Name"}
+                      value={accessory.name ?? ""}
                     >
-                      {accessory.name}
+                      {accessory.name ?? "Accessory Name"}
                     </option>
                   ))}
                 </select>

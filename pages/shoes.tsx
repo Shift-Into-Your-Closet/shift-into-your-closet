@@ -19,15 +19,13 @@ import {
 import { Combobox, Listbox } from "@headlessui/react";
 import BackToTopButton from "../components/ui/BackToTopButton";
 
-type FootwearProps = {
+type ShoeProps = {
   shoes: AllShoesQuery["allShoe"];
   brands: AllShoeBrandsQuery["allShoeBrand"];
   categories: AllFootwearCategoriesQuery["allFootwearCategory"];
 };
 
-export const getStaticProps: GetStaticProps<FootwearProps> = async (
-  context
-) => {
+export const getStaticProps: GetStaticProps<ShoeProps> = async (context) => {
   const { params = {} } = context;
   const page = Number(params.page) || 1;
   const perPage = Number(params.perPage) || 12;
@@ -69,11 +67,11 @@ export const getStaticProps: GetStaticProps<FootwearProps> = async (
   };
 };
 
-const Footwear: NextPage<FootwearProps> = ({
+const Shoes: NextPage<ShoeProps> = ({
   shoes,
   brands,
   categories,
-}: FootwearProps) => {
+}: ShoeProps) => {
   const [selectedShoe, setSelectedShoe] = useState("");
   const [query, setQuery] = useState("");
   const [selectedBrand, setSelectedBrand] = useState("");
@@ -512,7 +510,7 @@ const Footwear: NextPage<FootwearProps> = ({
                   return (
                     <Link
                       key={shoe.slug?.current}
-                      href={`/shoes/${shoe.slug?.current}`}
+                      href={`/shoe/${shoe.slug?.current}`}
                     >
                       <div className="relative cursor-pointer overflow-hidden rounded-sm">
                         <div className="h-72 relative">
@@ -589,4 +587,4 @@ const Footwear: NextPage<FootwearProps> = ({
   );
 };
 
-export default Footwear;
+export default Shoes;

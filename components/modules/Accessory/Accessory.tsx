@@ -170,7 +170,10 @@ function Accessory({ accessory }: AccessoryProps) {
               </div>
 
               <Link
-                href="/accessory-inquiry"
+                href={{
+                  pathname: "/accessory-inquiry",
+                  query: { accessoryName: accessory?.name },
+                }}
                 className="w-full px-4 py-2 bg-blue-500 rounded-lg text-center mb-5 text-white hover:bg-blue-700"
               >
                 Inquire

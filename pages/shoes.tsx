@@ -76,9 +76,9 @@ const Shoes: NextPage<ShoeProps> = ({
   const [query, setQuery] = useState("");
   const [selectedBrand, setSelectedBrand] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("");
-
   const [sortPrice, setSortPrice] = useState("");
   const [condition, setCondition] = useState("");
+  const [sortOrder, setSortOrder] = useState("");
 
   const handleSelectedCondition = (selectedCondition: string) => {
     setCondition(selectedCondition);
@@ -96,9 +96,18 @@ const Shoes: NextPage<ShoeProps> = ({
     setSelectedCategory(selectedCategory);
   };
 
-  const handleSortOrder = (selectedSortPrice: string) => {
+  const handleSortPriceOrder = (selectedSortPrice: string) => {
     setSortPrice(selectedSortPrice);
   };
+
+  const handleSortOrder = (selectedSortOrder: string) => {
+    setSortOrder(selectedSortOrder);
+  };
+
+  const sortOrderOptions = [
+    { value: "asc", text: "A to Z" },
+    { value: "desc", text: "Z to A" },
+  ];
 
   const sortPriceOptions = [
     { value: "asc", text: "Low to High" },
@@ -113,6 +122,10 @@ const Shoes: NextPage<ShoeProps> = ({
 
   const selectedPriceOption = sortPriceOptions.find(
     (option) => option.value === sortPrice
+  );
+
+  const selectedSortOption = sortOrderOptions.find(
+    (option) => option.value === sortOrder
   );
 
   const router = useRouter();
@@ -150,12 +163,24 @@ const Shoes: NextPage<ShoeProps> = ({
         return (a.price || 0) - (b.price || 0);
       } else if (sortPrice === "desc") {
         return (b.price || 0) - (a.price || 0);
+      } else if (sortOrder === "asc") {
+        return (a.name || "").localeCompare(b.name || "");
+      } else if (sortOrder === "desc") {
+        return (b.name || "").localeCompare(a.name || "");
       }
       return 0;
     });
 
     return brandShoes.slice(offset, offset + limit);
-  }, [selectedBrand, autocompleteShoes, offset, limit, sortPrice, condition]);
+  }, [
+    selectedBrand,
+    autocompleteShoes,
+    offset,
+    limit,
+    sortPrice,
+    condition,
+    sortOrder,
+  ]);
 
   const brandShoes = selectedBrand
     ? shoes.filter((shoe) =>
@@ -349,8 +374,83 @@ const Shoes: NextPage<ShoeProps> = ({
                   </Listbox.Options>
                 </div>
               </Listbox>
+              {/* Alphabetical Filter */}
+
+              <Listbox value={sortOrder} onChange={handleSortOrder}>
+                <div className="relative">
+                  <Listbox.Button className="relative w-full py-2 pl-3 pr-10 text-left bg-white rounded-md shadow-sm cursor-pointer focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+                    <span className="block truncate">
+                      {selectedSortOption?.text || "Sort Alphabetically"}
+                    </span>
+                    <span className="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
+                      <svg
+                        className="w-5 h-5 text-gray-400"
+                        viewBox="0 0 20 20"
+                        fill="currentColor"
+                      >
+                        <path
+                          fillRule="evenodd"
+                          clipRule="evenodd"
+                          d="M6.293 7.707a1 1 0 010-1.414l3-3a1 1 0 011.414 0l3 3a1 1 0 11-1.414 1.414L11 6.414V16a1 1 0 11-2 0V6.414L7.707 8.121a1 1 0 01-1.414-1.414z"
+                        />
+                      </svg>
+                    </span>
+                  </Listbox.Button>
+                  <Listbox.Options className="absolute z-10 w-full py-1 mt-1 overflow-auto text-base bg-white rounded-md shadow-lg max-h-60 ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
+                    <Listbox.Option
+                      key="all"
+                      value=""
+                      className={({ active }) =>
+                        cn(
+                          active ? "text-white bg-blue-600" : "text-gray-900",
+                          "cursor-default select-none relative py-2 pl-10 pr-4"
+                        )
+                      }
+                    >
+                      {({ selected, active }) => (
+                        <>
+                          <span
+                            className={cn(
+                              selected ? "font-semibold" : "font-normal",
+                              "block truncate"
+                            )}
+                          >
+                            All
+                          </span>
+                        </>
+                      )}
+                    </Listbox.Option>
+                    {sortOrderOptions.map((option) => (
+                      <Listbox.Option
+                        key={option.value}
+                        value={option.value}
+                        className={({ active }) =>
+                          cn(
+                            active ? "text-white bg-blue-600" : "text-gray-900",
+                            "cursor-default select-none relative py-2 pl-10 pr-4"
+                          )
+                        }
+                        onClick={() => handleSortOrder(option.value)}
+                      >
+                        {({ selected, active }) => (
+                          <>
+                            <span
+                              className={cn(
+                                selected ? "font-semibold" : "font-normal",
+                                "block truncate"
+                              )}
+                            >
+                              {option.text}
+                            </span>
+                          </>
+                        )}
+                      </Listbox.Option>
+                    ))}
+                  </Listbox.Options>
+                </div>
+              </Listbox>
               {/* Price Filter */}
-              <Listbox value={sortPrice} onChange={handleSortOrder}>
+              <Listbox value={sortPrice} onChange={handleSortPriceOrder}>
                 <div className="relative">
                   <Listbox.Button className="relative w-full py-2 pl-3 pr-10 text-left bg-white rounded-md shadow-sm cursor-pointer focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
                     <span className="block truncate">
@@ -371,6 +471,29 @@ const Shoes: NextPage<ShoeProps> = ({
                     </span>
                   </Listbox.Button>
                   <Listbox.Options className="absolute z-10 w-full py-1 mt-1 overflow-auto text-base bg-white rounded-md shadow-lg max-h-60 ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
+                    <Listbox.Option
+                      key="all-conditions"
+                      value=""
+                      className={({ active }) =>
+                        cn(
+                          active ? "text-white bg-blue-600" : "text-gray-900",
+                          "cursor-default select-none relative py-2 pl-10 pr-4"
+                        )
+                      }
+                    >
+                      {({ selected, active }) => (
+                        <>
+                          <span
+                            className={cn(
+                              selected ? "font-semibold" : "font-normal",
+                              "block truncate"
+                            )}
+                          >
+                            All
+                          </span>
+                        </>
+                      )}
+                    </Listbox.Option>
                     {sortPriceOptions.map((option) => (
                       <Listbox.Option
                         key={option.value}
@@ -381,7 +504,7 @@ const Shoes: NextPage<ShoeProps> = ({
                             "cursor-default select-none relative py-2 pl-10 pr-4"
                           )
                         }
-                        onClick={() => handleSortOrder(option.value)}
+                        onClick={() => handleSortPriceOrder(option.value)}
                       >
                         {({ selected, active }) => (
                           <>
@@ -459,7 +582,7 @@ const Shoes: NextPage<ShoeProps> = ({
                             "cursor-default select-none relative py-2 pl-10 pr-4"
                           )
                         }
-                        onClick={() => handleSortOrder(option.value)}
+                        onClick={() => handleSortPriceOrder(option.value)}
                       >
                         {({ selected, active }) => (
                           <>

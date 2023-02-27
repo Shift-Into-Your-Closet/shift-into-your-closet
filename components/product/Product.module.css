@@ -1,6 +1,6 @@
 .root {
     @apply relative grid items-start gap-1 grid-cols-1 overflow-x-hidden;
-    min-height: auto;
+    min-height: 700px;
   }
   
   .main {

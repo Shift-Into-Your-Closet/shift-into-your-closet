@@ -1,5 +1,6 @@
 import s from "../../product/Product.module.css";
 import ProductDetail from "../../product/ProductDetail";
+import { ShoeQuery } from "../../../graphql-operations";
 
 import Head from "next/head";
 import Image from "next/image";
@@ -7,7 +8,6 @@ import Link from "next/link";
 import { useMemo } from "react";
 
 import cn from "clsx";
-
 import SwiperCore, {
   Navigation,
   Pagination,
@@ -19,14 +19,24 @@ import SwiperCore, {
 } from "swiper";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/swiper-bundle.css";
-
-import { ShoeQuery } from "../../../graphql-operations";
+import {
+  FacebookShareButton,
+  TwitterShareButton,
+  FacebookMessengerShareButton,
+  TwitterIcon,
+  FacebookIcon,
+  FacebookMessengerIcon,
+  PinterestIcon,
+  PinterestShareButton,
+} from "react-share";
 
 export type ShoeProps = {
   shoe: ShoeQuery["allShoe"][0] | undefined;
 };
 
 const siteTitle = "Shift Into Your Closet";
+
+const appID = process.env.FACEBOOK_APP_ID;
 
 SwiperCore.use([
   Navigation,
@@ -39,6 +49,8 @@ SwiperCore.use([
 ]);
 
 function Shoe({ shoe }: ShoeProps) {
+  const shoeUrl = `www.https://www.shiftintoyourcloset.netlify.app/shoe/${shoe?.slug?.current}`;
+
   const images = useMemo(() => {
     const _images = [];
     if (shoe?.mainImage?.asset?.url) {
@@ -50,8 +62,8 @@ function Shoe({ shoe }: ShoeProps) {
     return _images;
   }, [shoe]);
 
-  const condition = shoe?.condition;
-  const updatedShoeCondition = condition?.replace("-", " ");
+  let condition = shoe?.condition;
+  condition = condition?.replace("-", " ");
 
   return (
     <>
@@ -142,8 +154,8 @@ function Shoe({ shoe }: ShoeProps) {
                         <SwiperSlide key={index}>
                           <Image
                             className="aspect-square"
-                            src={image ?? ""}
-                            alt={image || "Shoe Image"}
+                            src={image as string}
+                            alt={`Image of ${shoe?.name}`}
                             height={600}
                             width={600}
                             priority={index === 0}
@@ -155,7 +167,30 @@ function Shoe({ shoe }: ShoeProps) {
                   </Swiper>
                 )}
               </div>
+              <div className="flex mt-5 space-x-4 justify-center">
+                <FacebookShareButton url={shoeUrl} className="hover:scale-110">
+                  <FacebookIcon size={32} round={true} />
+                </FacebookShareButton>
+                <FacebookMessengerShareButton
+                  appId={appID as string}
+                  url={shoeUrl}
+                  className="hover:scale-110"
+                >
+                  <FacebookMessengerIcon size={32} round={true} />
+                </FacebookMessengerShareButton>
+                <TwitterShareButton url={shoeUrl} className="hover:scale-110">
+                  <TwitterIcon size={32} round={true} />
+                </TwitterShareButton>
+                <PinterestShareButton
+                  media={shoe?.mainImage?.asset?.url as string}
+                  url={shoeUrl}
+                  className="hover:scale-110"
+                >
+                  <PinterestIcon size={32} round={true} />
+                </PinterestShareButton>
+              </div>
             </div>
+
             <div className={s.sidebar}>
               <div className="flex mb-6">
                 <h1 className="font-bold text-blue-400 text-2xl flex-1">
@@ -177,7 +212,7 @@ function Shoe({ shoe }: ShoeProps) {
                     </span>
                   </div>
                   <div className="text-xl  text-blue-400 capitalize">
-                    Condition: {updatedShoeCondition}
+                    Condition: {condition}
                   </div>
                 </div>
               )}

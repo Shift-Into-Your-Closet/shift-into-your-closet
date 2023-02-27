@@ -27,6 +27,7 @@ fragment accessory on Accessory {
   slug {
     current
   }
+  _createdAt
 }
 
 query allAccessory {

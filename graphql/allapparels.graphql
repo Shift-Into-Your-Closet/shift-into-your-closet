@@ -1,35 +1,36 @@
 fragment apparel on Apparel {
-    price
-    brand {
-      name
-      slug {
-        current
-      }
-    }
-    condition
-    size {
-      apparelSize
-    }
-    category {
-      name
-      slug {
-        current
-      }
-    }
-    mainImage {
-      asset {
-        url
-      }
-    }
-    image {
-      asset {
-        url
-      }
-    }
+  price
+  brand {
     name
     slug {
       current
     }
+  }
+  condition
+  size {
+    apparelSize
+  }
+  category {
+    name
+    slug {
+      current
+    }
+  }
+  mainImage {
+    asset {
+      url
+    }
+  }
+  image {
+    asset {
+      url
+    }
+  }
+  name
+  slug {
+    current
+  }
+  _createdAt
 }
 
 query allApparels {

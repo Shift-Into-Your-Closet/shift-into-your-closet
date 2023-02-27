@@ -30,6 +30,7 @@ fragment shoe on Shoe {
   slug {
     current
   }
+  _createdAt
 }
 
 query allShoes {

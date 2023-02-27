@@ -76,12 +76,10 @@ const Apparel: NextPage<ApparelProps> = ({
   const [query, setQuery] = useState("");
   const [selectedBrand, setSelectedBrand] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("");
-  const [sortPrice, setSortPrice] = useState("");
+  const [arrivalOrder, setArrivalOrder] = useState("");
   const [condition, setCondition] = useState("");
-
-  const handleSelectedCondition = (selectedCondition: string) => {
-    setCondition(selectedCondition);
-  };
+  const [sortPrice, setSortPrice] = useState("");
+  const [sortOrder, setSortOrder] = useState("");
 
   const capitalizeWords = (str: string) => {
     return str.replace(/\b\w/g, (c) => c.toUpperCase());
@@ -95,13 +93,25 @@ const Apparel: NextPage<ApparelProps> = ({
     setSelectedCategory(selectedCategory);
   };
 
-  const handleSortOrder = (selectedSortPrice: string) => {
+  const handleSelectedArrival = (selectedArrival: string) => {
+    setArrivalOrder(selectedArrival);
+  };
+
+  const handleSelectedCondition = (selectedCondition: string) => {
+    setCondition(selectedCondition);
+  };
+
+  const handleSortPriceOrder = (selectedSortPrice: string) => {
     setSortPrice(selectedSortPrice);
   };
 
-  const sortPriceOptions = [
-    { value: "asc", text: "Low to High" },
-    { value: "desc", text: "High to Low" },
+  const handleSortOrder = (selectedSortOrder: string) => {
+    setSortOrder(selectedSortOrder);
+  };
+
+  const arrivalOptions = [
+    { value: "newest-to-oldest", text: "Newest to Oldest" },
+    { value: "oldest-to-newest", text: "Oldest to Newest" },
   ];
 
   const conditionOptions = [
@@ -110,8 +120,26 @@ const Apparel: NextPage<ApparelProps> = ({
     { value: "worn", text: "Worn" },
   ];
 
-  const selectedPriceOption = sortPriceOptions.find(
+  const priceOptions = [
+    { value: "asc", text: "Low to High" },
+    { value: "desc", text: "High to Low" },
+  ];
+
+  const orderOptions = [
+    { value: "asc", text: "A to Z" },
+    { value: "desc", text: "Z to A" },
+  ];
+
+  const selectedArrivalOption = arrivalOptions.find(
+    (option) => option.value === arrivalOrder
+  );
+
+  const selectedPriceOption = priceOptions.find(
     (option) => option.value === sortPrice
+  );
+
+  const selectedSortOption = orderOptions.find(
+    (option) => option.value === sortOrder
   );
 
   const router = useRouter();
@@ -146,11 +174,26 @@ const Apparel: NextPage<ApparelProps> = ({
       return apparel.condition === condition;
     });
 
-    if (sortPrice === "asc") {
-      brandApparel.sort((a, b) => (a.price || 0) - (b.price || 0));
-    } else if (sortPrice === "desc") {
-      brandApparel.sort((a, b) => (b.price || 0) - (a.price || 0));
-    }
+    brandApparel.sort((a, b) => {
+      if (sortPrice === "asc") {
+        return (a.price || 0) - (b.price || 0);
+      } else if (sortPrice === "desc") {
+        return (b.price || 0) - (a.price || 0);
+      } else if (arrivalOrder === "newest-to-oldest") {
+        return (
+          new Date(b._createdAt).getTime() - new Date(a._createdAt).getTime()
+        );
+      } else if (arrivalOrder === "oldest-to-newest") {
+        return (
+          new Date(a._createdAt).getTime() - new Date(b._createdAt).getTime()
+        );
+      } else if (sortOrder === "asc") {
+        return (a.name || "").localeCompare(b.name || "");
+      } else if (sortOrder === "desc") {
+        return (b.name || "").localeCompare(a.name || "");
+      }
+      return 0;
+    });
 
     return brandApparel.slice(offset, offset + limit);
   }, [
@@ -158,9 +201,12 @@ const Apparel: NextPage<ApparelProps> = ({
     autocompleteApparel,
     offset,
     limit,
+    selectedBrand,
     selectedCategory,
+    arrivalOrder,
     condition,
     sortPrice,
+    sortOrder,
   ]);
 
   const brandApparel = activeBrand
@@ -278,7 +324,6 @@ const Apparel: NextPage<ApparelProps> = ({
                   </Listbox.Options>
                 </div>
               </Listbox>
-
               {/* Category Filter */}
               <Listbox
                 value={selectedCategory}
@@ -357,12 +402,12 @@ const Apparel: NextPage<ApparelProps> = ({
                 </div>
               </Listbox>
 
-              {/* Price */}
-              <Listbox value={sortPrice} onChange={handleSortOrder}>
+              {/* Arrivals Filter */}
+              <Listbox value={arrivalOrder} onChange={handleSelectedArrival}>
                 <div className="relative">
                   <Listbox.Button className="relative w-full py-2 pl-3 pr-10 text-left bg-white rounded-md shadow-sm cursor-pointer focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
                     <span className="block truncate">
-                      {selectedPriceOption?.text || "Sort by Price"}
+                      {selectedArrivalOption?.text || "Filter by Arrivals"}
                     </span>
                     <span className="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
                       <svg
@@ -379,7 +424,30 @@ const Apparel: NextPage<ApparelProps> = ({
                     </span>
                   </Listbox.Button>
                   <Listbox.Options className="absolute z-10 w-full py-1 mt-1 overflow-auto text-base bg-white rounded-md shadow-lg max-h-60 ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
-                    {sortPriceOptions.map((option) => (
+                    <Listbox.Option
+                      key="all"
+                      value=""
+                      className={({ active }) =>
+                        cn(
+                          active ? "text-white bg-blue-600" : "text-gray-900",
+                          "cursor-default select-none relative py-2 pl-10 pr-4"
+                        )
+                      }
+                    >
+                      {({ selected, active }) => (
+                        <>
+                          <span
+                            className={cn(
+                              selected ? "font-semibold" : "font-normal",
+                              "block truncate"
+                            )}
+                          >
+                            All
+                          </span>
+                        </>
+                      )}
+                    </Listbox.Option>
+                    {arrivalOptions.map((option) => (
                       <Listbox.Option
                         key={option.value}
                         value={option.value}
@@ -389,7 +457,7 @@ const Apparel: NextPage<ApparelProps> = ({
                             "cursor-default select-none relative py-2 pl-10 pr-4"
                           )
                         }
-                        onClick={() => handleSortOrder(option.value)}
+                        onClick={() => handleSelectedArrival(option.value)}
                       >
                         {({ selected, active }) => (
                           <>
@@ -408,6 +476,7 @@ const Apparel: NextPage<ApparelProps> = ({
                   </Listbox.Options>
                 </div>
               </Listbox>
+
               {/* Condition Filter */}
               <Listbox value={condition} onChange={handleSelectedCondition}>
                 <div className="relative">
@@ -457,9 +526,157 @@ const Apparel: NextPage<ApparelProps> = ({
                         </>
                       )}
                     </Listbox.Option>
-
-                    {/*  */}
                     {conditionOptions.map((option) => (
+                      <Listbox.Option
+                        key={option.value}
+                        value={option.value}
+                        className={({ active }) =>
+                          cn(
+                            active ? "text-white bg-blue-600" : "text-gray-900",
+                            "cursor-default select-none relative py-2 pl-10 pr-4"
+                          )
+                        }
+                        onClick={() => handleSortPriceOrder(option.value)}
+                      >
+                        {({ selected, active }) => (
+                          <>
+                            <span
+                              className={cn(
+                                selected ? "font-semibold" : "font-normal",
+                                "block truncate"
+                              )}
+                            >
+                              {option.text}
+                            </span>
+                          </>
+                        )}
+                      </Listbox.Option>
+                    ))}
+                  </Listbox.Options>
+                </div>
+              </Listbox>
+
+              {/* Price Filter */}
+              <Listbox value={sortPrice} onChange={handleSortPriceOrder}>
+                <div className="relative">
+                  <Listbox.Button className="relative w-full py-2 pl-3 pr-10 text-left bg-white rounded-md shadow-sm cursor-pointer focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+                    <span className="block truncate">
+                      {selectedPriceOption?.text || "Sort by Price"}
+                    </span>
+                    <span className="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
+                      <svg
+                        className="w-5 h-5 text-gray-400"
+                        viewBox="0 0 20 20"
+                        fill="currentColor"
+                      >
+                        <path
+                          fillRule="evenodd"
+                          clipRule="evenodd"
+                          d="M6.293 7.707a1 1 0 010-1.414l3-3a1 1 0 011.414 0l3 3a1 1 0 11-1.414 1.414L11 6.414V16a1 1 0 11-2 0V6.414L7.707 8.121a1 1 0 01-1.414-1.414z"
+                        />
+                      </svg>
+                    </span>
+                  </Listbox.Button>
+                  <Listbox.Options className="absolute z-10 w-full py-1 mt-1 overflow-auto text-base bg-white rounded-md shadow-lg max-h-60 ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
+                    <Listbox.Option
+                      key="all-conditions"
+                      value=""
+                      className={({ active }) =>
+                        cn(
+                          active ? "text-white bg-blue-600" : "text-gray-900",
+                          "cursor-default select-none relative py-2 pl-10 pr-4"
+                        )
+                      }
+                    >
+                      {({ selected, active }) => (
+                        <>
+                          <span
+                            className={cn(
+                              selected ? "font-semibold" : "font-normal",
+                              "block truncate"
+                            )}
+                          >
+                            All
+                          </span>
+                        </>
+                      )}
+                    </Listbox.Option>
+                    {priceOptions.map((option) => (
+                      <Listbox.Option
+                        key={option.value}
+                        value={option.value}
+                        className={({ active }) =>
+                          cn(
+                            active ? "text-white bg-blue-600" : "text-gray-900",
+                            "cursor-default select-none relative py-2 pl-10 pr-4"
+                          )
+                        }
+                        onClick={() => handleSortPriceOrder(option.value)}
+                      >
+                        {({ selected, active }) => (
+                          <>
+                            <span
+                              className={cn(
+                                selected ? "font-semibold" : "font-normal",
+                                "block truncate"
+                              )}
+                            >
+                              {option.text}
+                            </span>
+                          </>
+                        )}
+                      </Listbox.Option>
+                    ))}
+                  </Listbox.Options>
+                </div>
+              </Listbox>
+              {/* Alphabetical Filter */}
+
+              <Listbox value={sortOrder} onChange={handleSortOrder}>
+                <div className="relative">
+                  <Listbox.Button className="relative w-full py-2 pl-3 pr-10 text-left bg-white rounded-md shadow-sm cursor-pointer focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+                    <span className="block truncate">
+                      {selectedSortOption?.text || "Sort Alphabetically"}
+                    </span>
+                    <span className="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
+                      <svg
+                        className="w-5 h-5 text-gray-400"
+                        viewBox="0 0 20 20"
+                        fill="currentColor"
+                      >
+                        <path
+                          fillRule="evenodd"
+                          clipRule="evenodd"
+                          d="M6.293 7.707a1 1 0 010-1.414l3-3a1 1 0 011.414 0l3 3a1 1 0 11-1.414 1.414L11 6.414V16a1 1 0 11-2 0V6.414L7.707 8.121a1 1 0 01-1.414-1.414z"
+                        />
+                      </svg>
+                    </span>
+                  </Listbox.Button>
+                  <Listbox.Options className="absolute z-10 w-full py-1 mt-1 overflow-auto text-base bg-white rounded-md shadow-lg max-h-60 ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
+                    <Listbox.Option
+                      key="all"
+                      value=""
+                      className={({ active }) =>
+                        cn(
+                          active ? "text-white bg-blue-600" : "text-gray-900",
+                          "cursor-default select-none relative py-2 pl-10 pr-4"
+                        )
+                      }
+                    >
+                      {({ selected, active }) => (
+                        <>
+                          <span
+                            className={cn(
+                              selected ? "font-semibold" : "font-normal",
+                              "block truncate"
+                            )}
+                          >
+                            All
+                          </span>
+                        </>
+                      )}
+                    </Listbox.Option>
+                    {orderOptions.map((option) => (
                       <Listbox.Option
                         key={option.value}
                         value={option.value}

@@ -1,5 +1,6 @@
 import s from "../../product/Product.module.css";
 import ProductDetail from "../../product/ProductDetail";
+import { AccessoryQuery } from "../../../graphql-operations";
 
 import Head from "next/head";
 import Image from "next/image";
@@ -7,7 +8,6 @@ import Link from "next/link";
 import { useMemo } from "react";
 
 import cn from "clsx";
-
 import SwiperCore, {
   Navigation,
   Pagination,
@@ -19,14 +19,24 @@ import SwiperCore, {
 } from "swiper";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/swiper-bundle.css";
-
-import { AccessoryQuery } from "../../../graphql-operations";
+import {
+  FacebookShareButton,
+  TwitterShareButton,
+  FacebookMessengerShareButton,
+  TwitterIcon,
+  FacebookIcon,
+  FacebookMessengerIcon,
+  PinterestIcon,
+  PinterestShareButton,
+} from "react-share";
 
 export type AccessoryProps = {
   accessory: AccessoryQuery["allAccessory"][0] | undefined;
 };
 
 const siteTitle = "Shift Into Your Closet";
+
+const appID = process.env.FACEBOOK_APP_ID;
 
 SwiperCore.use([
   Navigation,
@@ -39,6 +49,8 @@ SwiperCore.use([
 ]);
 
 function Accessory({ accessory }: AccessoryProps) {
+  const accessoryUrl = `www.https://www.shiftintoyourcloset.netlify.app/accessory/${accessory?.slug?.current}`;
+
   const images = useMemo(() => {
     const _images = [];
     if (accessory?.mainImage?.asset?.url) {
@@ -50,8 +62,8 @@ function Accessory({ accessory }: AccessoryProps) {
     return _images;
   }, [accessory]);
 
-  const condition = accessory?.condition;
-  const updatedAccessoryCondition = condition?.replace("-", " ");
+  let condition = accessory?.condition;
+  condition = condition?.replace("-", " ");
 
   return (
     <>
@@ -142,8 +154,8 @@ function Accessory({ accessory }: AccessoryProps) {
                         <SwiperSlide key={index}>
                           <Image
                             className="aspect-square"
-                            src={image ?? ""}
-                            alt={image || "Accessirt Image"}
+                            src={image as string}
+                            alt={`Image of ${accessory?.name}`}
                             height={600}
                             width={600}
                             priority={index === 0}
@@ -154,6 +166,34 @@ function Accessory({ accessory }: AccessoryProps) {
                     ))}
                   </Swiper>
                 )}
+              </div>
+              <div className="flex mt-5 space-x-4 justify-center">
+                <FacebookShareButton
+                  url={accessoryUrl}
+                  className="hover:scale-110"
+                >
+                  <FacebookIcon size={32} round={true} />
+                </FacebookShareButton>
+                <FacebookMessengerShareButton
+                  appId={appID as string}
+                  url={accessoryUrl}
+                  className="hover:scale-110"
+                >
+                  <FacebookMessengerIcon size={32} round={true} />
+                </FacebookMessengerShareButton>
+                <TwitterShareButton
+                  url={accessoryUrl}
+                  className="hover:scale-110"
+                >
+                  <TwitterIcon size={32} round={true} />
+                </TwitterShareButton>
+                <PinterestShareButton
+                  media={accessory?.mainImage?.asset?.url as string}
+                  url={accessoryUrl}
+                  className="hover:scale-110"
+                >
+                  <PinterestIcon size={32} round={true} />
+                </PinterestShareButton>
               </div>
             </div>
             <div className={s.sidebar}>
@@ -166,7 +206,7 @@ function Accessory({ accessory }: AccessoryProps) {
                 </div>
               </div>
               <div className="text-xl mb-3 text-blue-400 capitalize">
-                Condition: {updatedAccessoryCondition}
+                Condition: {condition}
               </div>
 
               <Link

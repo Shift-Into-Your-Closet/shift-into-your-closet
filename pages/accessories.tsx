@@ -15,9 +15,10 @@ import {
   AllAccessoryDocument,
   AllAccessoryQuery,
 } from "./../graphql-operations";
+import BackToTopButton from "../components/ui/BackToTopButton";
 
 import { Combobox, Listbox } from "@headlessui/react";
-import BackToTopButton from "../components/ui/BackToTopButton";
+import qs from "qs";
 
 type AccessoryProps = {
   accessories: AllAccessoryQuery["allAccessory"];
@@ -91,26 +92,68 @@ const Accessories: NextPage<AccessoryProps> = ({
 
   const handleSelectedBrand = (selectedBrand: string) => {
     setSelectedBrand(selectedBrand);
+    router.push({
+      pathname: "/accessories",
+      search: qs.stringify({
+        ...router.query,
+        brand: selectedBrand.toLowerCase(),
+      }),
+    });
   };
 
   const handleSelectedCategory = (selectedCategory: string) => {
     setSelectedCategory(selectedCategory);
+    router.push({
+      pathname: "/accessories",
+      search: qs.stringify({
+        ...router.query,
+        category: selectedCategory.toLowerCase(),
+      }),
+    });
   };
 
   const handleSelectedArrival = (selectedArrival: string) => {
     setArrivalOrder(selectedArrival);
+    router.push({
+      pathname: "/accessories",
+      search: qs.stringify({
+        ...router.query,
+        arrival: selectedArrival.toLowerCase(),
+      }),
+    });
   };
 
   const handleSelectedCondition = (selectedCondition: string) => {
     setCondition(selectedCondition);
+    router.push({
+      pathname: "/accessories",
+      search: qs.stringify({
+        ...router.query,
+        condition: selectedCondition.toLowerCase(),
+      }),
+    });
   };
 
   const handleSortPriceOrder = (selectedSortPrice: string) => {
     setSortPrice(selectedSortPrice);
+    router.push({
+      pathname: "/accessories",
+      search: qs.stringify({
+        ...router.query,
+        priceOrder: selectedSortPrice.toLowerCase(),
+      }),
+    });
   };
 
   const handleSortOrder = (selectedSortOrder: string) => {
     setSortOrder(selectedSortOrder);
+    router.push({
+      pathname: "/accessories",
+      search: qs.stringify({
+        ...router.query,
+        sortOrder: selectedSortOrder.toLowerCase(),
+      }),
+    });
   };
 
   const arrivalOptions = [
@@ -268,6 +311,7 @@ const Accessories: NextPage<AccessoryProps> = ({
                         className="w-5 h-5 text-gray-400"
                         viewBox="0 0 20 20"
                         fill="currentColor"
+                        style={{ transform: "rotate(180deg)" }}
                       >
                         <path
                           fillRule="evenodd"
@@ -344,6 +388,7 @@ const Accessories: NextPage<AccessoryProps> = ({
                         className="w-5 h-5 text-gray-400"
                         viewBox="0 0 20 20"
                         fill="currentColor"
+                        style={{ transform: "rotate(180deg)" }}
                       >
                         <path
                           fillRule="evenodd"
@@ -419,6 +464,7 @@ const Accessories: NextPage<AccessoryProps> = ({
                         className="w-5 h-5 text-gray-400"
                         viewBox="0 0 20 20"
                         fill="currentColor"
+                        style={{ transform: "rotate(180deg)" }}
                       >
                         <path
                           fillRule="evenodd"
@@ -493,16 +539,15 @@ const Accessories: NextPage<AccessoryProps> = ({
                     </span>
                     <span className="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
                       <svg
-                        xmlns="http://www.w3.org/2000/svg"
                         className="w-5 h-5 text-gray-400"
                         viewBox="0 0 20 20"
                         fill="currentColor"
-                        aria-hidden="true"
+                        style={{ transform: "rotate(180deg)" }}
                       >
                         <path
                           fillRule="evenodd"
-                          d="M5.293 6.707a1 1 0 0 1 0-1.414l3-3a1 1 0 0 1 1.414 0l3 3a1 1 0 0 1-1.414 1.414L10 5.414V16a1 1 0 1 1-2 0V5.414L6.707 6.707a1 1 0 0 1-1.414 0z"
                           clipRule="evenodd"
+                          d="M6.293 7.707a1 1 0 010-1.414l3-3a1 1 0 011.414 0l3 3a1 1 0 11-1.414 1.414L11 6.414V16a1 1 0 11-2 0V6.414L7.707 8.121a1 1 0 01-1.414-1.414z"
                         />
                       </svg>
                     </span>
@@ -573,6 +618,7 @@ const Accessories: NextPage<AccessoryProps> = ({
                         className="w-5 h-5 text-gray-400"
                         viewBox="0 0 20 20"
                         fill="currentColor"
+                        style={{ transform: "rotate(180deg)" }}
                       >
                         <path
                           fillRule="evenodd"
@@ -648,6 +694,7 @@ const Accessories: NextPage<AccessoryProps> = ({
                         className="w-5 h-5 text-gray-400"
                         viewBox="0 0 20 20"
                         fill="currentColor"
+                        style={{ transform: "rotate(180deg)" }}
                       >
                         <path
                           fillRule="evenodd"

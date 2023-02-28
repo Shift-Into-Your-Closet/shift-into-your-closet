@@ -15,9 +15,10 @@ import {
   AllApparelsDocument,
   AllApparelsQuery,
 } from "./../graphql-operations";
+import BackToTopButton from "../components/ui/BackToTopButton";
 
 import { Combobox, Listbox } from "@headlessui/react";
-import BackToTopButton from "../components/ui/BackToTopButton";
+import qs from "qs";
 
 type ApparelProps = {
   apparels: AllApparelsQuery["allApparel"];
@@ -76,6 +77,7 @@ const Apparel: NextPage<ApparelProps> = ({
   const [query, setQuery] = useState("");
   const [selectedBrand, setSelectedBrand] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("");
+  const [selectedSize, setSelectedSize] = useState("");
   const [arrivalOrder, setArrivalOrder] = useState("");
   const [condition, setCondition] = useState("");
   const [sortPrice, setSortPrice] = useState("");
@@ -85,28 +87,74 @@ const Apparel: NextPage<ApparelProps> = ({
     return str.replace(/\b\w/g, (c) => c.toUpperCase());
   };
 
+  const handleSelectedSize = (selectedSize: string) => {
+    setSelectedSize(selectedSize);
+  };
+
   const handleSelectedBrand = (selectedBrand: string) => {
     setSelectedBrand(selectedBrand);
+    router.push({
+      pathname: "/shoes",
+      search: qs.stringify({
+        ...router.query,
+        brand: selectedBrand.toLowerCase(),
+      }),
+    });
   };
 
   const handleSelectedCategory = (selectedCategory: string) => {
     setSelectedCategory(selectedCategory);
+    router.push({
+      pathname: "/shoes",
+      search: qs.stringify({
+        ...router.query,
+        category: selectedCategory.toLowerCase(),
+      }),
+    });
   };
 
   const handleSelectedArrival = (selectedArrival: string) => {
     setArrivalOrder(selectedArrival);
+    router.push({
+      pathname: "/shoes",
+      search: qs.stringify({
+        ...router.query,
+        arrival: selectedArrival.toLowerCase(),
+      }),
+    });
   };
 
   const handleSelectedCondition = (selectedCondition: string) => {
     setCondition(selectedCondition);
+    router.push({
+      pathname: "/shoes",
+      search: qs.stringify({
+        ...router.query,
+        condition: selectedCondition.toLowerCase(),
+      }),
+    });
   };
 
   const handleSortPriceOrder = (selectedSortPrice: string) => {
     setSortPrice(selectedSortPrice);
+    router.push({
+      pathname: "/shoes",
+      search: qs.stringify({
+        ...router.query,
+        priceOrder: selectedSortPrice.toLowerCase(),
+      }),
+    });
   };
 
   const handleSortOrder = (selectedSortOrder: string) => {
     setSortOrder(selectedSortOrder);
+    router.push({
+      pathname: "/shoes",
+      search: qs.stringify({
+        ...router.query,
+        sortOrder: selectedSortOrder.toLowerCase(),
+      }),
+    });
   };
 
   const arrivalOptions = [
@@ -170,6 +218,11 @@ const Apparel: NextPage<ApparelProps> = ({
       : brandApparel;
 
     brandApparel = brandApparel.filter((apparel) => {
+      if (!selectedSize) return true;
+      return apparel.size?.apparelSize === selectedSize;
+    });
+
+    brandApparel = brandApparel.filter((apparel) => {
       if (!condition) return true;
       return apparel.condition === condition;
     });
@@ -203,6 +256,7 @@ const Apparel: NextPage<ApparelProps> = ({
     limit,
     selectedBrand,
     selectedCategory,
+    selectedSize,
     arrivalOrder,
     condition,
     sortPrice,
@@ -263,6 +317,7 @@ const Apparel: NextPage<ApparelProps> = ({
                         className="w-5 h-5 text-gray-400"
                         viewBox="0 0 20 20"
                         fill="currentColor"
+                        style={{ transform: "rotate(180deg)" }}
                       >
                         <path
                           fillRule="evenodd"
@@ -339,6 +394,7 @@ const Apparel: NextPage<ApparelProps> = ({
                         className="w-5 h-5 text-gray-400"
                         viewBox="0 0 20 20"
                         fill="currentColor"
+                        style={{ transform: "rotate(180deg)" }}
                       >
                         <path
                           fillRule="evenodd"
@@ -402,6 +458,62 @@ const Apparel: NextPage<ApparelProps> = ({
                 </div>
               </Listbox>
 
+              {/* Size Filter */}
+              {apparels && (
+                <Listbox value={selectedSize} onChange={setSelectedSize}>
+                  <Listbox.Button className="relative w-full py-2 pl-3 pr-10 text-left bg-white rounded-md shadow-sm cursor-pointer focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+                    <span className="block truncate">
+                      {selectedSize || "All Sizes"}
+                    </span>
+                    <span className="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
+                      <svg
+                        className="w-5 h-5 text-gray-400"
+                        viewBox="0 0 20 20"
+                        fill="currentColor"
+                      >
+                        <path
+                          fillRule="evenodd"
+                          clipRule="evenodd"
+                          d="M6.293 7.707a1 1 0 010-1.414l3-3a1 1 0 011.414 0l3 3a1 1 0 11-1.414 1.414L11 6.414V16a1 1 0 11-2 0V6.414L7.707 8.121a1 1 0 01-1.414-1.414z"
+                        />
+                      </svg>
+                    </span>
+                  </Listbox.Button>
+                  <Listbox.Options className="absolute z-10 w-full py-1 mt-1 overflow-auto text-base bg-white rounded-md shadow-lg max-h-60 ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
+                    {Array.from(
+                      new Set(
+                        apparels.map((apparel) => apparel.size?.apparelSize)
+                      )
+                    ).map((size) => (
+                      <Listbox.Option
+                        key={size}
+                        value={size}
+                        className={({ active }) =>
+                          cn(
+                            active ? "text-white bg-blue-600" : "text-gray-900",
+                            "cursor-default select-none relative py-2 pl-10 pr-4"
+                          )
+                        }
+                        onClick={() => handleSelectedSize(size as string)}
+                      >
+                        {({ selected, active }) => (
+                          <>
+                            <span
+                              className={cn(
+                                selected ? "font-semibold" : "font-normal",
+                                "block truncate"
+                              )}
+                            >
+                              {size}
+                            </span>
+                          </>
+                        )}
+                      </Listbox.Option>
+                    ))}
+                  </Listbox.Options>
+                </Listbox>
+              )}
+
               {/* Arrivals Filter */}
               <Listbox value={arrivalOrder} onChange={handleSelectedArrival}>
                 <div className="relative">
@@ -414,6 +526,7 @@ const Apparel: NextPage<ApparelProps> = ({
                         className="w-5 h-5 text-gray-400"
                         viewBox="0 0 20 20"
                         fill="currentColor"
+                        style={{ transform: "rotate(180deg)" }}
                       >
                         <path
                           fillRule="evenodd"
@@ -488,16 +601,15 @@ const Apparel: NextPage<ApparelProps> = ({
                     </span>
                     <span className="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
                       <svg
-                        xmlns="http://www.w3.org/2000/svg"
                         className="w-5 h-5 text-gray-400"
                         viewBox="0 0 20 20"
                         fill="currentColor"
-                        aria-hidden="true"
+                        style={{ transform: "rotate(180deg)" }}
                       >
                         <path
                           fillRule="evenodd"
-                          d="M5.293 6.707a1 1 0 0 1 0-1.414l3-3a1 1 0 0 1 1.414 0l3 3a1 1 0 0 1-1.414 1.414L10 5.414V16a1 1 0 1 1-2 0V5.414L6.707 6.707a1 1 0 0 1-1.414 0z"
                           clipRule="evenodd"
+                          d="M6.293 7.707a1 1 0 010-1.414l3-3a1 1 0 011.414 0l3 3a1 1 0 11-1.414 1.414L11 6.414V16a1 1 0 11-2 0V6.414L7.707 8.121a1 1 0 01-1.414-1.414z"
                         />
                       </svg>
                     </span>
@@ -568,6 +680,7 @@ const Apparel: NextPage<ApparelProps> = ({
                         className="w-5 h-5 text-gray-400"
                         viewBox="0 0 20 20"
                         fill="currentColor"
+                        style={{ transform: "rotate(180deg)" }}
                       >
                         <path
                           fillRule="evenodd"
@@ -643,6 +756,7 @@ const Apparel: NextPage<ApparelProps> = ({
                         className="w-5 h-5 text-gray-400"
                         viewBox="0 0 20 20"
                         fill="currentColor"
+                        style={{ transform: "rotate(180deg)" }}
                       >
                         <path
                           fillRule="evenodd"
@@ -749,7 +863,7 @@ const Apparel: NextPage<ApparelProps> = ({
                               src={apparel.mainImage.asset.url}
                               alt={`Image for ${apparel.name}`}
                               className="object-cover"
-                              priority={true}
+                              loading="lazy"
                               fill
                               sizes="(max-width: 768px) 100vw,
                             (max-width: 1200px) 50vw,

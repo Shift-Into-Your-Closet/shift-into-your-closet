@@ -22,10 +22,8 @@ import "swiper/swiper-bundle.css";
 import {
   FacebookShareButton,
   TwitterShareButton,
-  FacebookMessengerShareButton,
   TwitterIcon,
   FacebookIcon,
-  FacebookMessengerIcon,
   PinterestIcon,
   PinterestShareButton,
 } from "react-share";
@@ -35,8 +33,6 @@ export type ShoeProps = {
 };
 
 const siteTitle = "Shift Into Your Closet";
-
-const appID = process.env.FACEBOOK_APP_ID;
 
 SwiperCore.use([
   Navigation,
@@ -171,13 +167,6 @@ function Shoe({ shoe }: ShoeProps) {
                 <FacebookShareButton url={shoeUrl} className="hover:scale-110">
                   <FacebookIcon size={32} round={true} />
                 </FacebookShareButton>
-                <FacebookMessengerShareButton
-                  appId={appID as string}
-                  url={shoeUrl}
-                  className="hover:scale-110"
-                >
-                  <FacebookMessengerIcon size={32} round={true} />
-                </FacebookMessengerShareButton>
                 <TwitterShareButton url={shoeUrl} className="hover:scale-110">
                   <TwitterIcon size={32} round={true} />
                 </TwitterShareButton>

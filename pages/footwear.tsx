@@ -92,14 +92,14 @@ const Shoes: NextPage<ShoeProps> = ({
     setSelectedSize(selectedSize);
     if (selectedSize) {
       router.push({
-        pathname: "/shoes",
+        pathname: "/footwear",
         search: qs.stringify({
           ...router.query,
           size: selectedSize.toLowerCase(),
         }),
       });
     } else {
-      router.push("/shoes");
+      router.push("/footwear");
     }
   };
 
@@ -107,14 +107,14 @@ const Shoes: NextPage<ShoeProps> = ({
     setSelectedBrand(selectedBrand);
     if (selectedBrand) {
       router.push({
-        pathname: "/shoes",
+        pathname: "/footwear",
         search: qs.stringify({
           ...router.query,
           brand: selectedBrand.toLowerCase(),
         }),
       });
     } else {
-      router.push("/shoes");
+      router.push("/footwear");
     }
   };
 
@@ -122,14 +122,14 @@ const Shoes: NextPage<ShoeProps> = ({
     setSelectedCategory(selectedCategory);
     if (selectedCategory) {
       router.push({
-        pathname: "/shoes",
+        pathname: "/footwear",
         search: qs.stringify({
           ...router.query,
           category: selectedCategory.toLowerCase(),
         }),
       });
     } else {
-      router.push("/shoes");
+      router.push("/footwear");
     }
   };
 
@@ -137,14 +137,14 @@ const Shoes: NextPage<ShoeProps> = ({
     setArrivalOrder(selectedArrival);
     if (selectedArrival) {
       router.push({
-        pathname: "/shoes",
+        pathname: "/footwear",
         search: qs.stringify({
           ...router.query,
           arrival: selectedArrival.toLowerCase(),
         }),
       });
     } else {
-      router.push("/shoes");
+      router.push("/footwear");
     }
   };
 
@@ -152,14 +152,14 @@ const Shoes: NextPage<ShoeProps> = ({
     setCondition(selectedCondition);
     if (selectedCondition) {
       router.push({
-        pathname: "/shoes",
+        pathname: "/footwear",
         search: qs.stringify({
           ...router.query,
           condition: selectedCondition.toLowerCase(),
         }),
       });
     } else {
-      router.push("/shoes");
+      router.push("/footwear");
     }
   };
 
@@ -167,14 +167,14 @@ const Shoes: NextPage<ShoeProps> = ({
     setSortPrice(selectedSortPrice);
     if (selectedSortPrice) {
       router.push({
-        pathname: "/shoes",
+        pathname: "/footwear",
         search: qs.stringify({
           ...router.query,
           priceOrder: selectedSortPrice.toLowerCase(),
         }),
       });
     } else {
-      router.push("/shoes");
+      router.push("/footwear");
     }
   };
 
@@ -182,14 +182,14 @@ const Shoes: NextPage<ShoeProps> = ({
     setSortOrder(selectedSortOrder);
     if (selectedSortOrder) {
       router.push({
-        pathname: "/shoes",
+        pathname: "/footwear",
         search: qs.stringify({
           ...router.query,
           sortOrder: selectedSortOrder.toLowerCase(),
         }),
       });
     } else {
-      router.push("/shoes");
+      router.push("/footwear");
     }
   };
   const arrivalOptions = [
@@ -890,10 +890,10 @@ const Shoes: NextPage<ShoeProps> = ({
                 value={selectedShoe}
                 onChange={setSelectedShoe}
                 className="w-full"
-                aria-label="Search Apparel"
+                aria-label="Search Shoes"
               >
                 <Combobox.Input
-                  placeholder="Search Apparel"
+                  placeholder="Search Shoes"
                   className="w-full border border-accent-4 rounded-sm p-2 pl-8 text-black bg-gray-200"
                   onChange={(event) => setQuery(event.target.value)}
                 />

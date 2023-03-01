@@ -791,10 +791,10 @@ const Accessories: NextPage<AccessoryProps> = ({
                 value={selectedAccessory}
                 onChange={setSelectedAccessory}
                 className="w-full"
-                aria-label="Search Apparel"
+                aria-label="Search Accessories"
               >
                 <Combobox.Input
-                  placeholder="Search Apparel"
+                  placeholder="Search Accessories"
                   className="w-full border border-accent-4 rounded-sm p-2 pl-8 text-black bg-gray-200"
                   onChange={(event) => setQuery(event.target.value)}
                 />

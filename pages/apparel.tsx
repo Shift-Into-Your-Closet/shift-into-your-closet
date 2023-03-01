@@ -89,72 +89,107 @@ const Apparel: NextPage<ApparelProps> = ({
 
   const handleSelectedSize = (selectedSize: string) => {
     setSelectedSize(selectedSize);
+    if (selectedSize) {
+      router.push({
+        pathname: "/apparel",
+        search: qs.stringify({
+          ...router.query,
+          size: selectedSize.toLowerCase(),
+        }),
+      });
+    } else {
+      router.push("/apparel");
+    }
   };
 
   const handleSelectedBrand = (selectedBrand: string) => {
-    setSelectedBrand(selectedBrand);
-    router.push({
-      pathname: "/shoes",
-      search: qs.stringify({
-        ...router.query,
-        brand: selectedBrand.toLowerCase(),
-      }),
-    });
+    setSelectedCategory(selectedBrand);
+    if (selectedBrand) {
+      router.push({
+        pathname: "/apparel",
+        search: qs.stringify({
+          ...router.query,
+          brand: selectedBrand.toLowerCase(),
+        }),
+      });
+    } else {
+      router.push("/apparel");
+    }
   };
 
   const handleSelectedCategory = (selectedCategory: string) => {
     setSelectedCategory(selectedCategory);
-    router.push({
-      pathname: "/shoes",
-      search: qs.stringify({
-        ...router.query,
-        category: selectedCategory.toLowerCase(),
-      }),
-    });
+    if (selectedCategory) {
+      router.push({
+        pathname: "/apparel",
+        search: qs.stringify({
+          ...router.query,
+          category: selectedCategory.toLowerCase(),
+        }),
+      });
+    } else {
+      router.push("/apparel");
+    }
   };
 
   const handleSelectedArrival = (selectedArrival: string) => {
     setArrivalOrder(selectedArrival);
-    router.push({
-      pathname: "/shoes",
-      search: qs.stringify({
-        ...router.query,
-        arrival: selectedArrival.toLowerCase(),
-      }),
-    });
+    if (selectedArrival) {
+      router.push({
+        pathname: "/apparel",
+        search: qs.stringify({
+          ...router.query,
+          arrival: selectedArrival.toLowerCase(),
+        }),
+      });
+    } else {
+      router.push("/apparel");
+    }
   };
 
   const handleSelectedCondition = (selectedCondition: string) => {
     setCondition(selectedCondition);
-    router.push({
-      pathname: "/shoes",
-      search: qs.stringify({
-        ...router.query,
-        condition: selectedCondition.toLowerCase(),
-      }),
-    });
+    if (selectedCondition) {
+      router.push({
+        pathname: "/apparel",
+        search: qs.stringify({
+          ...router.query,
+          condition: selectedCondition.toLowerCase(),
+        }),
+      });
+    } else {
+      router.push("/apparel");
+    }
   };
 
   const handleSortPriceOrder = (selectedSortPrice: string) => {
     setSortPrice(selectedSortPrice);
-    router.push({
-      pathname: "/shoes",
-      search: qs.stringify({
-        ...router.query,
-        priceOrder: selectedSortPrice.toLowerCase(),
-      }),
-    });
+    if (selectedSortPrice) {
+      router.push({
+        pathname: "/apparel",
+        search: qs.stringify({
+          ...router.query,
+          priceOrder: selectedSortPrice.toLowerCase(),
+        }),
+      });
+    } else {
+      router.push("/apparel");
+    }
   };
 
   const handleSortOrder = (selectedSortOrder: string) => {
-    setSortOrder(selectedSortOrder);
-    router.push({
-      pathname: "/shoes",
-      search: qs.stringify({
-        ...router.query,
-        sortOrder: selectedSortOrder.toLowerCase(),
-      }),
-    });
+    setSortPrice(selectedSortOrder);
+    if (selectedSortOrder) {
+      router.push({
+        pathname: "/apparel",
+        search: qs.stringify({
+          ...router.query,
+          sortOrder: selectedSortOrder.toLowerCase(),
+        }),
+      });
+    } else {
+      router.push("/apparel");
+    }
   };
 
   const arrivalOptions = [

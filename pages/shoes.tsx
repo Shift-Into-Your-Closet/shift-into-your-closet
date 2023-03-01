@@ -19,6 +19,7 @@ import BackToTopButton from "../components/ui/BackToTopButton";
 
 import { Combobox, Listbox } from "@headlessui/react";
 import qs from "qs";
+import { FaSearch } from "react-icons/fa";
 
 type ShoeProps = {
   shoes: AllShoesQuery["allShoe"];
@@ -103,7 +104,7 @@ const Shoes: NextPage<ShoeProps> = ({
   };
 
   const handleSelectedBrand = (selectedBrand: string) => {
-    setSelectedCategory(selectedBrand);
+    setSelectedBrand(selectedBrand);
     if (selectedBrand) {
       router.push({
         pathname: "/shoes",
@@ -178,7 +179,7 @@ const Shoes: NextPage<ShoeProps> = ({
   };
 
   const handleSortOrder = (selectedSortOrder: string) => {
-    setSortPrice(selectedSortOrder);
+    setSortOrder(selectedSortOrder);
     if (selectedSortOrder) {
       router.push({
         pathname: "/shoes",
@@ -342,7 +343,7 @@ const Shoes: NextPage<ShoeProps> = ({
                 <div className="relative">
                   <Listbox.Button className="relative w-full py-2 pl-3 pr-10 text-left bg-white rounded-md shadow-sm cursor-pointer focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
                     <span className="block truncate">
-                      {selectedBrand || "All Brands"}
+                      {selectedBrand || "Filter Brands"}
                     </span>
                     <span className="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
                       <svg
@@ -419,7 +420,7 @@ const Shoes: NextPage<ShoeProps> = ({
                 <div className="relative">
                   <Listbox.Button className="relative w-full py-2 pl-3 pr-10 text-left bg-white rounded-md shadow-sm cursor-pointer focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
                     <span className="block truncate">
-                      {selectedCategory || "All Categories"}
+                      {selectedCategory || "Filter by Categories"}
                     </span>
                     <span className="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
                       <svg
@@ -493,63 +494,38 @@ const Shoes: NextPage<ShoeProps> = ({
               {/* Size Filter */}
 
               {shoes && (
-                <Listbox value={selectedSize} onChange={setSelectedSize}>
-                  <Listbox.Button className="relative w-full py-2 pl-3 pr-10 text-left bg-white rounded-md shadow-sm cursor-pointer focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
-                    <span className="block truncate">
-                      {selectedSize || "All Sizes"}
-                    </span>
-                    <span className="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
-                      <svg
-                        className="w-5 h-5 text-gray-400"
-                        viewBox="0 0 20 20"
-                        fill="currentColor"
-                        style={{ transform: "rotate(180deg)" }}
-                      >
-                        <path
-                          fillRule="evenodd"
-                          clipRule="evenodd"
-                          d="M6.293 7.707a1 1 0 010-1.414l3-3a1 1 0 011.414 0l3 3a1 1 0 11-1.414 1.414L11 6.414V16a1 1 0 11-2 0V6.414L7.707 8.121a1 1 0 01-1.414-1.414z"
-                        />
-                      </svg>
-                    </span>
-                  </Listbox.Button>
-                  <Listbox.Options className="absolute z-10 w-full py-1 mt-1 overflow-auto text-base bg-white rounded-md shadow-lg max-h-60 ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
-                    <Listbox.Option
-                      key="all-sizes"
-                      value=""
-                      className={({ active }) =>
-                        cn(
-                          active ? "text-white bg-blue-600" : "text-gray-900",
-                          "cursor-default select-none relative py-2 pl-10 pr-4"
-                        )
-                      }
-                    >
-                      {({ selected, active }) => (
-                        <>
-                          <span
-                            className={cn(
-                              selected ? "font-semibold" : "font-normal",
-                              "block truncate"
-                            )}
-                          >
-                            All Sizes
-                          </span>
-                        </>
-                      )}
-                    </Listbox.Option>
-                    {Array.from(
-                      new Set(shoes.map((shoe) => shoe.size?.shoeSize))
-                    ).map((size) => (
+                <Listbox value={selectedSize} onChange={handleSelectedSize}>
+                  <div className="relative">
+                    <Listbox.Button className="relative w-full py-2 pl-3 pr-10 text-left bg-white rounded-md shadow-sm cursor-pointer focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+                      <span className="block truncate">
+                        {selectedSize || "Filter by Sizes"}
+                      </span>
+                      <span className="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
+                        <svg
+                          className="w-5 h-5 text-gray-400"
+                          viewBox="0 0 20 20"
+                          fill="currentColor"
+                          style={{ transform: "rotate(180deg)" }}
+                        >
+                          <path
+                            fillRule="evenodd"
+                            clipRule="evenodd"
+                            d="M6.293 7.707a1 1 0 010-1.414l3-3a1 1 0 011.414 0l3 3a1 1 0 11-1.414 1.414L11 6.414V16a1 1 0 11-2 0V6.414L7.707 8.121a1 1 0 01-1.414-1.414z"
+                          />
+                        </svg>
+                      </span>
+                    </Listbox.Button>
+                    <Listbox.Options className="absolute z-10 w-full py-1 mt-1 overflow-auto text-base bg-white rounded-md shadow-lg max-h-60 ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
                       <Listbox.Option
-                        key={size}
-                        value={size}
+                        key="All Sizes"
+                        value=""
                         className={({ active }) =>
                           cn(
                             active ? "text-white bg-blue-600" : "text-gray-900",
                             "cursor-default select-none relative py-2 pl-10 pr-4"
                           )
                         }
-                        onClick={() => handleSelectedSize(size as string)}
+                        onClick={() => setSelectedSize("")}
                       >
                         {({ selected, active }) => (
                           <>
@@ -559,13 +535,43 @@ const Shoes: NextPage<ShoeProps> = ({
                                 "block truncate"
                               )}
                             >
-                              {size}
+                              All Sizes
                             </span>
                           </>
                         )}
                       </Listbox.Option>
-                    ))}
-                  </Listbox.Options>
+                      {Array.from(
+                        new Set(shoes.map((shoe) => shoe.size?.shoeSize))
+                      ).map((size) => (
+                        <Listbox.Option
+                          key={size}
+                          value={size}
+                          className={({ active }) =>
+                            cn(
+                              active
+                                ? "text-white bg-blue-600"
+                                : "text-gray-900",
+                              "cursor-default select-none relative py-2 pl-10 pr-4"
+                            )
+                          }
+                          onClick={() => setSelectedSize(size as string)}
+                        >
+                          {({ selected, active }) => (
+                            <>
+                              <span
+                                className={cn(
+                                  selected ? "font-semibold" : "font-normal",
+                                  "block truncate"
+                                )}
+                              >
+                                {size}
+                              </span>
+                            </>
+                          )}
+                        </Listbox.Option>
+                      ))}
+                    </Listbox.Options>
+                  </div>
                 </Listbox>
               )}
 
@@ -878,19 +884,22 @@ const Shoes: NextPage<ShoeProps> = ({
           </div>
 
           <div className="col-span-10 lg:col-span-8">
-            <div className="mb-5">
+            <div className="mb-5 relative">
               <Combobox
                 as="div"
                 value={selectedShoe}
                 onChange={setSelectedShoe}
                 className="w-full"
-                aria-label="Search Shoes"
+                aria-label="Search Apparel"
               >
                 <Combobox.Input
-                  placeholder="Search Shoes"
-                  className="w-full border border-accent-4 rounded-sm p-2 text-black bg-gray-200"
+                  placeholder="Search Apparel"
+                  className="w-full border border-accent-4 rounded-sm p-2 pl-8 text-black bg-gray-200"
                   onChange={(event) => setQuery(event.target.value)}
                 />
+                <span className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                  <FaSearch className="text-gray-500" />
+                </span>
                 {filteredShoes.length > 0 && (
                   <Combobox.Options>
                     {autocompleteShoes.map((shoe) => (

@@ -19,6 +19,7 @@ import BackToTopButton from "../components/ui/BackToTopButton";
 
 import { Combobox, Listbox } from "@headlessui/react";
 import qs from "qs";
+import { FaSearch } from "react-icons/fa";
 
 type AccessoryProps = {
   accessories: AllAccessoryQuery["allAccessory"];
@@ -91,7 +92,7 @@ const Accessories: NextPage<AccessoryProps> = ({
   };
 
   const handleSelectedBrand = (selectedBrand: string) => {
-    setSelectedCategory(selectedBrand);
+    setSelectedBrand(selectedBrand);
     if (selectedBrand) {
       router.push({
         pathname: "/accessories",
@@ -166,7 +167,7 @@ const Accessories: NextPage<AccessoryProps> = ({
   };
 
   const handleSortOrder = (selectedSortOrder: string) => {
-    setSortPrice(selectedSortOrder);
+    setSortOrder(selectedSortOrder);
     if (selectedSortOrder) {
       router.push({
         pathname: "/accessories",
@@ -790,13 +791,16 @@ const Accessories: NextPage<AccessoryProps> = ({
                 value={selectedAccessory}
                 onChange={setSelectedAccessory}
                 className="w-full"
-                aria-label="Search Accessories"
+                aria-label="Search Apparel"
               >
                 <Combobox.Input
-                  placeholder="Search Accessories"
-                  className="w-full border border-accent-4 rounded-sm p-2 text-black bg-gray-200"
+                  placeholder="Search Apparel"
+                  className="w-full border border-accent-4 rounded-sm p-2 pl-8 text-black bg-gray-200"
                   onChange={(event) => setQuery(event.target.value)}
                 />
+                <span className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                  <FaSearch className="text-gray-500" />
+                </span>
                 {filteredAccessories.length > 0 && (
                   <Combobox.Options>
                     {autocompleteAccessories.map((accessory) => (

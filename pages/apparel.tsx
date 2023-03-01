@@ -19,6 +19,7 @@ import BackToTopButton from "../components/ui/BackToTopButton";
 
 import { Combobox, Listbox } from "@headlessui/react";
 import qs from "qs";
+import { FaSearch } from "react-icons/fa";
 
 type ApparelProps = {
   apparels: AllApparelsQuery["allApparel"];
@@ -103,7 +104,7 @@ const Apparel: NextPage<ApparelProps> = ({
   };
 
   const handleSelectedBrand = (selectedBrand: string) => {
-    setSelectedCategory(selectedBrand);
+    setSelectedBrand(selectedBrand);
     if (selectedBrand) {
       router.push({
         pathname: "/apparel",
@@ -178,7 +179,7 @@ const Apparel: NextPage<ApparelProps> = ({
   };
 
   const handleSortOrder = (selectedSortOrder: string) => {
-    setSortPrice(selectedSortOrder);
+    setSortOrder(selectedSortOrder);
     if (selectedSortOrder) {
       router.push({
         pathname: "/apparel",
@@ -345,7 +346,7 @@ const Apparel: NextPage<ApparelProps> = ({
                 <div className="relative">
                   <Listbox.Button className="relative w-full py-2 pl-3 pr-10 text-left bg-white rounded-md shadow-sm cursor-pointer focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
                     <span className="block truncate">
-                      {selectedBrand || "All Brands"}
+                      {selectedBrand || "Filter by Brands"}
                     </span>
                     <span className="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
                       <svg
@@ -369,7 +370,7 @@ const Apparel: NextPage<ApparelProps> = ({
                       className={({ active }) =>
                         cn(
                           active ? "text-white bg-blue-600" : "text-gray-900",
-                          "cursor-default select-none relative py-2 pl-10 pr-4"
+                          "cursor-default select-none relative py-1 px-3"
                         )
                       }
                     >
@@ -422,7 +423,7 @@ const Apparel: NextPage<ApparelProps> = ({
                 <div className="relative">
                   <Listbox.Button className="relative w-full py-2 pl-3 pr-10 text-left bg-white rounded-md shadow-sm cursor-pointer focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
                     <span className="block truncate">
-                      {selectedCategory || "All Categories"}
+                      {selectedCategory || "Filter by Categories"}
                     </span>
                     <span className="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
                       <svg
@@ -494,42 +495,40 @@ const Apparel: NextPage<ApparelProps> = ({
               </Listbox>
 
               {/* Size Filter */}
+
               {apparels && (
-                <Listbox value={selectedSize} onChange={setSelectedSize}>
-                  <Listbox.Button className="relative w-full py-2 pl-3 pr-10 text-left bg-white rounded-md shadow-sm cursor-pointer focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
-                    <span className="block truncate">
-                      {selectedSize || "All Sizes"}
-                    </span>
-                    <span className="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
-                      <svg
-                        className="w-5 h-5 text-gray-400"
-                        viewBox="0 0 20 20"
-                        fill="currentColor"
-                      >
-                        <path
-                          fillRule="evenodd"
-                          clipRule="evenodd"
-                          d="M6.293 7.707a1 1 0 010-1.414l3-3a1 1 0 011.414 0l3 3a1 1 0 11-1.414 1.414L11 6.414V16a1 1 0 11-2 0V6.414L7.707 8.121a1 1 0 01-1.414-1.414z"
-                        />
-                      </svg>
-                    </span>
-                  </Listbox.Button>
-                  <Listbox.Options className="absolute z-10 w-full py-1 mt-1 overflow-auto text-base bg-white rounded-md shadow-lg max-h-60 ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
-                    {Array.from(
-                      new Set(
-                        apparels.map((apparel) => apparel.size?.apparelSize)
-                      )
-                    ).map((size) => (
+                <Listbox value={selectedSize} onChange={handleSelectedSize}>
+                  <div className="relative">
+                    <Listbox.Button className="relative w-full py-2 pl-3 pr-10 text-left bg-white rounded-md shadow-sm cursor-pointer focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+                      <span className="block truncate">
+                        {selectedSize || "Filter by Sizes"}
+                      </span>
+                      <span className="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
+                        <svg
+                          className="w-5 h-5 text-gray-400"
+                          viewBox="0 0 20 20"
+                          fill="currentColor"
+                          style={{ transform: "rotate(180deg)" }}
+                        >
+                          <path
+                            fillRule="evenodd"
+                            clipRule="evenodd"
+                            d="M6.293 7.707a1 1 0 010-1.414l3-3a1 1 0 011.414 0l3 3a1 1 0 11-1.414 1.414L11 6.414V16a1 1 0 11-2 0V6.414L7.707 8.121a1 1 0 01-1.414-1.414z"
+                          />
+                        </svg>
+                      </span>
+                    </Listbox.Button>
+                    <Listbox.Options className="absolute z-10 w-full py-1 mt-1 overflow-auto text-base bg-white rounded-md shadow-lg max-h-60 ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
                       <Listbox.Option
-                        key={size}
-                        value={size}
+                        key="All Sizes"
+                        value=""
                         className={({ active }) =>
                           cn(
                             active ? "text-white bg-blue-600" : "text-gray-900",
                             "cursor-default select-none relative py-2 pl-10 pr-4"
                           )
                         }
-                        onClick={() => handleSelectedSize(size as string)}
+                        onClick={() => setSelectedSize("")}
                       >
                         {({ selected, active }) => (
                           <>
@@ -539,13 +538,45 @@ const Apparel: NextPage<ApparelProps> = ({
                                 "block truncate"
                               )}
                             >
-                              {size}
+                              All Sizes
                             </span>
                           </>
                         )}
                       </Listbox.Option>
-                    ))}
-                  </Listbox.Options>
+                      {Array.from(
+                        new Set(
+                          apparels.map((apparel) => apparel.size?.apparelSize)
+                        )
+                      ).map((size) => (
+                        <Listbox.Option
+                          key={size}
+                          value={size}
+                          className={({ active }) =>
+                            cn(
+                              active
+                                ? "text-white bg-blue-600"
+                                : "text-gray-900",
+                              "cursor-default select-none relative py-2 pl-10 pr-4"
+                            )
+                          }
+                          onClick={() => setSelectedSize(size as string)}
+                        >
+                          {({ selected, active }) => (
+                            <>
+                              <span
+                                className={cn(
+                                  selected ? "font-semibold" : "font-normal",
+                                  "block truncate"
+                                )}
+                              >
+                                {size}
+                              </span>
+                            </>
+                          )}
+                        </Listbox.Option>
+                      ))}
+                    </Listbox.Options>
+                  </div>
                 </Listbox>
               )}
 
@@ -858,7 +889,7 @@ const Apparel: NextPage<ApparelProps> = ({
           </div>
 
           <div className="col-span-10 lg:col-span-8">
-            <div className="mb-5">
+            <div className="mb-5 relative">
               <Combobox
                 as="div"
                 value={selectedApparel}
@@ -868,9 +899,12 @@ const Apparel: NextPage<ApparelProps> = ({
               >
                 <Combobox.Input
                   placeholder="Search Apparel"
-                  className="w-full border border-accent-4 rounded-sm p-2 text-black bg-gray-200"
+                  className="w-full border border-accent-4 rounded-sm p-2 pl-8 text-black bg-gray-200"
                   onChange={(event) => setQuery(event.target.value)}
                 />
+                <span className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                  <FaSearch className="text-gray-500" />
+                </span>
                 {filteredApparel.length > 0 && (
                   <Combobox.Options>
                     {autocompleteApparel.map((apparel) => (
@@ -883,6 +917,7 @@ const Apparel: NextPage<ApparelProps> = ({
                 )}
               </Combobox>
             </div>
+
             {filteredApparel.length > 0 ? (
               <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 animate-fade-in-up">
                 {filteredApparel.map((apparel) => {

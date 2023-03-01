@@ -20,6 +20,9 @@ import {
   NewestShoesQuery,
 } from "../../graphql-operations";
 
+import { useSpring, animated } from "react-spring";
+import { useState } from "react";
+
 interface NewArrivalCardProps {
   imageUrl: string | null | undefined;
   name: string | null | undefined;
@@ -46,11 +49,21 @@ function NewArrivalCard({
   href,
   typeName,
 }: NewArrivalCardProps) {
-  const uppercaseTypeName = typeName?.toLowerCase();
+  const [hovered, setHovered] = useState(false);
+
+  const hoverAnimation = useSpring({
+    transform: hovered ? "scale(1.05)" : "scale(1)",
+  });
+  let lowercaseTypeName = typeName?.toLowerCase();
   return (
     <>
-      <Link key={href} href={`/${uppercaseTypeName}/${href}`}>
-        <div className="relative overflow-hidden rounded-sm">
+      <Link key={href} href={`/${lowercaseTypeName}/${href}`}>
+        <animated.div
+          className="relative overflow-hidden rounded-sm"
+          style={hoverAnimation}
+          onMouseEnter={() => setHovered(true)}
+          onMouseLeave={() => setHovered(false)}
+        >
           <div className="h-80 relative">
             <Image
               src={imageUrl ?? ""}
@@ -73,7 +86,7 @@ function NewArrivalCard({
               <div className="text-xl text-blue-400 font-bold">${price}</div>
             </div>
           </div>
-        </div>
+        </animated.div>
       </Link>
     </>
   );

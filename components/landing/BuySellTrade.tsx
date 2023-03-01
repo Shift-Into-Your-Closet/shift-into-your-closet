@@ -7,7 +7,7 @@ import { MdOutlineSwapHorizontalCircle } from "react-icons/md";
 function BuySellTrade() {
   return (
     <>
-      <section className="my-28">
+      <section className="my-20">
         <div className="w-full">
           <div className="m-auto w-3/4 md:max-w-screen-xl">
             <div className="flex flex-col gap-4 mx-auto lg:flex-row">
@@ -16,11 +16,11 @@ function BuySellTrade() {
                   <div className="text-5xl text-white">
                     <CiShoppingCart />
                   </div>
-                  <span className="text-white font-roboto font-bold text-xl sm:text-2xl text-center">
+                  <span className="text-white font-roboto font-bold text-xl sm:text-2xl text-center uppercase">
                     Buy
                   </span>
                   <span className="text-white font-roboto text-center">
-                    Our items are curated worldwide to provide the best shopping
+                    Our items are curated worldwide to provide the best customer
                     experience.
                   </span>
                 </div>
@@ -28,7 +28,7 @@ function BuySellTrade() {
                   <div className="text-5xl text-white">
                     <FaSellsy />
                   </div>
-                  <span className="text-white font-roboto font-bold text-2xl text-center">
+                  <span className="text-white font-roboto font-bold text-xl sm:text-2xl text-center uppercase">
                     Sell
                   </span>
                   <span className="text-white font-roboto text-center">
@@ -54,7 +54,7 @@ function BuySellTrade() {
                   <div className="text-5xl text-white">
                     <MdOutlineSwapHorizontalCircle />
                   </div>
-                  <span className="text-white font-roboto font-bold text-2xl text-center">
+                  <span className="text-white font-roboto font-bold text-xl sm:text-2xl text-center uppercase">
                     Trade
                   </span>
                   <span className="text-white font-roboto text-center">

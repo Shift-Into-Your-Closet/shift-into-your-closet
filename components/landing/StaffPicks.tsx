@@ -1,14 +1,14 @@
 import { useState } from "react";
-
 import Image from "next/image";
 import Link from "next/link";
-
-import cn from "clsx";
 
 import {
   FeaturedApparelsQuery,
   FeaturedShoesQuery,
 } from "../../graphql-operations";
+
+import cn from "clsx";
+import { useSpring, animated } from "react-spring";
 
 interface StaffPicksCardProps {
   imageUrl: string | null | undefined;
@@ -22,20 +22,35 @@ function StaffPicksCard({
   imageUrl,
   name,
   price,
-
   href,
   typeName,
 }: StaffPicksCardProps) {
-  const uppercaseTypeName = typeName?.toLowerCase();
+  const [hovered, setHovered] = useState(false);
+
+  const cardAnimation = useSpring({
+    from: { opacity: 0, transform: "scale(0.5)" },
+    to: { opacity: 1, transform: "scale(1)" },
+  });
+
+  const hoverAnimation = useSpring({
+    transform: hovered ? "scale(0.9)" : "scale(1)",
+  });
+
+  let lowercaseTypeName = typeName?.toLowerCase();
 
   return (
     <>
       <Link
         key={href}
-        as={`/${uppercaseTypeName}/${href}`}
-        href={`/${uppercaseTypeName}/${href}`}
+        as={`/${lowercaseTypeName}/${href}`}
+        href={`/${lowercaseTypeName}/${href}`}
       >
-        <div className="relative overflow-hidden rounded-sm">
+        <animated.div
+          className="relative overflow-hidden rounded-sm"
+          style={{ ...cardAnimation, ...hoverAnimation }}
+          onMouseEnter={() => setHovered(true)}
+          onMouseLeave={() => setHovered(false)}
+        >
           <div className="h-80 relative">
             <Image
               src={imageUrl ?? ""}
@@ -58,7 +73,7 @@ function StaffPicksCard({
               <div className="text-xl text-blue-400 font-bold">${price}</div>
             </div>
           </div>
-        </div>
+        </animated.div>
       </Link>
     </>
   );
@@ -79,14 +94,11 @@ function StaffPicks({
 
   const [showMore, setShowMore] = useState(!hasShowMore);
   return (
-    <div className="relative max-w-5xl mx-auto my-28">
+    <div className="relative max-w-5xl mx-auto">
       <div className="flex pb-12 flex-col items-center justify-center">
         <h2 className="text-3xl text-center tracking-widest mt-6 uppercase text-gray-400 font-bold ">
           Staff Picks
         </h2>
-        <p className="mx-auto mt-3 max-w-2xl text-md sm:text-xl font-roboto sm:mt-4 text-center text-xl text-gray-200 font-light">
-          Check out some must haves!
-        </p>
       </div>
       <div
         className={cn({

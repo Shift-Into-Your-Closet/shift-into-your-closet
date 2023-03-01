@@ -1,5 +1,3 @@
-import { animated, useSpring } from "react-spring";
-
 import type { NextPage } from "next";
 import Head from "next/head";
 import client from "../apollo-client";
@@ -8,7 +6,9 @@ import StaffPicks from "../components/landing/StaffPicks";
 import NewArrivals from "../components/landing/NewArrivals";
 import WhyCustomersChooseUs from "../components/landing/WhyCustomersChooseUs";
 import BackToTopButton from "../components/ui/BackToTopButton";
+import BuySellTrade from "../components/landing/BuySellTrade";
 
+import { animated, useTrail } from "react-spring";
 import {
   FeaturedApparelsQuery,
   FeaturedApparelsDocument,
@@ -21,8 +21,6 @@ import {
   NewestShoesDocument,
   NewestShoesQuery,
 } from "../graphql-operations";
-import BuySellTrade from "../components/landing/BuySellTrade";
-
 type HomeProps = {
   featuredApparels: FeaturedApparelsQuery["allApparel"];
   featuredShoes: FeaturedShoesQuery["allShoe"];
@@ -69,18 +67,31 @@ export async function getStaticProps() {
 }
 
 const ShiftIntoYourCloset = () => {
-  const animation = useSpring({
-    from: { opacity: 0 },
-    to: { opacity: 1 },
-    config: { duration: 3000 },
+  const text = "Shift Into Your Closet";
+  const config = { mass: 5, tension: 2000, friction: 200 };
+  const trail = useTrail(text.length, {
+    config,
+    opacity: 1,
+    x: 0,
+    from: { opacity: 0, x: 50 },
+    delay: 1000,
   });
+
   return (
-    <animated.h1
-      style={animation}
-      className="text-7xl font-title text-center text-white"
-    >
-      Shift Into Your Closet
-    </animated.h1>
+    <h1 className="text-7xl font-bold text-center">
+      {trail.map(({ x, opacity }, index) => (
+        <animated.span
+          key={index}
+          style={{
+            opacity,
+            transform: x.to((x) => `translate3d(${x}px,0,0)`),
+            color: x.to([0, 100], ["white", "#60a5fa"]),
+          }}
+        >
+          {text[index]}
+        </animated.span>
+      ))}
+    </h1>
   );
 };
 

@@ -3,8 +3,8 @@ import Link from "next/link";
 
 const shopLinks = [
   {
-    name: "Shoes",
-    link: "/shoes",
+    name: "Footwear",
+    link: "/footwear",
   },
   {
     name: "Apparel",

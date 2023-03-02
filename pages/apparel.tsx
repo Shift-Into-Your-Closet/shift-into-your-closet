@@ -339,8 +339,37 @@ const Apparel: NextPage<ApparelProps> = ({
         className="max-w-7xl mx-auto px-5 sm:px-6 lg:px-8 py-20 sm:py-24 lg:py-24 animate-fade-in-up min-h-screen"
       >
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 mt-3 mb-20">
-          <div className="col-span-8 lg:col-span-2">
+          <div className="col-span-10 lg:col-span-2">
             <div className="space-y-4">
+              {/* Autocomplete */}
+              <div className="mb-5 relative">
+                <Combobox
+                  as="div"
+                  value={selectedApparel}
+                  onChange={setSelectedApparel}
+                  className="w-full"
+                  aria-label="Search Apparel"
+                >
+                  <Combobox.Input
+                    placeholder="Search Apparel"
+                    className="w-full border border-accent-4 rounded-sm p-2 pl-8 text-black bg-gray-200"
+                    onChange={(event) => setQuery(event.target.value)}
+                  />
+                  <span className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                    <FaSearch className="text-gray-500" />
+                  </span>
+                  {filteredApparel.length > 0 && (
+                    <Combobox.Options>
+                      {autocompleteApparel.map((apparel) => (
+                        <Combobox.Option
+                          key={apparel.name}
+                          value={apparel.name}
+                        />
+                      ))}
+                    </Combobox.Options>
+                  )}
+                </Combobox>
+              </div>
               {/* Brand Filter */}
               <Listbox value={selectedBrand} onChange={handleSelectedBrand}>
                 <div className="relative">
@@ -365,12 +394,12 @@ const Apparel: NextPage<ApparelProps> = ({
                   </Listbox.Button>
                   <Listbox.Options className="absolute z-10 w-full py-1 mt-1 overflow-auto text-base bg-white rounded-md shadow-lg max-h-60 ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
                     <Listbox.Option
-                      key="all-brands"
+                      key="all-categories"
                       value=""
                       className={({ active }) =>
                         cn(
                           active ? "text-white bg-blue-600" : "text-gray-900",
-                          "cursor-default select-none relative py-1 px-3"
+                          "cursor-default select-none relative py-2 pl-10 pr-4"
                         )
                       }
                     >
@@ -387,6 +416,7 @@ const Apparel: NextPage<ApparelProps> = ({
                         </>
                       )}
                     </Listbox.Option>
+
                     {brands?.map((brand) => (
                       <Listbox.Option
                         key={brand.slug?.current}
@@ -889,35 +919,6 @@ const Apparel: NextPage<ApparelProps> = ({
           </div>
 
           <div className="col-span-10 lg:col-span-8">
-            <div className="mb-5 relative">
-              <Combobox
-                as="div"
-                value={selectedApparel}
-                onChange={setSelectedApparel}
-                className="w-full"
-                aria-label="Search Apparel"
-              >
-                <Combobox.Input
-                  placeholder="Search Apparel"
-                  className="w-full border border-accent-4 rounded-sm p-2 pl-8 text-black bg-gray-200"
-                  onChange={(event) => setQuery(event.target.value)}
-                />
-                <span className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <FaSearch className="text-gray-500" />
-                </span>
-                {filteredApparel.length > 0 && (
-                  <Combobox.Options>
-                    {autocompleteApparel.map((apparel) => (
-                      <Combobox.Option
-                        key={apparel.name}
-                        value={apparel.name}
-                      />
-                    ))}
-                  </Combobox.Options>
-                )}
-              </Combobox>
-            </div>
-
             {filteredApparel.length > 0 ? (
               <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 animate-fade-in-up">
                 {filteredApparel.map((apparel) => {

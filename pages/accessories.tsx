@@ -21,6 +21,8 @@ import { Combobox, Listbox } from "@headlessui/react";
 import qs from "qs";
 import { FaSearch } from "react-icons/fa";
 
+import { useTrail, animated } from "react-spring";
+
 type AccessoryProps = {
   accessories: AllAccessoryQuery["allAccessory"];
   brands: AllAccessoryBrandsQuery["allAccessoryBrand"];
@@ -278,6 +280,12 @@ const Accessories: NextPage<AccessoryProps> = ({
     sortOrder,
   ]);
 
+  const trail = useTrail(filteredAccessories.length, {
+    opacity: 1,
+    transform: "translate3d(0, 0, 0)",
+    from: { opacity: 0, transform: "translate3d(0, 30px, 0)" },
+  });
+
   const brandAccessory = activeBrand
     ? accessories.filter((accessory) =>
         accessory.brand?.some((brand) => brand?.slug?.current === activeBrand)
@@ -306,14 +314,11 @@ const Accessories: NextPage<AccessoryProps> = ({
   return (
     <>
       <Head>
-        <title>Accessories | Shift Into Your Closet</title>
+        <title>Accessories | Shift's Closet</title>
         <link rel="apple-touch-icon" href="/path/to/apple-touch-icon.png" />
         <meta name="theme-color" content="#60A5FA" />
-        <meta
-          name="description"
-          content="Accessories at Shift Into Your Closet"
-        />
-        <meta name="keywords" content="accessories, shift into your closet" />
+        <meta name="description" content="Accessories at Shift's Closet" />
+        <meta name="keywords" content="accessories, shift's closet" />
         <meta name="viewport" content="width=device-width" />
       </Head>
       <section
@@ -813,25 +818,27 @@ const Accessories: NextPage<AccessoryProps> = ({
 
           <div className="col-span-10 lg:col-span-8">
             {filteredAccessories.length > 0 ? (
-              <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 animate-fade-in-up">
-                {filteredAccessories.map((accessory) => {
+              <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+                {trail.map((props, index) => {
+                  const accessory = filteredAccessories[index];
                   return (
                     <Link
                       key={accessory.slug?.current}
-                      href={`/accessory/${accessory.slug?.current}`}
+                      href={`/accessories/${accessory.slug?.current}`}
                     >
-                      <div className="relative cursor-pointer overflow-hidden rounded-sm">
+                      <animated.div
+                        style={props}
+                        className="relative cursor-pointer overflow-hidden rounded-sm"
+                      >
                         <div className="h-72 relative">
                           {accessory.mainImage?.asset?.url && (
                             <Image
                               src={accessory.mainImage.asset.url}
                               alt={`Image for ${accessory.name}`}
                               className="object-cover"
-                              priority={true}
+                              loading="lazy"
                               fill
-                              sizes="(max-width: 768px) 100vw,
-                            (max-width: 1200px) 50vw,
-                            33vw"
+                              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                             />
                           )}
                         </div>
@@ -849,15 +856,14 @@ const Accessories: NextPage<AccessoryProps> = ({
                             </div>
                           </div>
                         </div>
-                      </div>
+                      </animated.div>
                     </Link>
                   );
                 })}
               </div>
             ) : (
               <div className="text-sm text-white">
-                No accessories found. Please check back as we get in new items
-                weekly.
+                No shoes found. Please check back as we get in new items weekly.
               </div>
             )}
           </div>

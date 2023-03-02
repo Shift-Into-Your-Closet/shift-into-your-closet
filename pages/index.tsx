@@ -66,8 +66,8 @@ export async function getStaticProps() {
   };
 }
 
-const ShiftIntoYourCloset = () => {
-  const text = "Shift Into Your Closet";
+const ShiftsCloset = () => {
+  const text = "Shift's Closet";
   const config = { mass: 5, tension: 2000, friction: 200 };
   const trail = useTrail(text.length, {
     config,
@@ -105,15 +105,15 @@ const Home: NextPage<HomeProps> = ({
   return (
     <>
       <Head>
-        <title>Shift Into Your Closet</title>
+        <title>Shift's Closet</title>
         <link rel="icon" href="/favicon.ico" />
         <meta name="theme-color" content="#60A5FA" />
-        <meta name="description" content="Shift Into Your Closet" />
-        <meta name="keywords" content="shift into your closet" />
+        <meta name="description" content="Shift's Closet" />
+        <meta name="keywords" content="shift's closet" />
         <meta name="viewport" content="width=device-width" />
       </Head>
       <section className="max-w-7xl mx-auto mt-5 px-5 sm:px-6 lg:px-8 py-20 sm:py-24 lg:py-24 font-roboto min-h-screen">
-        <ShiftIntoYourCloset />
+        <ShiftsCloset />
         <BuySellTrade />
         <StaffPicks
           featuredShoes={featuredShoes}

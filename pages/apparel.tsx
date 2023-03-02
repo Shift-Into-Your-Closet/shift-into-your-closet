@@ -20,6 +20,7 @@ import BackToTopButton from "../components/ui/BackToTopButton";
 import { Combobox, Listbox } from "@headlessui/react";
 import qs from "qs";
 import { FaSearch } from "react-icons/fa";
+import { useTrail, animated } from "react-spring";
 
 type ApparelProps = {
   apparels: AllApparelsQuery["allApparel"];
@@ -83,6 +84,7 @@ const Apparel: NextPage<ApparelProps> = ({
   const [condition, setCondition] = useState("");
   const [sortPrice, setSortPrice] = useState("");
   const [sortOrder, setSortOrder] = useState("");
+  const [isHovered, setIsHovered] = useState(false);
 
   const capitalizeWords = (str: string) => {
     return str.replace(/\b\w/g, (c) => c.toUpperCase());
@@ -299,6 +301,11 @@ const Apparel: NextPage<ApparelProps> = ({
     sortOrder,
   ]);
 
+  const trail = useTrail(filteredApparel.length, {
+    opacity: 1,
+    transform: "translate3d(0, 0, 0)",
+    from: { opacity: 0, transform: "translate3d(0, 30px, 0)" },
+  });
   const brandApparel = activeBrand
     ? apparels.filter((apparel) =>
         apparel.brand?.some((brand) => brand?.slug?.current === activeBrand)
@@ -327,11 +334,11 @@ const Apparel: NextPage<ApparelProps> = ({
   return (
     <>
       <Head>
-        <title>Apparel | Shift Into Your Closet</title>
+        <title>Apparel | Shift's Closet</title>
         <link rel="apple-touch-icon" href="/path/to/apple-touch-icon.png" />
         <meta name="theme-color" content="#60A5FA" />
-        <meta name="description" content="Apparel at Shift Into Your Closet" />
-        <meta name="keywords" content="apparel, shift into your closet" />
+        <meta name="description" content="Apparel at Shift's Closet" />
+        <meta name="keywords" content="apparel, shift's closet" />
         <meta name="viewport" content="width=device-width" />
       </Head>
       <section
@@ -920,14 +927,18 @@ const Apparel: NextPage<ApparelProps> = ({
 
           <div className="col-span-10 lg:col-span-8">
             {filteredApparel.length > 0 ? (
-              <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 animate-fade-in-up">
-                {filteredApparel.map((apparel) => {
+              <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+                {trail.map((props, index) => {
+                  const apparel = filteredApparel[index];
                   return (
                     <Link
                       key={apparel.slug?.current}
                       href={`/apparel/${apparel.slug?.current}`}
                     >
-                      <div className="relative cursor-pointer overflow-hidden rounded-sm">
+                      <animated.div
+                        style={props}
+                        className="relative cursor-pointer overflow-hidden rounded-sm"
+                      >
                         <div className="h-72 relative">
                           {apparel.mainImage?.asset?.url && (
                             <Image
@@ -936,9 +947,7 @@ const Apparel: NextPage<ApparelProps> = ({
                               className="object-cover"
                               loading="lazy"
                               fill
-                              sizes="(max-width: 768px) 100vw,
-                            (max-width: 1200px) 50vw,
-                            33vw"
+                              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                             />
                           )}
                         </div>
@@ -956,15 +965,14 @@ const Apparel: NextPage<ApparelProps> = ({
                             </div>
                           </div>
                         </div>
-                      </div>
+                      </animated.div>
                     </Link>
                   );
                 })}
               </div>
             ) : (
               <div className="text-sm text-white">
-                No apparel found. Please check back as we get in new items
-                weekly.
+                No shoes found. Please check back as we get in new items weekly.
               </div>
             )}
           </div>

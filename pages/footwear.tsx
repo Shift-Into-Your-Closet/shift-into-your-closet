@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { NextPage, GetStaticProps } from "next";
 import { useRouter } from "next/router";
 import Head from "next/head";
@@ -20,6 +20,8 @@ import BackToTopButton from "../components/ui/BackToTopButton";
 import { Combobox, Listbox } from "@headlessui/react";
 import qs from "qs";
 import { FaSearch } from "react-icons/fa";
+
+import { useTrail, animated } from "react-spring";
 
 type ShoeProps = {
   shoes: AllShoesQuery["allShoe"];
@@ -74,7 +76,7 @@ const Shoes: NextPage<ShoeProps> = ({
   brands,
   categories,
 }: ShoeProps) => {
-  const [selectedShoe, setSelectedShoe] = useState("");
+  const [selectedFootwear, setSelectedFootwear] = useState("");
   const [query, setQuery] = useState("");
   const [selectedBrand, setSelectedBrand] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("");
@@ -296,6 +298,12 @@ const Shoes: NextPage<ShoeProps> = ({
     sortOrder,
   ]);
 
+  const trail = useTrail(filteredShoes.length, {
+    opacity: 1,
+    transform: "translate3d(0, 0, 0)",
+    from: { opacity: 0, transform: "translate3d(0, 30px, 0)" },
+  });
+
   const brandShoes = selectedBrand
     ? shoes.filter((shoe) =>
         shoe.brand?.some((brand) => brand?.slug?.current === selectedBrand)
@@ -324,15 +332,15 @@ const Shoes: NextPage<ShoeProps> = ({
   return (
     <>
       <Head>
-        <title>Shoes | Shift Into Your Closet</title>
+        <title>Footwear | Shift's Closet</title>
         <link rel="apple-touch-icon" href="/path/to/apple-touch-icon.png" />
         <meta name="theme-color" content="#60A5FA" />
-        <meta name="description" content="Shoes at Shift Into Your Closet" />
-        <meta name="keywords" content="shoes, shift into your closet" />
+        <meta name="description" content="Footwear at Shift's Closet" />
+        <meta name="keywords" content="footwear, shift's closet" />
         <meta name="viewport" content="width=device-width" />
       </Head>
       <section
-        id="shoes"
+        id="footwear"
         className="max-w-7xl mx-auto px-5 sm:px-6 lg:px-8 py-20 sm:py-24 lg:py-24 animate-fade-in-up min-h-screen"
       >
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 mt-3 mb-20">
@@ -342,13 +350,13 @@ const Shoes: NextPage<ShoeProps> = ({
               <div className="mb-5 relative">
                 <Combobox
                   as="div"
-                  value={selectedShoe}
-                  onChange={setSelectedShoe}
+                  value={selectedFootwear}
+                  onChange={setSelectedFootwear}
                   className="w-full"
-                  aria-label="Search Shoes"
+                  aria-label="Search Footwear"
                 >
                   <Combobox.Input
-                    placeholder="Search Shoes"
+                    placeholder="Search Footwear"
                     className="w-full border border-accent-4 rounded-sm p-2 pl-8 text-black bg-gray-200"
                     onChange={(event) => setQuery(event.target.value)}
                   />
@@ -911,14 +919,18 @@ const Shoes: NextPage<ShoeProps> = ({
 
           <div className="col-span-10 lg:col-span-8">
             {filteredShoes.length > 0 ? (
-              <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 animate-fade-in-up">
-                {filteredShoes.map((shoe) => {
+              <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+                {trail.map((props, index) => {
+                  const shoe = filteredShoes[index];
                   return (
                     <Link
                       key={shoe.slug?.current}
                       href={`/shoe/${shoe.slug?.current}`}
                     >
-                      <div className="relative cursor-pointer overflow-hidden rounded-sm">
+                      <animated.div
+                        style={props}
+                        className="relative cursor-pointer overflow-hidden rounded-sm"
+                      >
                         <div className="h-72 relative">
                           {shoe.mainImage?.asset?.url && (
                             <Image
@@ -927,9 +939,7 @@ const Shoes: NextPage<ShoeProps> = ({
                               className="object-cover"
                               loading="lazy"
                               fill
-                              sizes="(max-width: 768px) 100vw,
-                            (max-width: 1200px) 50vw,
-                            33vw"
+                              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                             />
                           )}
                         </div>
@@ -947,7 +957,7 @@ const Shoes: NextPage<ShoeProps> = ({
                             </div>
                           </div>
                         </div>
-                      </div>
+                      </animated.div>
                     </Link>
                   );
                 })}
@@ -958,6 +968,7 @@ const Shoes: NextPage<ShoeProps> = ({
               </div>
             )}
           </div>
+
           <div className="col-span-8 lg:col-span-2"></div>
         </div>
         <div className="flex justify-evenly gap-x-12">

@@ -34,7 +34,7 @@ export type AccessoryProps = {
   accessory: AccessoryQuery["allAccessory"][0] | undefined;
 };
 
-const siteTitle = "Shift Into Your Closet";
+const siteTitle = "Shift's Closet";
 
 SwiperCore.use([
   Navigation,
@@ -72,7 +72,7 @@ function Accessory({ accessory }: AccessoryProps) {
     boxShadow: springProps.boxShadow,
   };
 
-  const accessoryUrl = `www.https://www.shiftintoyourcloset.netlify.app/accessory/${accessory?.slug?.current}`;
+  const accessoryUrl = `www.https://www.shiftscloset.com/accessory/${accessory?.slug?.current}`;
 
   const images = useMemo(() => {
     const _images = [];
@@ -96,9 +96,9 @@ function Accessory({ accessory }: AccessoryProps) {
         <meta name="theme-color" content="#60A5FA" />
         <meta
           name="description"
-          content={`${accessory?.name} Shift Into Your Closet`}
+          content={`${accessory?.name} Shift's Closet`}
         />
-        <meta name="keywords" content="accessory, shift into your closet" />
+        <meta name="keywords" content="accessory, shift's closet" />
         <meta name="viewport" content="width=device-width" />
       </Head>
 

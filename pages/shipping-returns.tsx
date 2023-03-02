@@ -20,14 +20,11 @@ const ShippingReturns: NextPage = () => {
   return (
     <>
       <Head>
-        <title>Shipping & Return Policy | Shift Into Your Closet</title>
+        <title>Shipping & Return Policy | Shift's Closet</title>
         <link rel="apple-touch-icon" href="/path/to/apple-touch-icon.png" />
         <meta name="theme-color" content="#60A5FA" />
-        <meta
-          name="description"
-          content="Return Policy at Shift Into Your Closet"
-        />
-        <meta name="keywords" content="return policy, shift into your closet" />
+        <meta name="description" content="Return Policy at Shift's Closet" />
+        <meta name="keywords" content="return policy, shift's closet" />
         <meta name="viewport" content="width=device-width" />
       </Head>
       <section
@@ -74,8 +71,8 @@ const ShippingReturns: NextPage = () => {
           </ol>
         </nav>
         <p className="mt-4 text-xl font-light">
-          Welcome to Shift Into Your Closet. Please find our shipping and return
-          policy below.
+          Welcome to Shift's Closet. Please find our shipping and return policy
+          below.
         </p>
         <Policy title="Locals">
           <p>

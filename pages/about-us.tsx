@@ -61,11 +61,11 @@ const AboutUs: NextPage = () => {
   return (
     <>
       <Head>
-        <title>About Us | Shift Into Your Closet</title>
+        <title>About Us | Shift's Closet</title>
         <link rel="apple-touch-icon" href="/path/to/apple-touch-icon.png" />
         <meta name="theme-color" content="#60A5FA" />
-        <meta name="description" content="About Us at Shift Into Your Closet" />
-        <meta name="keywords" content="about us, shift into your closet" />
+        <meta name="description" content="About Us at Shift's Closet" />
+        <meta name="keywords" content="about us, shift's closet" />
         <meta name="viewport" content="width=device-width" />
       </Head>
       <section
@@ -115,10 +115,10 @@ const AboutUs: NextPage = () => {
           About Us
         </h1>
         <p className="mt-4 text-xl font-light">
-          Shift Into Your Closet was founded in 2019. My vision is to be able to
-          provide an accessible marketplace for everyone. Our inventory is
-          supplied by trusted sellers. If you would like to become a seller on
-          our platform, you can reach us at {""}
+          Shift's Closet was founded in 2019. My vision is to be able to provide
+          an accessible marketplace for everyone. Our inventory is supplied by
+          trusted sellers. If you would like to become a seller on our platform,
+          you can reach us at {""}
           <a
             className="underline text-lg italic hover:no-underline"
             href="mailto:shiftintoyourcloset@gmail.com?subject=Become%20a%20%20seller"

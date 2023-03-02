@@ -8,6 +8,7 @@ import { useForm } from "react-hook-form";
 import { useForm as useFormSpree } from "@formspree/react";
 
 import { Transition } from "@headlessui/react";
+import { useSpring, animated } from "react-spring";
 
 type FormValues = {
   firstName: string;
@@ -18,6 +19,31 @@ type FormValues = {
 };
 
 const Contact: NextPage = () => {
+  const [springProps, set] = useSpring(() => ({
+    transform: "translateY(0px)",
+    boxShadow: "0px 0px 0px rgba(0, 0, 0, 0.2)",
+  }));
+
+  const handleHover = () => {
+    set({
+      to: [
+        {
+          transform: "translateY(-5px)",
+          boxShadow: "0px 5px 0px rgba(0, 0, 0, 0.2)",
+        },
+        {
+          transform: "translateY(0px)",
+          boxShadow: "0px 0px 0px rgba(0, 0, 0, 0.2)",
+        },
+      ],
+    });
+  };
+
+  const buttonStyles = {
+    transform: springProps.transform,
+    boxShadow: springProps.boxShadow,
+  };
+
   const [formSpreeState, sendToFormSpree] = useFormSpree("mqkjvrpd");
 
   const {
@@ -224,15 +250,17 @@ const Contact: NextPage = () => {
                 </span>
               )}
             </div>
-
             <div className="flex ">
-              <button
+              <animated.button
                 type="submit"
-                value="Send"
+                value="send"
                 className="w-full rounded-md bg-blue-500 px-14 py-4 mt-4 text-sm font-roboto bold  text-white hover:bg-blue-700 cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75"
+                onMouseEnter={handleHover}
+                onMouseLeave={() => handleHover()}
+                style={buttonStyles}
               >
                 Send
-              </button>
+              </animated.button>
             </div>
           </div>
         </form>

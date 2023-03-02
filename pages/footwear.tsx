@@ -317,14 +317,14 @@ const Shoes: NextPage<ShoeProps> = ({
 
   const prevLink =
     prevPage > 0
-      ? `/shoes?page=${prevPage}&perPage=${perPage}${
+      ? `/footwear?page=${prevPage}&perPage=${perPage}${
           activeBrand ? `&brand=${activeBrand}` : ""
         }`
       : null;
 
   const nextLink =
     nextPage <= brandPages
-      ? `/shoes?page=${nextPage}&perPage=${perPage}${
+      ? `/footwear?page=${nextPage}&perPage=${perPage}${
           activeBrand ? `&brand=${activeBrand}` : ""
         }`
       : null;
@@ -344,7 +344,7 @@ const Shoes: NextPage<ShoeProps> = ({
         className="max-w-7xl mx-auto px-5 sm:px-6 lg:px-8 py-20 sm:py-24 lg:py-24 animate-fade-in-up min-h-screen"
       >
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 mt-3 mb-20">
-          <div className="col-span-8 lg:col-span-2">
+          <div className="col-span-10 lg:col-span-2">
             <div className="space-y-4">
               {/* Autocomplete */}
               <div className="mb-5 relative">

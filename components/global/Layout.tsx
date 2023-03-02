@@ -11,7 +11,7 @@ export default function Layout({ children }: LayoutProps) {
   return (
     <div className="bg-zinc-800">
       <Head>
-        <title>Shift Into Your Closet</title>
+        <title>Shift's Closet</title>
       </Head>
       <Navbar />
       <main>{children}</main>

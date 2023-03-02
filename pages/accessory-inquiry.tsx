@@ -12,6 +12,7 @@ import { useForm } from "react-hook-form";
 import { useForm as useFormSpree } from "@formspree/react";
 
 import { Transition } from "@headlessui/react";
+import { useSpring, animated } from "react-spring";
 
 type FormValues = {
   firstName: string;
@@ -43,6 +44,31 @@ export const getStaticProps: GetStaticProps<
 const ApparelInquiry: NextPage<AccessoryInquiryProps> = ({
   accessories,
 }: AccessoryInquiryProps) => {
+  const [springProps, set] = useSpring(() => ({
+    transform: "translateY(0px)",
+    boxShadow: "0px 0px 0px rgba(0, 0, 0, 0.2)",
+  }));
+
+  const handleHover = () => {
+    set({
+      to: [
+        {
+          transform: "translateY(-5px)",
+          boxShadow: "0px 5px 0px rgba(0, 0, 0, 0.2)",
+        },
+        {
+          transform: "translateY(0px)",
+          boxShadow: "0px 0px 0px rgba(0, 0, 0, 0.2)",
+        },
+      ],
+    });
+  };
+
+  const buttonStyles = {
+    transform: springProps.transform,
+    boxShadow: springProps.boxShadow,
+  };
+
   const router = useRouter();
   const { accessoryName } = router.query;
 
@@ -82,12 +108,12 @@ const ApparelInquiry: NextPage<AccessoryInquiryProps> = ({
   return (
     <>
       <Head>
-        <title>Accessory Inquiry | Shift Into Your Closet</title>
+        <title>Accessory Inquiry | Shift's Closet</title>
         <link rel="apple-touch-icon" href="/path/to/apple-touch-icon.png" />
         <meta name="theme-color" content="#60A5FA" />
         <meta
           name="description"
-          content="accessory inquiry at Shift Into Your Closet"
+          content="accessory inquiry at Shift's Closet"
         />
         <meta
           name="keywords"
@@ -308,13 +334,16 @@ const ApparelInquiry: NextPage<AccessoryInquiryProps> = ({
             </div>
 
             <div className="flex ">
-              <button
+              <animated.button
                 type="submit"
-                value="Send"
-                className="w-full rounded-md bg-blue-500 px-14 py-4 mt-4 text-sm font-roboto bold text-white hover:bg-blue-700 cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75"
+                value="send"
+                className="w-full rounded-md bg-blue-500 px-14 py-4 mt-4 text-sm font-roboto bold  text-white hover:bg-blue-700 cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75"
+                onMouseEnter={handleHover}
+                onMouseLeave={() => handleHover()}
+                style={buttonStyles}
               >
                 Send
-              </button>
+              </animated.button>
             </div>
           </div>
         </form>

@@ -33,7 +33,7 @@ export type ApparelProps = {
   apparel: ApparelQuery["allApparel"][0] | undefined;
 };
 
-const siteTitle = "Shift Into Your Closet";
+const siteTitle = "Shift's Closet";
 
 SwiperCore.use([
   Navigation,
@@ -71,7 +71,7 @@ function Apparel({ apparel }: ApparelProps) {
     boxShadow: springProps.boxShadow,
   };
 
-  const apparelUrl = `www.https://www.shiftintoyourcloset.netlify.app/apparel/${apparel?.slug?.current}`;
+  const apparelUrl = `www.https://www.shiftscloset.com/apparel/${apparel?.slug?.current}`;
 
   const images = useMemo(() => {
     const _images = [];
@@ -93,11 +93,8 @@ function Apparel({ apparel }: ApparelProps) {
         <title>{apparel?.name + " | " + siteTitle}</title>
         <link rel="apple-touch-icon" href="/path/to/apple-touch-icon.png" />
         <meta name="theme-color" content="#60A5FA" />
-        <meta
-          name="description"
-          content={`${apparel?.name} Shift Into Your Closet`}
-        />
-        <meta name="keywords" content="apparel, shift into your closet" />
+        <meta name="description" content={`${apparel?.name} Shift's Closet`} />
+        <meta name="keywords" content="apparel, shift's closet" />
         <meta name="viewport" content="width=device-width" />
       </Head>
 

@@ -46,12 +46,12 @@ const WishList: NextPage = () => {
   return (
     <>
       <Head>
-        <title>Wishlist | Shift Into Your Closet</title>
+        <title>Wishlist | Shift's Closet</title>
         <link rel="apple-touch-icon" href="/path/to/apple-touch-icon.png" />
         <meta name="theme-color" content="#60A5FA" />
 
-        <meta name="description" content="wishlist at Shift Into Your Closet" />
-        <meta name="keywords" content="wishlist, shift into your closet" />
+        <meta name="description" content="wishlist at Shift's Closet" />
+        <meta name="keywords" content="wishlist, shift's closet" />
         <meta name="viewport" content="width=device-width" />
       </Head>
 

@@ -47,11 +47,11 @@ const Contact: NextPage = () => {
   return (
     <>
       <Head>
-        <title>Contact | Shift Into Your Closet</title>
+        <title>Contact | Shift's Closet</title>
         <link rel="apple-touch-icon" href="/path/to/apple-touch-icon.png" />
         <meta name="theme-color" content="#60A5FA" />
-        <meta name="description" content="contact at Shift Into Your Closet" />
-        <meta name="keywords" content="contact, shift into your closet" />
+        <meta name="description" content="contact at Shift's Closet" />
+        <meta name="keywords" content="contact, shift's closet" />
         <meta name="viewport" content="width=device-width" />
       </Head>
 

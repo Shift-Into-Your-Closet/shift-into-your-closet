@@ -47,11 +47,11 @@ const Sell: NextPage = () => {
   return (
     <>
       <Head>
-        <title>Sell | Shift Into Your Closet</title>
+        <title>Sell | Shift's Closet</title>
         <link rel="apple-touch-icon" href="/path/to/apple-touch-icon.png" />
         <meta name="theme-color" content="#327CDF" />
-        <meta name="description" content="sell at Shift Into Your Closet" />
-        <meta name="keywords" content="sell, shift into your closet" />
+        <meta name="description" content="sell at Shift's Closet" />
+        <meta name="keywords" content="sell, shift's closet" />
         <meta name="viewport" content="width=device-width" />
       </Head>
 

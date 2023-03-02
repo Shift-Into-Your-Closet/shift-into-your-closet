@@ -81,8 +81,7 @@ function Footer() {
           </div>
         </div>
         <div className="text-slate-200 text-xs pt-8">
-          © {new Date().getFullYear()} | Shift Into Your Closet | All Rights
-          Reserved
+          © {new Date().getFullYear()} | Shift's Closet | All Rights Reserved
         </div>
       </div>
     </footer>

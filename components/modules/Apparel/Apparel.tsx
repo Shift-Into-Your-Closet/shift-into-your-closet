@@ -19,6 +19,7 @@ import SwiperCore, {
 } from "swiper";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/swiper-bundle.css";
+import { useSpring, animated } from "react-spring";
 import {
   FacebookShareButton,
   TwitterShareButton,
@@ -45,6 +46,31 @@ SwiperCore.use([
 ]);
 
 function Apparel({ apparel }: ApparelProps) {
+  const [springProps, set] = useSpring(() => ({
+    transform: "translateY(0px)",
+    boxShadow: "0px 0px 0px rgba(0, 0, 0, 0.2)",
+  }));
+
+  const handleHover = () => {
+    set({
+      to: [
+        {
+          transform: "translateY(-5px)",
+          boxShadow: "0px 5px 0px rgba(0, 0, 0, 0.2)",
+        },
+        {
+          transform: "translateY(0px)",
+          boxShadow: "0px 0px 0px rgba(0, 0, 0, 0.2)",
+        },
+      ],
+    });
+  };
+
+  const buttonStyles = {
+    transform: springProps.transform,
+    boxShadow: springProps.boxShadow,
+  };
+
   const apparelUrl = `www.https://www.shiftintoyourcloset.netlify.app/apparel/${apparel?.slug?.current}`;
 
   const images = useMemo(() => {
@@ -218,10 +244,17 @@ function Apparel({ apparel }: ApparelProps) {
                   pathname: "/apparel-inquiry",
                   query: { apparelName: apparel?.name },
                 }}
-                className="w-full px-4 py-2 bg-blue-500 rounded-lg text-center mb-5 text-white hover:bg-blue-700"
               >
-                Inquire
+                <animated.button
+                  className="w-full px-4 py-2 bg-blue-500 rounded-lg text-center mb-5 text-white hover:bg-blue-700"
+                  onMouseEnter={handleHover}
+                  onMouseLeave={() => handleHover()}
+                  style={buttonStyles}
+                >
+                  Message
+                </animated.button>
               </Link>
+
               <div className="animate-fade-in-up">
                 <ProductDetail index={0} title="Authenticity Guaranteed">
                   Every item is guranteed to be 100% authentic. Our inventory

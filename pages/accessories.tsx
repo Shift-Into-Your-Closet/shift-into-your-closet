@@ -326,7 +326,7 @@ const Accessories: NextPage<AccessoryProps> = ({
         className="max-w-7xl mx-auto px-5 sm:px-6 lg:px-8 py-20 sm:py-24 lg:py-24 animate-fade-in-up min-h-screen"
       >
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 mt-3 mb-20">
-          <div className="col-span-8 lg:col-span-2">
+          <div className="col-span-10 lg:col-span-2">
             <div className="space-y-4">
               {/* Autocomplete */}
               <div className="mb-5 relative">
@@ -824,7 +824,7 @@ const Accessories: NextPage<AccessoryProps> = ({
                   return (
                     <Link
                       key={accessory.slug?.current}
-                      href={`/accessories/${accessory.slug?.current}`}
+                      href={`/accessory/${accessory.slug?.current}`}
                     >
                       <animated.div
                         style={props}

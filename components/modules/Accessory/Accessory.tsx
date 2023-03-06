@@ -72,7 +72,7 @@ function Accessory({ accessory }: AccessoryProps) {
     boxShadow: springProps.boxShadow,
   };
 
-  const accessoryUrl = `www.https://www.shiftscloset.com/accessory/${accessory?.slug?.current}`;
+  const accessoryUrl = `https://www.shiftscloset.com/accessory/${accessory?.slug?.current}`;
 
   const images = useMemo(() => {
     const _images = [];

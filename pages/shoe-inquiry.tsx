@@ -155,10 +155,10 @@ const ShoeInquiry: NextPage<ShoeInquiryProps> = ({
                   ></path>
                 </svg>
                 <Link
-                  href="/shoes"
+                  href="/footwear"
                   className="ml-1 text-lg font-regular font-roboto md:ml-2 cursor-pointer hover:text-blue-400"
                 >
-                  Shoes
+                  Footwear
                 </Link>
               </div>
             </li>

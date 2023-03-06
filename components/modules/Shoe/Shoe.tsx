@@ -71,7 +71,7 @@ function Shoe({ shoe }: ShoeProps) {
     boxShadow: springProps.boxShadow,
   };
 
-  const shoeUrl = `www.https://www.shiftscloset.com/shoe/${shoe?.slug?.current}`;
+  const shoeUrl = `https://www.shiftscloset.com/shoe/${shoe?.slug?.current}`;
 
   const images = useMemo(() => {
     const _images = [];

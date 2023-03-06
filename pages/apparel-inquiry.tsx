@@ -154,7 +154,7 @@ const ApparelInquiry: NextPage<ApparelInquiryProps> = ({
                   ></path>
                 </svg>
                 <Link
-                  href="/accessories"
+                  href="/apparel"
                   className="ml-1 text-lg font-regular font-roboto md:ml-2 cursor-pointer hover:text-blue-400"
                 >
                   Apparel

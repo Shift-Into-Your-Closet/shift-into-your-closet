@@ -71,7 +71,7 @@ function Apparel({ apparel }: ApparelProps) {
     boxShadow: springProps.boxShadow,
   };
 
-  const apparelUrl = `www.https://www.shiftscloset.com/apparel/${apparel?.slug?.current}`;
+  const apparelUrl = `https://www.shiftscloset.com/apparel/${apparel?.slug?.current}`;
 
   const images = useMemo(() => {
     const _images = [];

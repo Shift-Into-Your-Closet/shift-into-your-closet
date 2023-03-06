@@ -377,7 +377,7 @@ const Shoes: NextPage<ShoeProps> = ({
                 <div className="relative">
                   <Listbox.Button className="relative w-full py-2 pl-3 pr-10 text-left bg-white rounded-md shadow-sm cursor-pointer focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
                     <span className="block truncate">
-                      {selectedBrand || "Filter Brands"}
+                      {selectedBrand || "Filter by Brand"}
                     </span>
                     <span className="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
                       <svg
@@ -454,7 +454,7 @@ const Shoes: NextPage<ShoeProps> = ({
                 <div className="relative">
                   <Listbox.Button className="relative w-full py-2 pl-3 pr-10 text-left bg-white rounded-md shadow-sm cursor-pointer focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
                     <span className="block truncate">
-                      {selectedCategory || "Filter by Categories"}
+                      {selectedCategory || "Filter by Category"}
                     </span>
                     <span className="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
                       <svg
@@ -532,7 +532,7 @@ const Shoes: NextPage<ShoeProps> = ({
                   <div className="relative">
                     <Listbox.Button className="relative w-full py-2 pl-3 pr-10 text-left bg-white rounded-md shadow-sm cursor-pointer focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
                       <span className="block truncate">
-                        {selectedSize || "Filter by Sizes"}
+                        {selectedSize || "Filter by Size"}
                       </span>
                       <span className="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
                         <svg
@@ -614,7 +614,7 @@ const Shoes: NextPage<ShoeProps> = ({
                 <div className="relative">
                   <Listbox.Button className="relative w-full py-2 pl-3 pr-10 text-left bg-white rounded-md shadow-sm cursor-pointer focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
                     <span className="block truncate">
-                      {selectedArrivalOption?.text || "Filter by Arrivals"}
+                      {selectedArrivalOption?.text || "Sort by Arrivals"}
                     </span>
                     <span className="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
                       <svg
@@ -964,7 +964,8 @@ const Shoes: NextPage<ShoeProps> = ({
               </div>
             ) : (
               <div className="text-sm text-white">
-                No shoes found. Please check back as we get in new items weekly.
+                No footwear found. Please check back as we get in new items
+                weekly.
               </div>
             )}
           </div>

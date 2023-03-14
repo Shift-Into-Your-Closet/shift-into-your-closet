@@ -552,7 +552,7 @@ const Apparel: NextPage<ApparelProps> = ({
                               "cursor-default select-none relative py-2 pl-10 pr-4"
                             )
                           }
-                          onClick={() => setSelectedSize(size as string)}
+                          onClick={() => setSelectedSize(size ?? "")}
                         >
                           {({ selected, active }) => (
                             <>

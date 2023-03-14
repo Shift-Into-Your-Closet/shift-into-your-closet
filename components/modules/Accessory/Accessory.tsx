@@ -176,8 +176,8 @@ function Accessory({ accessory }: AccessoryProps) {
                       <div key={image} className={s.imageContainer}>
                         <SwiperSlide key={index}>
                           <Image
-                            className="aspect-square"
-                            src={image as string}
+                            className="aspect-square object-contain"
+                            src={image ?? ""}
                             alt={`Image of ${accessory?.name}`}
                             height={600}
                             width={600}
@@ -205,7 +205,7 @@ function Accessory({ accessory }: AccessoryProps) {
                   <TwitterIcon size={32} round={true} />
                 </TwitterShareButton>
                 <PinterestShareButton
-                  media={accessory?.mainImage?.asset?.url as string}
+                  media={accessory?.mainImage?.asset?.url ?? ""}
                   url={accessoryUrl}
                   className="hover:scale-110"
                 >

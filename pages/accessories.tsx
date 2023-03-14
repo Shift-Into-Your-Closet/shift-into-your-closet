@@ -29,15 +29,7 @@ type AccessoryProps = {
   categories: AllAccessoryCategoriesQuery["allAccessoryCategory"];
 };
 
-export const getStaticProps: GetStaticProps<AccessoryProps> = async (
-  context
-) => {
-  const { params = {} } = context;
-  const page = Number(params.page) || 1;
-  const perPage = Number(params.perPage) || 12;
-  const offset = (page - 1) * perPage;
-  const limit = perPage;
-
+export const getStaticProps: GetStaticProps<AccessoryProps> = async () => {
   const [
     { data: accessoryData },
     { data: accessoryBrandData },
@@ -45,10 +37,6 @@ export const getStaticProps: GetStaticProps<AccessoryProps> = async (
   ] = await Promise.all([
     client.query<AllAccessoryQuery>({
       query: AllAccessoryDocument,
-      variables: {
-        offset,
-        limit,
-      },
     }),
     client.query<AllAccessoryBrandsQuery>({
       query: AllAccessoryBrandsDocument,
@@ -88,6 +76,7 @@ const Accessories: NextPage<AccessoryProps> = ({
   const [condition, setCondition] = useState("");
   const [sortPrice, setSortPrice] = useState("");
   const [sortOrder, setSortOrder] = useState("");
+  const router = useRouter();
 
   const capitalizeWords = (str: string) => {
     return str.replace(/\b\w/g, (c) => c.toUpperCase());
@@ -214,12 +203,6 @@ const Accessories: NextPage<AccessoryProps> = ({
   const selectedSortOption = orderOptions.find(
     (option) => option.value === sortOrder
   );
-  const router = useRouter();
-  const activeBrand = router.query.brand || "";
-  const page = Number(router.query.page) || 1;
-  const perPage = Number(router.query.perPage) || 12;
-  const offset = (page - 1) * perPage;
-  const limit = perPage;
 
   const autocompleteAccessories =
     query === ""
@@ -266,12 +249,9 @@ const Accessories: NextPage<AccessoryProps> = ({
       }
       return 0;
     });
-    return brandAccessory.slice(offset, offset + limit);
+    return brandAccessory;
   }, [
-    activeBrand,
     autocompleteAccessories,
-    offset,
-    limit,
     selectedBrand,
     selectedCategory,
     arrivalOrder,
@@ -285,31 +265,6 @@ const Accessories: NextPage<AccessoryProps> = ({
     transform: "translate3d(0, 0, 0)",
     from: { opacity: 0, transform: "translate3d(0, 30px, 0)" },
   });
-
-  const brandAccessory = activeBrand
-    ? accessories.filter((accessory) =>
-        accessory.brand?.some((brand) => brand?.slug?.current === activeBrand)
-      )
-    : accessories;
-
-  const brandPages = Math.ceil(brandAccessory.length / perPage);
-
-  const prevPage = page - 1;
-  const nextPage = page + 1;
-
-  const prevLink =
-    prevPage > 0
-      ? `/accessories?page=${prevPage}&perPage=${perPage}${
-          activeBrand ? `&category=${activeBrand}` : ""
-        }`
-      : null;
-
-  const nextLink =
-    nextPage <= brandPages
-      ? `/accessories?page=${nextPage}&perPage=${perPage}${
-          activeBrand ? `&category=${activeBrand}` : ""
-        }`
-      : null;
 
   return (
     <>
@@ -871,32 +826,6 @@ const Accessories: NextPage<AccessoryProps> = ({
               </div>
             )}
           </div>
-          <div className="col-span-8 lg:col-span-2"></div>
-        </div>
-        <div className="flex justify-evenly gap-x-12">
-          {filteredAccessories.length > 0 && (
-            <div className="flex mt-12 mb-4 text-white">
-              {prevLink && (
-                <Link
-                  href={prevLink}
-                  className="block py-4 px-4 ml-auto text-base font-semibold text-white hover:text-accent-4 tracking-wide transition-all duration-200 rounded-md"
-                >
-                  Previous
-                </Link>
-              )}
-              <p className="m-4">
-                Page {page} of {brandPages}
-              </p>
-              {nextLink && (
-                <Link
-                  href={nextLink}
-                  className="block py-4 px-4 ml-auto text-base font-semibold text-white hover:text-accent-4 tracking-wide transition-all duration-200 rounded-md"
-                >
-                  Next
-                </Link>
-              )}
-            </div>
-          )}
         </div>
         <div className="flex justify-end">
           <BackToTopButton />

@@ -163,7 +163,7 @@ const Shoes: NextPage<ShoeProps> = ({
         pathname: "/footwear",
         search: qs.stringify({
           ...router.query,
-          priceOrder: selectedSortPrice.toLowerCase(),
+          price_order: selectedSortPrice,
         }),
       });
     } else {
@@ -178,13 +178,14 @@ const Shoes: NextPage<ShoeProps> = ({
         pathname: "/footwear",
         search: qs.stringify({
           ...router.query,
-          sortOrder: selectedSortOrder.toLowerCase(),
+          sort_order: selectedSortOrder,
         }),
       });
     } else {
       router.push("/footwear");
     }
   };
+
   const arrivalOptions = [
     { value: "newest-to-oldest", text: "Newest to Oldest" },
     { value: "oldest-to-newest", text: "Oldest to Newest" },
@@ -700,7 +701,7 @@ const Shoes: NextPage<ShoeProps> = ({
                             "cursor-default select-none relative py-2 pl-10 pr-4"
                           )
                         }
-                        onClick={() => handleSortPriceOrder(option.value)}
+                        onClick={() => handleSelectedCondition(option.value)}
                       >
                         {({ selected, active }) => (
                           <>

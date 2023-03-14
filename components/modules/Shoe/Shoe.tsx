@@ -172,8 +172,8 @@ function Shoe({ shoe }: ShoeProps) {
                       <div key={image} className={s.imageContainer}>
                         <SwiperSlide key={index}>
                           <Image
-                            className="aspect-square"
-                            src={image as string}
+                            className="aspect-square object-contain"
+                            src={image ?? ""}
                             alt={`Image of ${shoe?.name}`}
                             height={600}
                             width={600}
@@ -194,7 +194,7 @@ function Shoe({ shoe }: ShoeProps) {
                   <TwitterIcon size={32} round={true} />
                 </TwitterShareButton>
                 <PinterestShareButton
-                  media={shoe?.mainImage?.asset?.url as string}
+                  media={shoe?.mainImage?.asset?.url ?? ""}
                   url={shoeUrl}
                   className="hover:scale-110"
                 >

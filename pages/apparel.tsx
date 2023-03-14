@@ -162,7 +162,7 @@ const Apparel: NextPage<ApparelProps> = ({
         pathname: "/apparel",
         search: qs.stringify({
           ...router.query,
-          priceOrder: selectedSortPrice.toLowerCase(),
+          price_order: selectedSortPrice,
         }),
       });
     } else {
@@ -177,7 +177,7 @@ const Apparel: NextPage<ApparelProps> = ({
         pathname: "/apparel",
         search: qs.stringify({
           ...router.query,
-          sortOrder: selectedSortOrder.toLowerCase(),
+          sort_order: selectedSortOrder,
         }),
       });
     } else {
@@ -707,7 +707,7 @@ const Apparel: NextPage<ApparelProps> = ({
                             "cursor-default select-none relative py-2 pl-10 pr-4"
                           )
                         }
-                        onClick={() => handleSortPriceOrder(option.value)}
+                        onClick={() => handleSelectedCondition(option.value)}
                       >
                         {({ selected, active }) => (
                           <>

@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useRef, useMemo, useState, useEffect } from "react";
 import { NextPage, GetStaticProps } from "next";
 import { useRouter } from "next/router";
 import Head from "next/head";
@@ -75,6 +75,34 @@ const Shoes: NextPage<ShoeProps> = ({
   const [condition, setCondition] = useState("");
   const [sortPrice, setSortPrice] = useState("");
   const [sortOrder, setSortOrder] = useState("");
+  const [shoesToShow, setShoesToShow] = useState(9);
+
+  const lastItemRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const options = {
+      root: null,
+      rootMargin: "0px",
+      threshold: 1.0,
+    };
+
+    const observer = new IntersectionObserver(([entry]) => {
+      if (entry.isIntersecting && shoesToShow < shoes.length) {
+        setShoesToShow((prev) => prev + 3);
+      }
+    }, options);
+
+    if (lastItemRef.current) {
+      observer.observe(lastItemRef.current);
+    }
+
+    return () => {
+      if (lastItemRef.current) {
+        observer.unobserve(lastItemRef.current);
+      }
+    };
+  }, [lastItemRef, shoesToShow, shoes.length]);
+
   const router = useRouter();
 
   const capitalizeWords = (str: string) => {
@@ -281,7 +309,7 @@ const Shoes: NextPage<ShoeProps> = ({
     sortOrder,
   ]);
 
-  const trail = useTrail(filteredShoes.length, {
+  const trail = useTrail(shoesToShow, {
     opacity: 1,
     transform: "translate3d(0, 0, 0)",
     from: { opacity: 0, transform: "translate3d(0, 30px, 0)" },
@@ -878,15 +906,14 @@ const Shoes: NextPage<ShoeProps> = ({
           <div className="col-span-10 lg:col-span-8">
             {filteredShoes.length > 0 ? (
               <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-                {trail.map((props, index) => {
-                  const shoe = filteredShoes[index];
+                {shoes.slice(0, shoesToShow).map((shoe, index) => {
                   return (
                     <Link
                       key={shoe.slug?.current}
                       href={`/shoe/${shoe.slug?.current}`}
                     >
                       <animated.div
-                        style={props}
+                        style={trail[index]}
                         className="relative cursor-pointer overflow-hidden rounded-sm"
                       >
                         <div className="h-72 relative">
@@ -919,6 +946,7 @@ const Shoes: NextPage<ShoeProps> = ({
                     </Link>
                   );
                 })}
+                <div ref={lastItemRef}></div>
               </div>
             ) : (
               <div className="text-sm text-white">

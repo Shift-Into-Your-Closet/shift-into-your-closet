@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useRef, useMemo, useState, useEffect } from "react";
 import { NextPage, GetStaticProps } from "next";
 import { useRouter } from "next/router";
 import Head from "next/head";
@@ -76,6 +76,34 @@ const Accessories: NextPage<AccessoryProps> = ({
   const [condition, setCondition] = useState("");
   const [sortPrice, setSortPrice] = useState("");
   const [sortOrder, setSortOrder] = useState("");
+  const [accessoriesToShow, setAccessoriesToShow] = useState(9);
+
+  const lastItemRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const options = {
+      root: null,
+      rootMargin: "0px",
+      threshold: 1.0,
+    };
+
+    const observer = new IntersectionObserver(([entry]) => {
+      if (entry.isIntersecting && accessoriesToShow < accessories.length) {
+        setAccessoriesToShow((prev) => prev + 3);
+      }
+    }, options);
+
+    if (lastItemRef.current) {
+      observer.observe(lastItemRef.current);
+    }
+
+    return () => {
+      if (lastItemRef.current) {
+        observer.unobserve(lastItemRef.current);
+      }
+    };
+  }, [lastItemRef, accessoriesToShow, accessories.length]);
+
   const router = useRouter();
 
   const capitalizeWords = (str: string) => {
@@ -261,7 +289,7 @@ const Accessories: NextPage<AccessoryProps> = ({
     sortOrder,
   ]);
 
-  const trail = useTrail(filteredAccessories.length, {
+  const trail = useTrail(accessoriesToShow, {
     opacity: 1,
     transform: "translate3d(0, 0, 0)",
     from: { opacity: 0, transform: "translate3d(0, 30px, 0)" },
@@ -778,47 +806,48 @@ const Accessories: NextPage<AccessoryProps> = ({
           <div className="col-span-10 lg:col-span-8">
             {filteredAccessories.length > 0 ? (
               <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-                {trail.map((props, index) => {
-                  const accessory = filteredAccessories[index];
-                  return (
-                    <Link
-                      key={accessory.slug?.current}
-                      href={`/accessory/${accessory.slug?.current}`}
-                    >
-                      <animated.div
-                        style={props}
-                        className="relative cursor-pointer overflow-hidden rounded-sm"
+                {accessories
+                  .slice(0, accessoriesToShow)
+                  .map((accessory, index) => {
+                    return (
+                      <Link
+                        key={accessory.slug?.current}
+                        href={`/accessory/${accessory.slug?.current}`}
                       >
-                        <div className="h-72 relative">
-                          {accessory.mainImage?.asset?.url && (
-                            <Image
-                              src={accessory.mainImage.asset.url}
-                              alt={`Image for ${accessory.name}`}
-                              className="object-cover"
-                              loading="lazy"
-                              fill
-                              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                            />
-                          )}
-                        </div>
-                        <div className="absolute bottom-0 left-0">
-                          <div className="bg-black py-3 px-5">
-                            <div className="text-white uppercase font-bold pb-1">
-                              {accessory.name}
+                        <animated.div
+                          style={trail[index]}
+                          className="relative cursor-pointer overflow-hidden rounded-sm"
+                        >
+                          <div className="h-72 relative">
+                            {accessory.mainImage?.asset?.url && (
+                              <Image
+                                src={accessory.mainImage.asset.url}
+                                alt={`Image for ${accessory.name}`}
+                                className="object-cover"
+                                loading="lazy"
+                                fill
+                                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                              />
+                            )}
+                          </div>
+                          <div className="absolute bottom-0 left-0">
+                            <div className="bg-black py-3 px-5">
+                              <div className="text-white uppercase font-bold pb-1">
+                                {accessory.name}
+                              </div>
                             </div>
                           </div>
-                        </div>
-                        <div className="absolute top-0 left-0">
-                          <div className="bg-black py-1 px-5">
-                            <div className="text-xl text-blue-400 font-bold">
-                              ${accessory.price}
+                          <div className="absolute top-0 left-0">
+                            <div className="bg-black py-1 px-5">
+                              <div className="text-xl text-blue-400 font-bold">
+                                ${accessory.price}
+                              </div>
                             </div>
                           </div>
-                        </div>
-                      </animated.div>
-                    </Link>
-                  );
-                })}
+                        </animated.div>
+                      </Link>
+                    );
+                  })}
               </div>
             ) : (
               <div className="text-sm text-white">

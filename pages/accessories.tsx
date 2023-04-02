@@ -1,4 +1,4 @@
-import { useRef, useMemo, useState, useEffect } from "react";
+import { useRef, useMemo, useState, useEffect, useContext } from "react";
 import { NextPage, GetStaticProps } from "next";
 import { useRouter } from "next/router";
 import Head from "next/head";
@@ -15,6 +15,8 @@ import {
   AllAccessoryDocument,
   AllAccessoryQuery,
 } from "./../graphql-operations";
+
+import SidesheetContext from "../context/SidesheetContext";
 import BackToTopButton from "../components/ui/BackToTopButton";
 
 import { Combobox, Listbox } from "@headlessui/react";
@@ -22,6 +24,7 @@ import qs from "qs";
 import { FaSearch } from "react-icons/fa";
 
 import { useTrail, animated } from "react-spring";
+import { VscFilter } from "react-icons/vsc";
 
 type AccessoryProps = {
   accessories: AllAccessoryQuery["allAccessory"];
@@ -295,53 +298,14 @@ const Accessories: NextPage<AccessoryProps> = ({
     from: { opacity: 0, transform: "translate3d(0, 30px, 0)" },
   });
 
-  return (
-    <>
-      <Head>
-        <title>Accessories | Shift's Closet</title>
-        <link rel="apple-touch-icon" href="/path/to/apple-touch-icon.png" />
-        <meta name="theme-color" content="#60A5FA" />
-        <meta name="description" content="Accessories at Shift's Closet" />
-        <meta name="keywords" content="accessories, shift's closet" />
-        <meta name="viewport" content="width=device-width" />
-      </Head>
-      <section
-        id="accessories"
-        className="max-w-7xl mx-auto px-5 sm:px-6 lg:px-8 py-20 sm:py-24 lg:py-24 animate-fade-in-up min-h-screen"
-      >
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 mt-3 mb-20">
+  const ToggleFilter = () => {
+    const { show } = useContext(SidesheetContext);
+
+    const handleClick = () => {
+      const component = (
+        <>
           <div className="col-span-10 lg:col-span-2">
             <div className="space-y-4">
-              {/* Autocomplete */}
-              <div className="mb-5 relative">
-                <Combobox
-                  as="div"
-                  value={selectedAccessory}
-                  onChange={setSelectedAccessory}
-                  className="w-full"
-                  aria-label="Search Accessories"
-                >
-                  <Combobox.Input
-                    placeholder="Search Accessories"
-                    className="w-full border border-accent-4 rounded-sm p-2 pl-8 text-black bg-gray-200"
-                    onChange={(event) => setQuery(event.target.value)}
-                  />
-                  <span className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                    <FaSearch className="text-gray-500" />
-                  </span>
-                  {filteredAccessories.length > 0 && (
-                    <Combobox.Options>
-                      {autocompleteAccessories.map((accessory) => (
-                        <Combobox.Option
-                          key={accessory.name}
-                          value={accessory.name}
-                        />
-                      ))}
-                    </Combobox.Options>
-                  )}
-                </Combobox>
-              </div>
-
               {/* Brand Filter */}
               <Listbox value={selectedBrand} onChange={handleSelectedBrand}>
                 <div className="relative">
@@ -802,11 +766,76 @@ const Accessories: NextPage<AccessoryProps> = ({
               </Listbox>
             </div>
           </div>
+        </>
+      );
+
+      show(component);
+    };
+
+    return (
+      <button
+        onClick={handleClick}
+        className="w-full border border-accent-4 rounded-sm p-2  text-black bg-gray-200 text-left flex justify-between items-center"
+      >
+        Filter By
+        <VscFilter />
+      </button>
+    );
+  };
+
+  return (
+    <>
+      <Head>
+        <title>Accessories | Shift's Closet</title>
+        <link rel="apple-touch-icon" href="/path/to/apple-touch-icon.png" />
+        <meta name="theme-color" content="#60A5FA" />
+        <meta name="description" content="Accessories at Shift's Closet" />
+        <meta name="keywords" content="accessories, shift's closet" />
+        <meta name="viewport" content="width=device-width" />
+      </Head>
+      <section
+        id="accessories"
+        className="max-w-7xl mx-auto px-5 sm:px-6 lg:px-8 py-20 sm:py-24 lg:py-24 animate-fade-in-up min-h-screen"
+      >
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 mt-3 mb-20">
+          <div className="col-span-10 lg:col-span-2">
+            <div className="space-y-4">
+              <ToggleFilter />
+            </div>
+          </div>
 
           <div className="col-span-10 lg:col-span-8">
-            {filteredAccessories.length > 0 ? (
+            <div className="mb-5 relative">
+              <Combobox
+                as="div"
+                value={selectedAccessory}
+                onChange={setSelectedAccessory}
+                className="w-full"
+                aria-label="Search Accessories"
+              >
+                <Combobox.Input
+                  placeholder="Search Accessories"
+                  className="w-full border border-accent-4 rounded-sm p-2 pl-8 text-black bg-gray-200"
+                  onChange={(event) => setQuery(event.target.value)}
+                />
+                <span className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                  <FaSearch className="text-gray-500" />
+                </span>
+                {filteredAccessories.length > 0 && (
+                  <Combobox.Options>
+                    {autocompleteAccessories.map((accessory) => (
+                      <Combobox.Option
+                        key={accessory.name}
+                        value={accessory.name}
+                      />
+                    ))}
+                  </Combobox.Options>
+                )}
+              </Combobox>
+            </div>
+            {autocompleteAccessories.length > 0 ? (
               <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-                {accessories
+                {filteredAccessories
                   .slice(0, accessoriesToShow)
                   .map((accessory, index) => {
                     return (

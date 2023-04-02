@@ -1,4 +1,4 @@
-import { useRef, useMemo, useState, useEffect } from "react";
+import { useRef, useMemo, useState, useEffect, useContext } from "react";
 import { NextPage, GetStaticProps } from "next";
 import { useRouter } from "next/router";
 import Head from "next/head";
@@ -15,11 +15,14 @@ import {
   AllApparelsDocument,
   AllApparelsQuery,
 } from "./../graphql-operations";
+
+import SidesheetContext from "../context/SidesheetContext";
 import BackToTopButton from "../components/ui/BackToTopButton";
 
 import { Combobox, Listbox } from "@headlessui/react";
 import qs from "qs";
 import { FaSearch } from "react-icons/fa";
+import { VscFilter } from "react-icons/vsc";
 import { useTrail, animated } from "react-spring";
 
 type ApparelProps = {
@@ -315,52 +318,14 @@ const Apparel: NextPage<ApparelProps> = ({
     from: { opacity: 0, transform: "translate3d(0, 30px, 0)" },
   });
 
-  return (
-    <>
-      <Head>
-        <title>Apparel | Shift's Closet</title>
-        <link rel="apple-touch-icon" href="/path/to/apple-touch-icon.png" />
-        <meta name="theme-color" content="#60A5FA" />
-        <meta name="description" content="Apparel at Shift's Closet" />
-        <meta name="keywords" content="apparel, shift's closet" />
-        <meta name="viewport" content="width=device-width" />
-      </Head>
-      <section
-        id="apparel"
-        className="max-w-7xl mx-auto px-5 sm:px-6 lg:px-8 py-20 sm:py-24 lg:py-24 animate-fade-in-up min-h-screen"
-      >
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 mt-3 mb-20">
+  const ToggleFilter = () => {
+    const { show } = useContext(SidesheetContext);
+
+    const handleClick = () => {
+      const component = (
+        <>
           <div className="col-span-10 lg:col-span-2">
             <div className="space-y-4">
-              {/* Autocomplete */}
-              <div className="mb-5 relative">
-                <Combobox
-                  as="div"
-                  value={selectedApparel}
-                  onChange={setSelectedApparel}
-                  className="w-full"
-                  aria-label="Search Apparel"
-                >
-                  <Combobox.Input
-                    placeholder="Search Apparel"
-                    className="w-full border border-accent-4 rounded-sm p-2 pl-8 text-black bg-gray-200"
-                    onChange={(event) => setQuery(event.target.value)}
-                  />
-                  <span className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                    <FaSearch className="text-gray-500" />
-                  </span>
-                  {filteredApparel.length > 0 && (
-                    <Combobox.Options>
-                      {autocompleteApparel.map((apparel) => (
-                        <Combobox.Option
-                          key={apparel.name}
-                          value={apparel.name}
-                        />
-                      ))}
-                    </Combobox.Options>
-                  )}
-                </Combobox>
-              </div>
               {/* Brand Filter */}
               <Listbox value={selectedBrand} onChange={handleSelectedBrand}>
                 <div className="relative">
@@ -522,7 +487,7 @@ const Apparel: NextPage<ApparelProps> = ({
                   <div className="relative">
                     <Listbox.Button className="relative w-full py-2 pl-3 pr-10 text-left bg-white rounded-md shadow-sm cursor-pointer focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
                       <span className="block truncate">
-                        {selectedSize || "Filter by Size"}
+                        {selectedSize ? selectedSize : "Filter by Size"}
                       </span>
                       <span className="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
                         <svg
@@ -908,49 +873,116 @@ const Apparel: NextPage<ApparelProps> = ({
               </Listbox>
             </div>
           </div>
+        </>
+      );
+
+      show(component);
+    };
+
+    return (
+      <button
+        onClick={handleClick}
+        className="w-full border border-accent-4 rounded-sm p-2  text-black bg-gray-200 text-left flex justify-between items-center"
+      >
+        Filter By
+        <VscFilter />
+      </button>
+    );
+  };
+
+  return (
+    <>
+      <Head>
+        <title>Apparel | Shift's Closet</title>
+        <link rel="apple-touch-icon" href="/path/to/apple-touch-icon.png" />
+        <meta name="theme-color" content="#60A5FA" />
+        <meta name="description" content="Apparel at Shift's Closet" />
+        <meta name="keywords" content="apparel, shift's closet" />
+        <meta name="viewport" content="width=device-width" />
+      </Head>
+      <section
+        id="apparel"
+        className="max-w-7xl mx-auto px-5 sm:px-6 lg:px-8 py-20 sm:py-24 lg:py-24 animate-fade-in-up min-h-screen"
+      >
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 mt-3 mb-20">
+          <div className="col-span-10 lg:col-span-2">
+            <div className="space-y-4">
+              <ToggleFilter />
+            </div>
+          </div>
           <div className="col-span-10 lg:col-span-8">
-            {filteredApparel.length > 0 ? (
+            <div className="mb-5 relative">
+              <Combobox
+                as="div"
+                value={selectedApparel}
+                onChange={setSelectedApparel}
+                className="w-full"
+                aria-label="Search Apparel"
+              >
+                <Combobox.Input
+                  placeholder="Search Apparel"
+                  className="w-full border border-accent-4 rounded-sm p-2 pl-8 text-black bg-gray-200"
+                  onChange={(event) => setQuery(event.target.value)}
+                />
+                <span className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                  <FaSearch className="text-gray-500" />
+                </span>
+                {filteredApparel.length > 0 && (
+                  <Combobox.Options>
+                    {autocompleteApparel.map((apparel) => (
+                      <Combobox.Option
+                        key={apparel.name}
+                        value={apparel.name}
+                      />
+                    ))}
+                  </Combobox.Options>
+                )}
+              </Combobox>
+            </div>
+            {autocompleteApparel.length > 0 ? (
               <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-                {apparels.slice(0, apparelToShow).map((apparel, index) => {
-                  return (
-                    <Link
-                      key={apparel.slug?.current}
-                      href={`/apparel/${apparel.slug?.current}`}
-                    >
-                      <animated.div
-                        style={trail[index]}
-                        className="relative cursor-pointer overflow-hidden rounded-sm"
+                {filteredApparel
+                  .slice(0, apparelToShow)
+                  .map((apparel, index) => {
+                    return (
+                      <Link
+                        key={apparel.slug?.current}
+                        href={`/apparel/${apparel.slug?.current}`}
                       >
-                        <div className="h-72 relative">
-                          {apparel.mainImage?.asset?.url && (
-                            <Image
-                              src={apparel.mainImage.asset.url}
-                              alt={`Image for ${apparel.name}`}
-                              className="object-cover"
-                              loading="lazy"
-                              fill
-                              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                            />
-                          )}
-                        </div>
-                        <div className="absolute bottom-0 left-0">
-                          <div className="bg-black py-3 px-5">
-                            <div className="text-white uppercase font-bold pb-1">
-                              {apparel.name}
+                        <animated.div
+                          style={trail[index]}
+                          className="relative cursor-pointer overflow-hidden rounded-sm"
+                        >
+                          <div className="h-72 relative">
+                            {apparel.mainImage?.asset?.url && (
+                              <Image
+                                src={apparel.mainImage.asset.url}
+                                alt={`Image for ${apparel.name}`}
+                                className="object-cover"
+                                loading="lazy"
+                                fill
+                                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                              />
+                            )}
+                          </div>
+                          <div className="absolute bottom-0 left-0">
+                            <div className="bg-black py-3 px-5">
+                              <div className="text-white uppercase font-bold pb-1">
+                                {apparel.name}
+                              </div>
                             </div>
                           </div>
-                        </div>
-                        <div className="absolute top-0 left-0">
-                          <div className="bg-black py-1 px-5">
-                            <div className="text-xl text-blue-400 font-bold">
-                              ${apparel.price}
+                          <div className="absolute top-0 left-0">
+                            <div className="bg-black py-1 px-5">
+                              <div className="text-xl text-blue-400 font-bold">
+                                ${apparel.price}
+                              </div>
                             </div>
                           </div>
-                        </div>
-                      </animated.div>
-                    </Link>
-                  );
-                })}
+                        </animated.div>
+                      </Link>
+                    );
+                  })}
                 <div ref={lastItemRef}></div>
               </div>
             ) : (

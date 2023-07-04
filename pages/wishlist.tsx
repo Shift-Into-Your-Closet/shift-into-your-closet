@@ -215,7 +215,7 @@ const WishList: NextPage = () => {
                   Email
                 </label>
                 <input
-                  type="text"
+                  type="email"
                   placeholder="Email"
                   className="rounded-md bg-blue-100 border border-slate-200 px-4 py-2 outline-none hover:border-green-300 focus:border-green-400 w-full mb-2 sm:mb-0"
                   {...register("email", {
@@ -257,7 +257,7 @@ const WishList: NextPage = () => {
                 value="send"
                 className="w-full rounded-md bg-blue-500 px-14 py-4 mt-4 text-sm font-roboto bold  text-white hover:bg-blue-700 cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75"
                 onMouseEnter={handleHover}
-                onMouseLeave={() => handleHover()}
+                onMouseLeave={handleHover}
                 style={buttonStyles}
               >
                 Send
